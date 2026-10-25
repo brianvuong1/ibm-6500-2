@@ -1,0 +1,30 @@
+---
+title: "Links to Portfolio Brian"
+author: "Brian Vuong"
+date: 'today'
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-expand: 2
+    toc-location: right
+    number-sections: true
+    number-depth: 3
+    code-link: true
+    code-tools: true
+    code-fold: true
+    code-overflow: wrap
+    code-copy: true
+    embed-resources: true
+    theme: cosmo
+    html-math-method: katex
+editor: visual
+execute:
+  freeze: auto
+  warning: false
+---
+
+## Project Links
+
+- [GitHub Repository](https://github.com/brianvuong1/ibm-6500)
+- [Netlify Website](https://incredible-klepon-596fec.netlify.app)
