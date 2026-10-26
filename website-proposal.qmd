@@ -1,0 +1,492 @@
+---
+title: "Portfolio Website Project Proposal"
+author: "Brian Vuong"
+date: "2026-10-26"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    embed-resources: true
+---
+
+# Project Overview
+
+This proposal describes my portfolio website for showcasing digital marketing, marketing analytics, survey research, data visualization, and brand design projects. The website will present my academic and professional work in an organized format for potential employers, clients, instructors, and marketing professionals.
+
+The portfolio will be created with Quarto and published through Netlify. The site will include a home page, a Digital Marketing Projects page, a Marketing Analytics Projects page, and a resume section.
+
+The website will also demonstrate my ability to use Quarto, Markdown, HTML, CSS, listings, and Reveal.js presentations to communicate marketing and analytics work.
+
+# Home Page
+
+The home page will introduce me as a digital marketing professional with a background in graphic design and marketing analytics.
+
+The page will include:
+
+- A short professional biography
+- Career aspirations
+- Education
+- Technical and creative skills
+- Professional experience
+- A professional photo or photo placeholder
+- Links to my GitHub repository and published Netlify website
+
+My current education includes an M.S. in Digital Marketing at Cal Poly Pomona and a B.A. in Graphic Design from California State University, Los Angeles.
+
+My relevant skills include:
+
+- Google Analytics 4
+- Looker Studio
+- Tableau
+- SEO
+- Digital marketing strategy
+- Adobe Illustrator
+- Adobe Photoshop
+- Adobe InDesign
+- Canva
+- Qualtrics
+- Microsoft Excel
+- GitHub
+- Quarto
+- Project management
+
+My career goal is to work in a role that combines marketing strategy, data analysis, and visual communication.
+
+# Digital Marketing Projects
+
+The Digital Marketing Projects page will contain multiple projects that demonstrate my ability to develop marketing strategies, design digital experiences, conduct market research, and communicate recommendations.
+
+## Project 1: Wellness Ranch Digital Marketing Optimization
+
+### Project Title
+
+Implementing and Optimizing Digital Marketing for Wellness Ranch Equine Assisted Therapy
+
+### Data and Source
+
+The project uses information from the Wellness Ranch Therapy website, Google Analytics 4, Google Search Console, SEO research, website audits, and previous digital marketing recommendations. The project source file is the MSDM culminating experience report, `cep-group-4.qmd`.
+
+### Managerial Problem
+
+Wellness Ranch has a strong mission and growing community demand, but its digital presence needs improvement. The organization needs stronger search visibility, better analytics tracking, improved website performance, and a sustainable digital marketing strategy.
+
+The organization also needs to understand which website actions are most meaningful, including contact-form submissions, phone clicks, appointment inquiries, and donations.
+
+### Target Audience
+
+The primary audience is the director and leadership team of Wellness Ranch Equine Assisted Therapy. The findings may also be useful for nonprofit staff, marketing volunteers, and future digital marketing partners.
+
+### Research Questions and Objectives
+
+The project will address the following questions:
+
+1. How visible is Wellness Ranch in search results for relevant mental health and equine-assisted therapy terms?
+2. Which website pages and user actions generate the most engagement?
+3. Which GA4 events should be treated as key events or conversions?
+4. Which traffic sources contribute to meaningful website activity?
+5. What website, SEO, analytics, and advertising improvements should be prioritized?
+
+### Expected Business Impact
+
+The project is expected to help Wellness Ranch:
+
+- Improve organic search visibility
+- Increase website engagement
+- Improve measurement of inquiries and donations
+- Prepare for Google Ad Grants
+- Identify practical digital marketing priorities
+- Develop a sustainable long-term digital marketing strategy
+
+### Methods
+
+The project will use:
+
+- SEO audits
+- Website content analysis
+- GA4 event and conversion analysis
+- Google Search Console analysis
+- Traffic-source comparisons
+- Engagement-rate analysis
+- Conversion-rate calculations
+- KPI development
+- Baseline and post-implementation comparisons
+
+## Project 2: Qualtrics Social Media Opinion Leader Experiment
+
+### Project Title
+
+Social Media Opinion Leader Experimental Design
+
+### Data and Source
+
+This project uses a Qualtrics survey containing randomized advertisement conditions. Participants are assigned to either a social media review condition or an advertising condition.
+
+### Managerial Problem
+
+Marketing managers need to understand whether different types of social media messages influence consumer attitudes, engagement, or purchase-related responses.
+
+### Target Audience
+
+The target audience is a marketing manager or research manager evaluating the effectiveness of influencer-style content compared with traditional advertising.
+
+### Research Questions and Objectives
+
+The project asks:
+
+1. Does advertisement type influence consumer responses?
+2. Do social media users respond differently to review-based content and traditional advertisements?
+3. How can survey design improve the measurement of social media usage?
+4. Can random assignment reduce bias between experimental groups?
+
+### Expected Business Impact
+
+The findings may help marketers determine which message style is more effective for engaging social media users and designing digital advertising campaigns.
+
+### Methods
+
+The project uses:
+
+- Random assignment
+- Experimental design
+- Branch logic
+- Qualtrics survey flow
+- Descriptive statistics
+- Group comparisons
+- Measurement of social media usage
+- Dependent-variable analysis
+
+## Project 3: Consumer Survey and Market Research
+
+### Project Title
+
+Consumer Survey Design and Qualtrics Research
+
+### Data and Source
+
+This project uses Qualtrics survey-development assignments completed during the IBM 6500 course. The project includes survey-flow design, question wording, multiple-response questions, carry-forward choices, and experimental conditions.
+
+### Managerial Problem
+
+Organizations need reliable consumer information to make decisions about products, services, communication, and marketing campaigns. Poorly written questions or poorly designed survey flows can reduce data quality.
+
+### Target Audience
+
+The target audience is a marketing researcher, brand manager, or client who needs consumer feedback for marketing decisions.
+
+### Research Questions and Objectives
+
+The objectives are to:
+
+- Design clear and useful survey questions
+- Improve response quality
+- Measure social media usage
+- Compare different marketing-message conditions
+- Create a survey structure that supports quantitative analysis
+
+### Expected Business Impact
+
+A well-designed survey can help organizations understand consumer preferences, improve advertising messages, and make better marketing decisions.
+
+### Methods
+
+The project uses:
+
+- Survey design
+- Randomization
+- Branch logic
+- Carry-forward choices
+- Multiple-response questions
+- Experimental conditions
+- Descriptive statistics
+- Comparison of response groups
+
+# Marketing Analytics Projects
+
+The Marketing Analytics Projects page will contain multiple projects involving website traffic, consumer research, data visualization, analytics measurement, and presentation of findings.
+
+## Project 1: GA4 Website Traffic and Measurement Analysis
+
+### Project Title
+
+Measuring Website Traffic, Engagement, and Conversions with GA4
+
+### Data and Source
+
+The data will come from Google Analytics 4 and, when available, Google Search Console. The analysis will use website traffic, traffic sources, user engagement, events, key events, and conversion-related interactions.
+
+Potential GA4 measures include:
+
+- Sessions
+- Users
+- Traffic source
+- Engaged sessions
+- Engagement rate
+- Average engagement time
+- Page views
+- Phone-number clicks
+- Contact-form submissions
+- Donation interactions
+- Appointment inquiries
+
+### Managerial Problem
+
+Website traffic alone does not tell an organization whether its marketing is successful. Managers need to understand how visitors arrive, which pages they use, and whether they complete meaningful actions.
+
+### Target Audience
+
+The target audience is a marketing manager, nonprofit director, website owner, or client who needs to evaluate digital marketing performance.
+
+### Research Questions and Objectives
+
+The project will examine:
+
+1. Which traffic sources bring visitors to the website?
+2. Which pages receive the most engagement?
+3. What user actions represent meaningful interest?
+4. Which events should be measured as key events?
+5. How can GA4 data support marketing decisions?
+
+### Expected Business Impact
+
+The project can help organizations:
+
+- Identify effective traffic sources
+- Improve website content
+- Prioritize marketing channels
+- Measure meaningful user actions
+- Improve conversion tracking
+- Make better budget and campaign decisions
+
+### Methods
+
+The project will use:
+
+- Descriptive statistics
+- Traffic-source comparisons
+- Engagement-rate analysis
+- Page-performance comparisons
+- Conversion-rate calculations
+- Event validation
+- KPI development
+- GA4 measurement audits
+- Google Search Console comparisons
+
+Because analytics data may be incomplete or require validation, the analysis will document limitations before making performance conclusions.
+
+## Project 2: Data Visualization with Tables
+
+### Project Title
+
+Using Tables and Embedded Visualizations for Marketing Analysis
+
+### Data and Source
+
+This project uses the `pizzaplace` dataset included with the `gt` package. The dataset contains one year of pizza-sales records, including order ID, date, pizza name, size, category, and price.
+
+### Managerial Problem
+
+Marketing and business managers need reports that communicate exact values while also making patterns easy to identify. A basic spreadsheet may contain the data but may not communicate the most important findings clearly.
+
+### Target Audience
+
+The target audience is a business manager, marketing analyst, or decision-maker who needs to compare sales performance and identify trends.
+
+### Research Questions and Objectives
+
+The project will examine:
+
+1. Which products or categories generate the most sales?
+2. How can tables communicate exact values?
+3. How can embedded charts help readers identify patterns?
+4. When should a table be used instead of a chart?
+
+### Expected Business Impact
+
+A well-designed analytical table can help managers compare products, identify trends, and make decisions without switching between multiple reports.
+
+### Methods
+
+The project uses:
+
+- Data cleaning
+- Grouping and summarizing
+- Descriptive statistics
+- Comparative analysis
+- Table design
+- `gt`
+- `gtExtras`
+- Embedded sparklines and visual summaries
+
+The project demonstrates how exact values and visual patterns can be presented together in a reproducible report.
+
+## Project 3: YouGov Consumer Survey Reflection
+
+### Project Title
+
+Evaluating Consumer Survey Questions and Response Quality
+
+### Data and Source
+
+This project is based on a YouGov survey experience documented in `IC5-2-Consumer-Panel.qmd`.
+
+### Managerial Problem
+
+Survey data can be affected by confusing questions, unusual response options, respondent attention, and questions that do not appear to have an obvious purpose.
+
+### Target Audience
+
+The target audience is a marketing researcher or survey manager responsible for designing reliable consumer research.
+
+### Research Questions and Objectives
+
+The project examines:
+
+1. How do unusual answer choices affect respondent attention?
+2. How can attention checks improve data quality?
+3. Why should every survey question have a clear purpose?
+4. How can researchers make survey questions easier to understand?
+
+### Expected Business Impact
+
+Better survey design can improve response quality, reduce confusion, and produce more useful information for marketing decisions.
+
+### Methods
+
+The project uses:
+
+- Qualitative review of survey questions
+- Evaluation of response options
+- Attention-check analysis
+- Survey-design critique
+- Consumer research principles
+
+## Project 4: Reveal.js Marketing Analytics Presentation
+
+### Project Title
+
+Implementing and Optimizing Digital Marketing for Wellness Ranch Therapy
+
+### Data and Source
+
+This project is based on the Reveal.js presentation in `cep-short-title.qmd`. The presentation summarizes the Wellness Ranch Therapy capstone project.
+
+### Managerial Problem
+
+A written report contains detailed information, but managers also need a concise presentation that communicates the problem, research objectives, proposed analysis, and recommendations.
+
+### Target Audience
+
+The target audience includes the Wellness Ranch director, marketing stakeholders, nonprofit leadership, and academic project reviewers.
+
+### Research Questions and Objectives
+
+The presentation explains:
+
+- The digital marketing problem facing Wellness Ranch
+- The importance of SEO and website visibility
+- The role of GA4 and conversion tracking
+- The proposed measurement framework
+- The implementation plan
+- The expected impact of the project
+
+### Expected Business Impact
+
+The presentation can help stakeholders understand the project quickly and make decisions about website improvements, analytics implementation, and digital marketing priorities.
+
+### Methods
+
+The presentation uses:
+
+- Reveal.js
+- Quarto
+- Digital marketing frameworks
+- GA4 measurement concepts
+- SEO analysis
+- Consumer decision-journey concepts
+- Descriptive analytics
+- KPI development
+
+# Website Design and Technical Structure
+
+The website will be created using Quarto.
+
+The main website pages will include:
+
+- Home page
+- Digital Marketing Projects page
+- Marketing Analytics Projects page
+- Resume page or resume link
+
+The website will use:
+
+- Quarto Markdown
+- YAML configuration
+- HTML
+- CSS
+- Responsive design
+- Quarto navigation
+- Project listings
+- Reveal.js presentations
+- Embedded links to project reports
+
+The custom CSS will control:
+
+- Colors
+- Typography
+- Buttons
+- Cards
+- Responsive layouts
+- Navigation styling
+- Spacing
+- Accessibility features
+
+The website will use a consistent visual system based on dark blue, white, gray, and gold accent colors.
+
+# Resume
+
+The resume section will present my professional background and qualifications.
+
+The resume will include:
+
+- Digital marketing experience
+- Marketing analytics experience
+- Graphic design experience
+- Education
+- Technical skills
+- Professional tools
+- Relevant project experience
+
+My experience includes work with Wellness Ranch Therapy, IMI Exhibits, the Trauma Resource Institute, and New Filmmakers LA.
+
+# Expected Portfolio Impact
+
+The portfolio website will demonstrate my ability to:
+
+- Plan and organize a digital marketing portfolio
+- Conduct marketing and consumer research
+- Analyze website and survey data
+- Use GA4 and marketing performance metrics
+- Design clear data visualizations
+- Create professional reports
+- Build Quarto websites
+- Use CSS to improve presentation
+- Create Reveal.js presentations
+- Communicate findings to business audiences
+
+The final website will give employers, clients, and instructors a central location to review my academic and professional work.
+
+# Project Deliverables
+
+The deliverables for this proposal are:
+
+1. A Quarto Markdown file containing the portfolio website project proposal
+2. An HTML file rendered from the Quarto Markdown file
+
+The completed portfolio website will continue to develop throughout the semester as additional marketing and analytics projects are completed.
+
+# Portfolio Links
+
+- [GitHub Repository](https://github.com/brianvuong1/ibm-6500)
+- [Netlify Website](https://incredible-klepon-596fec.netlify.app)
