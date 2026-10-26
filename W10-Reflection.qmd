@@ -1,0 +1,926 @@
+---
+---
+title: "Reflection on Labelled Data in R"
+subtitle: "Module 06 | Advanced Data Wrangling"
+author: "Brian Vuong"
+institute: "MSDM | Cal Poly Pomona"
+date: today
+date-format: "MMMM D, YYYY"
+
+format:
+  revealjs:
+    theme: serif
+    width: 1600
+    height: 900
+    footer: "M06 | Labelled Data and Data Cleaning"
+    transition: slide
+    transition-speed: default
+    incremental: false
+    toc: true
+    toc-depth: 1
+    slide-number: true
+    scrollable: true
+    smaller: true
+    code-fold: false
+    code-overflow: wrap
+    number-sections: false
+    embed-resources: true
+    controls: true
+    progress: true
+
+editor: visual
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  freeze: auto
+---
+---
+
+```{=html}
+<style>
+.reveal {
+  font-family: Arial, sans-serif;
+  color: #263445;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  font-family: Georgia, serif;
+  color: #17365D;
+}
+
+.reveal h1 {
+  font-size: 1.9em;
+}
+
+.reveal h2 {
+  font-size: 1.4em;
+  border-bottom: 3px solid #C69C50;
+  padding-bottom: 12px;
+}
+
+.reveal h3 {
+  color: #35668A;
+}
+
+.reveal p,
+.reveal li {
+  line-height: 1.45;
+}
+
+.reveal blockquote {
+  border-left: 5px solid #C69C50;
+  background: #F3F6FA;
+  padding: 15px;
+}
+
+.reveal table {
+  font-size: 0.75em;
+}
+
+.reveal th {
+  background: #17365D;
+  color: white;
+}
+
+.reveal td {
+  padding: 10px;
+}
+
+.prompt-box {
+  background: #F0F3F7;
+  border-left: 5px solid #35668A;
+  padding: 15px;
+  border-radius: 6px;
+  font-size: 0.85em;
+}
+
+.highlight-box {
+  background: #EDF3F9;
+  border-left: 5px solid #C69C50;
+  padding: 18px;
+  border-radius: 8px;
+}
+
+.small-text {
+  font-size: 0.78em;
+}
+</style>
+```
+
+# Introduction {background-color="#EDF3F9"}
+
+## Module 06: Reflection Overview
+
+This presentation reflects on the concepts and techniques introduced in Module 06, particularly labelled data, exploratory data analysis, hypothesis testing, and data cleaning in R.
+
+I will also discuss how these lessons relate to my individual analytical objective within our MSDM Culminating Experience Project (CEP).
+
+::: incremental
+1.  Understanding labelled data
+2.  Connecting analytical techniques to my CEP
+3.  Reflecting on initial data cleaning
+4.  Understanding further data cleaning
+5.  Comparing the two cleaning approaches
+6.  Applying the lessons to my analytical objective
+:::
+
+::: notes
+This reflection focuses on what I learned from the course materials and how those lessons can support my responsibilities within our group CEP.
+:::
+
+------------------------------------------------------------------------
+
+## My CEP and Individual Responsibility
+
+### Wellness Ranch Equine Assisted Therapy
+
+Our MSDM CEP is a group project focused on strengthening the digital marketing capabilities of Wellness Ranch Equine Assisted Therapy, a nonprofit organization.
+
+The broader project includes website improvements, search engine optimization, analytics, Google Ad Grants, and digital marketing strategy.
+
+My individual responsibility is:
+
+::: highlight-box
+**AO3: Prepare, Launch, and Optimize Google Ad Grants Campaigns**
+:::
+
+My objective involves:
+
+- Evaluating Google Ad Grants eligibility and readiness
+- Supporting the application process
+- Preparing campaign structure and keywords
+- Helping launch compliant Google Search campaigns
+- Monitoring campaign readiness and compliance
+- Using available performance information to guide campaign management and optimization
+
+Other group members are responsible for different analytical objectives, including data preparation and specialized campaign performance analysis.
+
+------------------------------------------------------------------------
+
+# Step 1: Labelled Data and Analysis {background-color="#EDF3F9"}
+
+## Prompt 1A: Understanding Labelled Data
+
+::: prompt-box
+**Assignment Prompt:**
+
+In Step 1, you learned how to read SPSS data into RStudio and conduct EDA and hypothesis testing.
+
+What is labelled data? Does your MSDM CEP involve labelled data? Explain why or why not.
+:::
+
+### My Reflection
+
+Labelled data refers to data containing descriptive information about variables or their possible values.
+
+In SPSS, variable labels describe what a variable represents, while value labels explain the meaning of coded responses.
+
+For example, a survey might record satisfaction using numbers from 1 to 5.
+
+Without labels, these numbers may be difficult to interpret correctly.
+
+With labels, researchers can understand the meaning of each response and select appropriate analytical methods.
+
+------------------------------------------------------------------------
+
+## Example of Labelled Data
+
+| Numerical Code | Value Label       |
+|----------------|-------------------|
+| 1              | Very dissatisfied |
+| 2              | Dissatisfied      |
+| 3              | Neutral           |
+| 4              | Satisfied         |
+| 5              | Very satisfied    |
+
+Although the responses are stored as numbers, they represent ordered categories.
+
+This distinction matters because numeric codes should not automatically be treated as continuous measurements.
+
+### What I Learned
+
+I learned that understanding how data is coded is an important step before conducting exploratory analysis or hypothesis testing.
+
+Misinterpreting variable labels could lead to incorrect conclusions.
+
+------------------------------------------------------------------------
+
+## Does My CEP Involve Labelled Data?
+
+My individual CEP objective does not primarily involve SPSS-labelled survey data.
+
+Instead, AO3 focuses on Google Ad Grants eligibility, campaign preparation, and advertising performance information.
+
+However, categorical labels can still be useful for organizing my work.
+
+For example, I may classify organizational readiness using categories such as:
+
+::: incremental
+- **Ready:** The requirement has been satisfied.
+- **Partially Ready:** Some requirements remain incomplete.
+- **Not Ready:** Significant improvements are required.
+- **Unable to Verify:** Additional information is needed.
+:::
+
+These classifications are not necessarily SPSS-labelled variables, but they serve a similar interpretive purpose by making categorical information easier to understand.
+
+------------------------------------------------------------------------
+
+## Why Labelled Data Matters to AO3
+
+Understanding labelled data can help me organize and interpret information used during Google Ad Grants preparation.
+
+::::: columns
+::: {.column width="50%"}
+### Readiness Assessment
+
+Categorical information can describe:
+
+- Eligibility status
+- Website readiness
+- Conversion tracking readiness
+- Campaign approval status
+- Compliance requirements
+:::
+
+::: {.column width="50%"}
+### Campaign Information
+
+Categorical variables can identify:
+
+- Campaign names
+- Ad groups
+- Keyword categories
+- Search intent
+- Campaign status
+:::
+:::::
+
+**My takeaway:** Even though my AO3 does not primarily use SPSS data, the principle of correctly defining and interpreting categories remains relevant to my work.
+
+------------------------------------------------------------------------
+
+## Reading SPSS Data into R
+
+Step 1 also introduced how to import SPSS data into RStudio.
+
+The `haven` package allows researchers to read SPSS files while preserving important variable metadata.
+
+```{r}
+#| eval: false
+
+library(haven)
+library(dplyr)
+
+# Import an SPSS dataset
+data <- read_sav("survey_data.sav")
+
+# Inspect data structure
+glimpse(data)
+
+# Review variable labels
+attr(data$satisfaction, "label")
+
+# Convert labelled values to factors
+data <- data |>
+  mutate(
+    satisfaction_factor =
+      as_factor(satisfaction)
+  )
+```
+
+This example demonstrates how R can preserve and interpret labelled information during analysis.
+
+The code is illustrative rather than a procedure performed for my CEP.
+
+------------------------------------------------------------------------
+
+## Prompt 1B: Relevant Analytical Techniques
+
+::: prompt-box
+**Assignment Prompt:**
+
+What techniques are relevant for your MSDM CEP?
+
+Please elaborate on how these approaches might help you address your analytical objective for the CEP.
+:::
+
+Several techniques from Step 1 are relevant to my AO3.
+
+::: incremental
+1.  **Exploratory Data Analysis (EDA):** Understand patterns and unusual observations.
+
+2.  **Descriptive Statistics:** Summarize campaign performance and readiness.
+
+3.  **Categorical Analysis:** Organize eligibility and readiness assessments.
+
+4.  **Data Visualization:** Communicate campaign trends and results.
+
+5.  **Hypothesis Testing:** Evaluate performance differences when sufficient data are available.
+:::
+
+------------------------------------------------------------------------
+
+## Applying EDA to My AO3
+
+Exploratory Data Analysis helps researchers understand a dataset before drawing conclusions.
+
+For AO3, EDA may become useful after Google Ad Grants campaigns are launched and performance data are available.
+
+I could examine:
+
+- Advertising impressions over time
+- Clicks across campaigns
+- Click-through rates
+- Keyword and search-term patterns
+- Conversion activity
+- Changes in campaign performance
+
+EDA would help identify patterns that deserve further investigation.
+
+However, my immediate responsibility is primarily focused on eligibility, readiness, application, campaign development, and launch.
+
+Detailed click-through and conversion performance analysis is also supported by another member's analytical objective.
+
+------------------------------------------------------------------------
+
+## Descriptive Statistics and Campaign Metrics
+
+If campaign data become available, descriptive statistics can help summarize advertising performance.
+
+| Metric          | Purpose                                        |
+|-----------------|------------------------------------------------|
+| Impressions     | Measures how often advertisements appear       |
+| Clicks          | Measures user interactions with advertisements |
+| CTR             | Evaluates clicks relative to impressions       |
+| Conversions     | Tracks defined meaningful actions              |
+| Conversion Rate | Measures conversions relative to interactions  |
+
+Two useful formulas are:
+
+\[ CTR = \frac{\text{Clicks}} {\text{Impressions}} \times 100 \]
+
+\[ Conversion Rate = \frac{\text{Conversions}} {\text{Clicks}} \times 100 \]
+
+These measures can support campaign monitoring and optimization.
+
+The conversion-rate formula assumes a click-based denominator; platform reporting definitions may differ.
+
+------------------------------------------------------------------------
+
+## Hypothesis Testing and AO3
+
+Hypothesis testing could be useful if sufficient campaign data become available later in the project.
+
+For example, a research question might ask whether two advertisement approaches produce different conversion rates.
+
+However, statistical testing requires:
+
+- Appropriate data
+- Clearly defined hypotheses
+- Sufficient observations
+- Suitable statistical assumptions
+- Careful interpretation
+
+For my AO3, hypothesis testing is a possible future application rather than the primary method.
+
+**My takeaway:** The analytical technique should match the research objective, the available data, and the decision that needs to be made.
+
+------------------------------------------------------------------------
+
+# Step 2: Initial Data Cleaning {background-color="#EDF3F9"}
+
+## Prompt 2: Initial Data Cleaning
+
+::: prompt-box
+**Assignment Prompt:**
+
+In Step 2, you saw the initial data cleaning process.
+
+Describe it and what lessons you got from it.
+:::
+
+### My Reflection
+
+The initial data cleaning process introduced the importance of examining data quality before performing analysis.
+
+The general purpose of initial cleaning is to identify problems that could interfere with accurate interpretation.
+
+These may include:
+
+::: incremental
+- Missing observations
+- Duplicate records
+- Incorrect variable types
+- Inconsistent coding
+- Unexpected values
+- Unclear variable definitions
+:::
+
+The exact procedures used in the Step 2 classroom demonstration should be documented separately.
+
+------------------------------------------------------------------------
+
+## Understanding Initial Data Cleaning in R
+
+The following example illustrates common initial data inspection techniques.
+
+```{r}
+#| eval: false
+
+library(haven)
+library(dplyr)
+
+# Import example data
+data <- read_sav("survey_data.sav")
+
+# Inspect dimensions
+dim(data)
+
+# Review variable structure
+glimpse(data)
+
+# Count missing values
+colSums(is.na(data))
+
+# Identify exact duplicate rows
+sum(duplicated(data))
+
+# Review summary statistics
+summary(data)
+```
+
+These commands can help researchers identify potential problems before deciding how to clean the dataset.
+
+However, identifying a potential problem does not automatically justify removing an observation.
+
+------------------------------------------------------------------------
+
+## Lessons Learned from Initial Cleaning
+
+The first important lesson is that raw data should be examined carefully before conducting statistical analysis.
+
+A dataset may contain values that appear valid but are incorrectly coded or interpreted.
+
+The second lesson is that data cleaning should be systematic.
+
+Using reproducible R code makes it easier to document what was checked and how decisions were made.
+
+The third lesson is that researchers should avoid removing observations without justification.
+
+For example, missing information does not always mean that an entire record must be deleted.
+
+::: highlight-box
+**My key takeaway:** Initial data cleaning helps establish a reliable foundation for analysis, but cleaning decisions must be supported by clear reasoning.
+:::
+
+------------------------------------------------------------------------
+
+## Connecting Step 2 to My CEP Role
+
+My MSDM CEP is a group project with responsibilities divided among team members.
+
+Another team member is responsible for data cleaning and preparation.
+
+My individual objective focuses on Google Ad Grants campaign readiness, application, development, and launch.
+
+Although I am not responsible for the group's primary data-cleaning work, understanding initial cleaning remains useful.
+
+It helps me recognize why accurate and consistent information matters when interpreting campaign reports.
+
+It also allows me to communicate more effectively with teammates who prepare or validate data.
+
+------------------------------------------------------------------------
+
+# Step 3: Further Data Cleaning {background-color="#EDF3F9"}
+
+## Prompt 3: Next Phase of Data Cleaning
+
+::: prompt-box
+**Assignment Prompt:**
+
+In Step 3, you saw the next phase of data cleaning.
+
+Describe it and what the key takeaways are.
+:::
+
+### My Reflection
+
+The next phase of data cleaning builds on the initial inspection by evaluating observations more closely.
+
+Depending on the research design, this may involve examining:
+
+- Incomplete responses
+- Inconsistent answers
+- Unusual response patterns
+- Implausible values
+- Eligibility for inclusion
+- The effect of exclusions on the dataset
+
+These examples illustrate possible further-cleaning procedures.
+
+The specific methods from our Step 3 classroom exercise should be identified from the module materials.
+
+------------------------------------------------------------------------
+
+## Understanding Response Quality
+
+One concept I learned is that response quality cannot be judged only by whether a record is complete.
+
+A complete survey response may still contain inconsistencies.
+
+Likewise, a partially completed response may contain useful information for certain analyses.
+
+::::: columns
+::: {.column width="50%"}
+### Completeness
+
+Questions to consider:
+
+- How much information is missing?
+- Which variables are affected?
+- Can the observation still be used?
+- Would exclusion affect the sample?
+:::
+
+::: {.column width="50%"}
+### Consistency
+
+Questions to consider:
+
+- Are responses logically consistent?
+- Are there implausible values?
+- Are response patterns unusual?
+- Is there sufficient evidence to justify exclusion?
+:::
+:::::
+
+**Key insight:** Data quality requires more than applying automatic filtering rules.
+
+------------------------------------------------------------------------
+
+## Key Takeaways from Step 3
+
+::: incremental
+1.  **Cleaning requires judgment.** Unusual observations are not necessarily invalid.
+
+2.  **Exclusion criteria matter.** Researchers should explain why records are removed.
+
+3.  **Sample size matters.** Removing too many observations can reduce statistical power.
+
+4.  **Bias is possible.** Excluding certain respondents may change the characteristics of the final sample.
+
+5.  **Documentation is essential.** Cleaning decisions should be transparent and reproducible.
+:::
+
+::: notes
+Insert the actual Step 3 cleaning criteria from the classroom exercise if available. Avoid claiming that these example checks were all performed during the module.
+:::
+
+------------------------------------------------------------------------
+
+## How Step 3 Relates to My AO3
+
+Although another group member handles data cleaning, I still need to understand how data quality affects analysis.
+
+For example, when reviewing Google Ads performance information, I should be aware of:
+
+- Incomplete reporting periods
+- Incorrect metric definitions
+- Duplicate data exports
+- Inconsistent campaign categories
+- Potential conversion tracking errors
+
+Understanding these issues can help me avoid interpreting inaccurate performance summaries.
+
+My responsibility is not to take over the data-cleaning role, but to use reliable information when making decisions related to Google Ad Grants.
+
+------------------------------------------------------------------------
+
+# Step 4: Comparing the Approaches {background-color="#EDF3F9"}
+
+## Prompt 4: Differences and Impact
+
+::: prompt-box
+**Assignment Prompt:**
+
+What are the big differences between the two approaches and the impact on the final sample size and response quality?
+:::
+
+### My Reflection
+
+The main conceptual difference between initial cleaning and further cleaning is the depth of evaluation.
+
+Initial cleaning generally focuses on identifying structural problems and inconsistencies.
+
+Further cleaning may apply more specific criteria to determine whether observations are suitable for analysis.
+
+Both stages contribute to data reliability.
+
+However, they can have different effects on the final analytical sample.
+
+------------------------------------------------------------------------
+
+## Comparing Step 2 and Step 3
+
+| Dimension | Initial Cleaning | Further Cleaning |
+|------------------------|------------------------|------------------------|
+| Primary focus | Data structure | Analytical suitability |
+| Typical checks | Types, missingness, duplicates | Completeness, consistency, eligibility |
+| Main goal | Identify obvious problems | Evaluate observations more closely |
+| Sample size | May remain similar or decrease | May decrease further |
+| Main benefit | Improved consistency | More defensible inclusion criteria |
+| Main concern | Overlooking subtle problems | Excluding valid observations |
+
+This comparison summarizes the general distinction.
+
+The exact differences should be confirmed against the procedures demonstrated in the module.
+
+------------------------------------------------------------------------
+
+## Impact on Final Sample Size
+
+Data cleaning can affect how many observations remain available for analysis.
+
+A useful way to evaluate the impact is to compare sample sizes before and after each cleaning stage.
+
+| Stage            |         Sample Size |
+|------------------|--------------------:|
+| Original dataset | \[Insert actual N\] |
+| After Step 2     | \[Insert actual N\] |
+| After Step 3     | \[Insert actual N\] |
+
+The overall retention rate can be calculated as:
+
+\[ Retention Rate = \frac{N_{\text{Final}}} {N\_{\text{Original}}} \times 100 \]
+
+Without the actual classroom results, I cannot determine which approach removed more observations.
+
+The important lesson is to report the sample-size changes rather than assuming that more aggressive cleaning is always better.
+
+------------------------------------------------------------------------
+
+## Impact on Response Quality
+
+::::: columns
+::: {.column width="50%"}
+### Potential Benefits
+
+Cleaning can:
+
+- Correct coding errors
+- Reduce duplicate records
+- Identify invalid observations
+- Improve consistency
+- Strengthen analytical reliability
+:::
+
+::: {.column width="50%"}
+### Potential Trade-offs
+
+Cleaning may also:
+
+- Reduce sample size
+- Lower statistical power
+- Exclude useful information
+- Introduce selection bias
+- Affect representativeness
+:::
+:::::
+
+::: {.fragment .fade-in}
+**My takeaway:** The goal is not simply to maximize or minimize sample size.
+
+The goal is to retain appropriate observations while addressing genuine data-quality problems.
+:::
+
+------------------------------------------------------------------------
+
+## What This Comparison Taught Me
+
+Before this module, I primarily thought of data cleaning as removing incorrect or incomplete information.
+
+I now understand that cleaning decisions can change the composition of a dataset and influence the conclusions researchers draw.
+
+A smaller sample is not automatically more accurate.
+
+Similarly, a larger sample is not automatically better if it contains invalid records.
+
+The most important consideration is whether the cleaning criteria are appropriate, transparent, and consistent with the research objective.
+
+------------------------------------------------------------------------
+
+# Applying the Lessons to AO3 {background-color="#EDF3F9"}
+
+## Collaboration Within Our CEP Group
+
+Our CEP requires collaboration because the analytical objectives are interconnected.
+
+::::: columns
+::: {.column width="50%"}
+### My AO3 Responsibilities
+
+- Google Ad Grants readiness
+- Eligibility verification
+- Application support
+- Keyword and campaign planning
+- Campaign launch
+- Compliance monitoring
+- Campaign management recommendations
+:::
+
+::: {.column width="50%"}
+### Related Team Contributions
+
+Other group members support:
+
+- Website and SEO improvements
+- GA4 measurement and tracking
+- Data preparation and quality
+- Detailed advertising performance analysis
+- Broader strategic recommendations
+:::
+:::::
+
+Understanding the data-cleaning process helps me collaborate with these team members.
+
+It also helps ensure that campaign recommendations are based on reliable information.
+
+------------------------------------------------------------------------
+
+## A Practical Example for AO3
+
+Suppose a campaign report shows an unexpected increase in conversions.
+
+Before interpreting the result as an improvement, I should consider whether:
+
+::: incremental
+1.  Conversion tracking was configured consistently.
+
+2.  The reporting periods are comparable.
+
+3.  Duplicate conversion events were recorded.
+
+4.  The conversion definition changed during the period.
+
+5.  The results reflect meaningful organizational actions.
+:::
+
+These questions demonstrate how data-quality awareness supports responsible campaign interpretation.
+
+They do not mean that I personally perform all data-cleaning tasks.
+
+------------------------------------------------------------------------
+
+## My Learning-to-Application Workflow
+
+```{r}
+#| echo: false
+#| fig-width: 11
+#| fig-height: 4
+
+steps <- c(
+  "Understand\nData",
+  "Review\nLabels",
+  "Recognize\nQuality Issues",
+  "Interpret\nResults",
+  "Support\nAO3 Decisions"
+)
+
+plot(
+  NA,
+  xlim = c(0.5, 5.5),
+  ylim = c(0.5, 1.8),
+  axes = FALSE,
+  xlab = "",
+  ylab = "",
+  main = "Applying Module 06 Lessons to AO3"
+)
+
+rect(
+  xleft = 1:5 - 0.43,
+  ybottom = 0.8,
+  xright = 1:5 + 0.43,
+  ytop = 1.4,
+  col = "#DFEAF5",
+  border = "#17365D",
+  lwd = 2
+)
+
+text(
+  x = 1:5,
+  y = 1.1,
+  labels = steps,
+  cex = 0.8,
+  font = 2,
+  col = "#17365D"
+)
+
+arrows(
+  x0 = 1:4 + 0.44,
+  y0 = 1.1,
+  x1 = 2:5 - 0.44,
+  y1 = 1.1,
+  length = 0.08,
+  lwd = 2,
+  col = "#C69C50"
+)
+```
+
+The module helped me understand the connection between data preparation, analytical interpretation, and decision-making.
+
+------------------------------------------------------------------------
+
+# Final Reflection {background-color="#EDF3F9"}
+
+## My Biggest Lessons from Module 06
+
+::: incremental
+**First**, I learned that labelled data provides context that helps researchers interpret coded variables.
+
+**Second**, I learned that exploratory analysis should come before formal statistical conclusions.
+
+**Third**, I learned that data cleaning involves both technical procedures and methodological decisions.
+
+**Fourth**, I recognized that cleaning criteria can affect sample size, response quality, and research conclusions.
+
+**Finally**, I learned that understanding data preparation is valuable even when another team member performs the work.
+:::
+
+------------------------------------------------------------------------
+
+## Final Reflection: My Role in the CEP
+
+My individual analytical objective focuses on preparing, launching, and optimizing Google Ad Grants campaigns for Wellness Ranch Equine Assisted Therapy.
+
+Although another group member is responsible for data cleaning, the concepts from this module remain relevant to my work.
+
+I need to understand the quality and meaning of the information used to evaluate campaign readiness and advertising performance.
+
+This knowledge will help me communicate effectively with my teammates and interpret results more carefully.
+
+Most importantly, I learned that successful data-driven marketing decisions depend on accurate information, appropriate analytical methods, and transparent processes.
+
+------------------------------------------------------------------------
+
+## Conclusion
+
+::: highlight-box
+**My overall takeaway:**
+
+Module 06 showed me that understanding data is just as important as analyzing it.
+
+Labelled data helps explain what variables mean, while data cleaning helps improve the reliability of the information used for analysis.
+
+Even though data cleaning is not my primary CEP responsibility, understanding these concepts will help me contribute more effectively to our group's Google Ad Grants project.
+:::
+
+------------------------------------------------------------------------
+
+# References {background-color="#EDF3F9"}
+
+## References and Learning Resources
+
+**R and labelled data**
+
+Wickham, H., Miller, E., & Smith, D. *haven: Import and Export SPSS, Stata and SAS Files.*
+
+<https://haven.tidyverse.org/>
+
+**Data analysis**
+
+Wickham, H., Çetinkaya-Rundel, M., & Grolemund, G. *R for Data Science (2nd ed.).*
+
+<https://r4ds.hadley.nz/>
+
+**Missing data**
+
+Little, R. J. A., & Rubin, D. B. (2019). *Statistical Analysis with Missing Data* (3rd ed.). Wiley.
+
+**Quarto**
+
+Quarto. *RevealJS Presentations.*
+
+<https://quarto.org/docs/presentations/revealjs/>
+
+**CEP project source**
+
+MSDM Group 4. *Wellness Ranch Equine Assisted Therapy Culminating Experience Project.* Group working document.
+
+------------------------------------------------------------------------
+
+## Thank You
+
+### Reflection on Labelled Data in R
+
+**Module 06 \| Advanced Data Wrangling**
+
+*Understanding data quality helps support better analytical decisions.*
+
+::: {.fragment .fade-in}
+**Questions and Discussion**
+:::
