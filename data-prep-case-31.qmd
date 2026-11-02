@@ -253,7 +253,6 @@ names(data)
 
 Why should precomputed variables such as `OverallEmployeePerformace` and `employeeperformance` be excluded from the analysis copy?
 
-**Your answer:**
 
 # Data Quality Checks
 
@@ -285,7 +284,6 @@ data |>
 
 Does any variable contain a value that the questionnaire does not define?
 
-**Your answer:**
 
 # Recode Special Responses
 
@@ -382,7 +380,18 @@ data <- data |>
 3. Why should `q13:q26` not be reversed or averaged into one score?
 4. What is a more appropriate way to summarize awareness/use items?
 
-**Your answer:**
+
+```markdown
+1. Reverse-coding is inappropriate for `q9` because the response scale is not ordered from least favorable to most favorable. The preferred response is “About Right,” which is located in the middle of the scale. Therefore, simply reversing the values would incorrectly treat “Too Often” or “Never” as the most favorable response.
+
+2. To measure whether the frequency was “about right,” I could create a binary variable. I would code “About Right” as `1` and all other valid responses as `0`. Missing or invalid responses would remain missing. The exact code for “About Right” should be confirmed using the questionnaire before recoding.
+
+3. The items `q13:q26` should not be reversed or averaged into one score because they measure awareness and use of separate products or services. Their response categories indicate whether a respondent is aware and has used an item, aware but has not used it, or unaware. These are categorical responses rather than multiple rating items measuring one common construct.
+
+4. A more appropriate approach is to summarize each awareness/use item separately using frequencies and percentages. The team could also create separate indicators, such as “aware versus unaware” or “used versus not used,” when those comparisons are useful. The items should remain separate unless a clear conceptual reason exists to combine specific items.
+```
+
+
 
 # Verify the Recoding
 
@@ -495,7 +504,22 @@ For each candidate measure:
 5. Is a one-factor interpretation reasonable based on the wording?
 6. Do you recommend creating an index?
 
-**Your answer:**
+
+## Employee Proficiency
+
+The employee proficiency measure includes items `q3` through `q6`. Cronbach’s alpha was **[insert employee raw_alpha]**. The item-total statistics showed that [all items contributed adequately / one or more items contributed weakly]. The item with the weakest item-total correlation was `[insert item, if applicable]`, with an `r.drop` value of `[insert value]`.
+
+The factor loadings for the one-factor solution were [insert summary of loadings]. These results [do / do not] support interpreting the items as measuring one common factor. The wording of the items is conceptually related because all items measure employee proficiency. Therefore, I [recommend / do not recommend] creating an employee proficiency index.
+
+## Operational Effectiveness
+
+The operational effectiveness measure includes items `q30` through `q34`. Cronbach’s alpha was **[insert operational effectiveness raw_alpha]**. The item-total statistics showed that [all items contributed adequately / one or more items contributed weakly]. The item with the weakest item-total correlation was `[insert item, if applicable]`, with an `r.drop` value of `[insert value]`.
+
+The factor loadings for the one-factor solution were [insert summary of loadings]. These results [do / do not] support interpreting the items as measuring one common factor. The wording of the items is conceptually related because all items address operational effectiveness. Therefore, I [recommend / do not recommend] creating an operational effectiveness index.
+
+## Overall Decision
+
+The decision to create each index was based on Cronbach’s alpha, item-total correlations, factor loadings, missing data, and the substantive meaning of the items rather than on a single numerical cutoff. [Both indexes were created / Only the employee proficiency index was created / Only the operational effectiveness index was created / Neither index was created] because [briefly explain the statistical and conceptual evidence].
 
 # Create Indexes Only When Justified
 
@@ -552,7 +576,17 @@ Write a concise narrative covering:
 
 ::: {.callout-note title="Data Preparation Narrative"}
 
-Write your narrative here.
+The Case 31 SPSS data were imported into R using `haven::read_sav()` from the file `Case 31 Data_efcu_1.sav`. The raw dataset was preserved as `data_raw`, and all data preparation was completed on a separate analysis copy. The imported dataset contained [insert number] rows and [insert number] variables.
+
+The data dictionary showed that the file included questionnaire variables labeled `q1` through `q38`, along with two precomputed variables named `OverallEmployeePerformace` and `employeeperformance`. The dictionary was used to review variable labels, value labels, data types, distinct values, and missing observations. Several labels were corrected or expanded to match the questionnaire and Case Exhibit 31.2. In particular, missing labels for awareness and use categories, yes/no response categories, and the `q37` rating scale were added. The label for `q8` was also revised because it incorrectly duplicated the label for `q9`.
+
+The two precomputed variables were excluded from the analysis copy because their construction was not documented and could not be evaluated. The analysis dataset retained the original questionnaire variables and the labels needed for interpretation. Special response codes were reviewed against the questionnaire. The value `6` for “No Opinion” in `q7` and `q8`, and the value `6` for “No answer” in `q37`, were treated as missing rather than as rating values.
+
+Reverse-coded variables were created for `q7`, `q8`, `q10`, and `q37` so that higher values consistently represented more favorable responses. The recoded variables were named `q7r`, `q8r`, `q10r`, and `q37r`. The recoding was verified using cross-tabulations comparing the original and reversed values. The variables `q9` and `q13` through `q26` were not reverse-coded. A simple reversal was not appropriate for `q9` because its best response was located in the middle of the frequency scale. The awareness and use variables were also not reversed because they represent categories rather than a single favorable-to-unfavorable rating continuum.
+
+Two possible multi-item measures were evaluated: employee proficiency using `q3` through `q6`, and operational effectiveness using `q30` through `q34`. Reliability analysis produced a Cronbach’s alpha of [insert alpha for employee proficiency] for employee proficiency and [insert alpha for operational effectiveness] for operational effectiveness. The item-total statistics and one-factor analysis showed [insert whether the items had acceptable correlations and factor loadings]. Based on the reliability results, factor loadings, item wording, and substantive meaning, [an employee proficiency index was created / an employee proficiency index was not created]. Similarly, [an operational effectiveness index was created / an operational effectiveness index was not created].
+
+When supported by the statistical and substantive evidence, the indexes were calculated by averaging the relevant items so that the resulting scores remained on the original response scale. Remaining data-quality limitations include [insert any missing-data concerns, undefined values, weak items, low reliability, or other limitations]. The final cleaned dataset and all transformations were saved in a new SPSS file so that the original raw data remained unchanged.
 
 :::
 
