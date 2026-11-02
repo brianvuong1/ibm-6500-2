@@ -1,0 +1,611 @@
+---
+title: "Data Preparation Assignment"
+subtitle: "Case 31 Employees Federal Credit Union"
+author: "Brian Vuong"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    embed-resources: true
+    theme: cosmo
+execute:
+  warning: false
+  message: false
+  echo: true
+---
+
+# Overview
+
+This assignment prepares Case 31 survey data for analysis using R and Quarto. The workflow imports an SPSS file, inspects the data, documents the variables, corrects coding problems, reverse-codes selected items, evaluates multi-item measures, and creates indexes when justified.
+
+```{r}
+#| label: setup
+
+library(tidyverse)
+library(haven)
+library(labelled)
+library(janitor)
+library(sjPlot)
+library(psych)
+library(skimr)
+library(gt)
+
+set_theme(theme_minimal())
+```
+
+# Import and Inspect the SPSS Data
+
+```{r}
+#| label: import
+
+data_raw <- read_sav("Case 31 Data_efcu_1.sav")
+```
+
+```{r}
+#| label: inspect
+
+dim(data_raw)
+names(data_raw)
+glimpse(data_raw)
+skim(data_raw)
+summary(data_raw)
+```
+
+## Questions
+
+1. How many rows and columns are in the imported data?
+2. What are the variable names?
+3. Which variables appear to be questionnaire items?
+4. Which variables appear to be precomputed variables?
+5. What is the difference between a variable label and a value label?
+6. Which variables contain missing values?
+
+**Your answer:**
+
+```{r}
+#| label: missing-raw
+
+data_raw |>
+  summarise(across(everything(), \(x) sum(is.na(x)))) |>
+  pivot_longer(
+    everything(),
+    names_to = "variable",
+    values_to = "n_missing"
+  ) |>
+  filter(n_missing > 0)
+```
+
+# Create a Data Dictionary
+
+```{r}
+#| label: dictionary
+
+data_dictionary <- tibble(
+  variable = names(data_raw),
+  variable_label = map_chr(
+    data_raw,
+    \(x) attr(x, "label") %||% ""
+  ),
+  class = map_chr(
+    data_raw,
+    \(x) class(x)[1]
+  ),
+  n_distinct = map_int(
+    data_raw,
+    n_distinct
+  ),
+  value_labels = map_chr(
+    data_raw,
+    \(x) {
+      labs <- attr(x, "labels")
+
+      if (is.null(labs)) {
+        ""
+      } else {
+        str_c(
+          names(labs),
+          "=",
+          unname(labs),
+          collapse = "; "
+        )
+      }
+    }
+  )
+)
+
+data_dictionary |>
+  gt()
+```
+
+## Data Dictionary Questions
+
+1. Which variables have clear and useful labels?
+2. Which labels should be revised?
+3. Which variables are nominal, ordinal, or approximately interval?
+4. Which value labels are essential for interpretation?
+5. Which variables contain missing values?
+
+**Your answer:**
+
+Keep `data_raw` unchanged. Perform all cleaning on a copy.
+
+# Case Coding Instructions
+
+Use the questionnaire PDF, `Case 31 - Employees Federal Credit Union.PDF`, and Case Exhibit 31.2 to verify the coding.
+
+| Response Scale | Coding |
+|---|---|
+| Strongly disagree to strongly agree | Strongly disagree = 1; strongly agree = 5 |
+| Very high to very low | Very high = 1; very low = 5; no opinion = 6 |
+| Too often to never | Too often = 1; never = 5 |
+| Excellent to poor | Excellent = 1; poor = 4 |
+| Excellent to very poor | Excellent = 1; very poor = 5; no answer = 6 |
+| Yes/no | Yes = 1; no = 2; no answer = 3 |
+| Awareness/use | Aware and used = 1; aware but not used = 2; unaware = 3 |
+
+The main coding groups are:
+
+- `q3:q6` and `q30:q34`: agreement scale
+- `q7` and `q8`: very high to very low
+- `q9`: frequency
+- `q10`: excellent to poor
+- `q11`, `q12`, `q27`, and `q38`: yes/no
+- `q13:q26`: awareness/use
+- `q37`: excellent to very poor
+
+## Coding Question
+
+Which codes in the file have missing or incomplete labels?
+
+**Your answer:**
+
+# Repair Variable and Value Labels
+
+```{r}
+#| label: label-demo
+
+var_label(data_raw$q7)
+val_labels(data_raw$q7)
+
+data_raw$q7 |>
+  add_value_labels("Refused" = 7) |>
+  val_labels()
+```
+
+## Add Missing Labels
+
+```{r}
+#| label: add-labels
+
+five_point_likert <- c(
+  "Strongly Disagree" = 1,
+  "Disagree" = 2,
+  "Uncertain" = 3,
+  "Agree" = 4,
+  "Strongly Agree" = 5
+)
+
+data_labelled <- data_raw |>
+  mutate(
+    across(
+      c(q3:q6, q30:q34),
+      \(x) add_value_labels(x, five_point_likert)
+    ),
+    across(
+      q13:q26,
+      \(x) add_value_labels(x, "Unaware" = 3)
+    ),
+    across(
+      c(q11, q12, q27, q38),
+      \(x) add_value_labels(x, "No answer" = 3)
+    ),
+    q37 = set_value_labels(
+      q37,
+      c(
+        "Excellent" = 1,
+        "Good" = 2,
+        "Average" = 3,
+        "Poor" = 4,
+        "Very Poor" = 5,
+        "No answer" = 6
+      )
+    )
+  )
+
+val_labels(data_labelled$q13)
+val_labels(data_labelled$q11)
+var_label(data_labelled$q37)
+```
+
+## Relabel Q8
+
+The existing label for `q8` appears to duplicate the label for `q9`, even though `q8` uses a very-high-to-very-low scale.
+
+**How should `q8` be relabeled based on the questionnaire?**
+
+**Your answer:**
+
+```{r}
+#| label: relabel-q8
+
+data_labelled <- data_labelled |>
+  set_variable_labels(
+    q8 = "Rates offered by the credit union"
+  )
+```
+
+# Create the Analysis Copy
+
+The file contains questionnaire variables and precomputed variables. Keep only questionnaire variables beginning with `q` followed by a number.
+
+```{r}
+#| label: analysis-copy
+
+data <- data_labelled |>
+  select(matches("^q\\d+$"))
+
+names(data)
+```
+
+## Question
+
+Why should precomputed variables such as `OverallEmployeePerformace` and `employeeperformance` be excluded from the analysis copy?
+
+**Your answer:**
+
+# Data Quality Checks
+
+```{r}
+#| label: quality-checks
+
+data |>
+  mutate(across(everything(), as.numeric)) |>
+  pivot_longer(
+    everything(),
+    names_to = "variable"
+  ) |>
+  summarise(
+    values_observed = str_c(
+      sort(unique(value)),
+      collapse = ", "
+    ),
+    n_missing = sum(is.na(value)),
+    pct_missing = round(
+      mean(is.na(value)) * 100,
+      1
+    ),
+    .by = variable
+  ) |>
+  gt()
+```
+
+## Question
+
+Does any variable contain a value that the questionnaire does not define?
+
+**Your answer:**
+
+# Recode Special Responses
+
+The code `6` represents “No Opinion” for `q7` and `q8`, and “No answer” for `q37`. These are not rating values and should be treated as missing.
+
+```{r}
+#| label: check-special-missing
+
+data |>
+  summarise(
+    q7_no_opinion = sum(q7 == 6, na.rm = TRUE),
+    q8_no_opinion = sum(q8 == 6, na.rm = TRUE),
+    q37_no_answer = sum(q37 == 6, na.rm = TRUE)
+  )
+```
+
+```{r}
+#| label: recode-special-missing
+
+data <- data |>
+  mutate(
+    across(
+      c(q7, q8, q37),
+      \(x) na_if(x, 6)
+    )
+  )
+```
+
+# Reverse-Code Selected Items
+
+Reverse-code the following items:
+
+- `q7`
+- `q8`
+- `q10`
+- `q37`
+
+Do not reverse-code:
+
+- `q9`, because the best response is in the middle of the scale
+- `q13:q26`, because these are awareness/use categories rather than ratings
+
+```{r}
+#| label: reverse-code
+
+data <- data |>
+  mutate(
+    q7r = 6 - q7,
+    q8r = 6 - q8,
+    q10r = 5 - q10,
+    q37r = 6 - q37
+  ) |>
+  set_variable_labels(
+    q7r = "Savings rates, reversed",
+    q8r = "Rates, q8, reversed",
+    q10r = "Statement accuracy, reversed",
+    q37r = "Overall rating, reversed"
+  ) |>
+  set_value_labels(
+    q7r = c(
+      "Very Low" = 1,
+      "Low" = 2,
+      "Average" = 3,
+      "High" = 4,
+      "Very High" = 5
+    ),
+    q8r = c(
+      "Very Low" = 1,
+      "Low" = 2,
+      "Average" = 3,
+      "High" = 4,
+      "Very High" = 5
+    ),
+    q10r = c(
+      "Poor" = 1,
+      "Fair" = 2,
+      "Good" = 3,
+      "Excellent" = 4
+    ),
+    q37r = c(
+      "Very Poor" = 1,
+      "Poor" = 2,
+      "Average" = 3,
+      "Good" = 4,
+      "Excellent" = 5
+    )
+  )
+```
+
+## Reverse-Coding Questions
+
+1. Why is reversal inappropriate for `q9`?
+2. How could `q9` be coded to measure whether frequency was “about right”?
+3. Why should `q13:q26` not be reversed or averaged into one score?
+4. What is a more appropriate way to summarize awareness/use items?
+
+**Your answer:**
+
+# Verify the Recoding
+
+```{r}
+#| label: verify-recode
+
+data |>
+  count(q7, q7r)
+
+data |>
+  count(q8, q8r)
+
+data |>
+  count(q10, q10r)
+
+data |>
+  count(q37, q37r)
+```
+
+Verify that:
+
+- “No Opinion” is missing for `q7` and `q8`.
+- “No answer” is missing for `q37`.
+- The lowest original value became the highest reversed value.
+- The highest original value became the lowest reversed value.
+- Missing values remained missing.
+- Higher reversed values represent more favorable responses.
+
+# Evaluate Candidate Multi-Item Measures
+
+The candidate measures are:
+
+1. Employee proficiency: `q3:q6`
+2. Operational effectiveness: `q30:q34`
+
+Use Cronbach’s alpha and a one-factor analysis before creating indexes.
+
+## Employee Proficiency
+
+```{r}
+#| label: employee-items
+
+employee_items <- data |>
+  select(q3:q6) |>
+  remove_val_labels() |>
+  remove_var_label()
+
+employee_alpha <- psych::alpha(employee_items)
+
+employee_alpha
+employee_alpha$total
+employee_alpha$item.stats
+```
+
+```{r}
+#| label: employee-factor
+
+employee_fa <- psych::fa(
+  employee_items,
+  nfactors = 1,
+  rotate = "none",
+  fm = "minres"
+)
+
+employee_fa
+employee_fa$loadings
+employee_fa$communality
+```
+
+## Operational Effectiveness
+
+```{r}
+#| label: operations-items
+
+operations_items <- data |>
+  select(q30:q34) |>
+  remove_val_labels() |>
+  remove_var_label()
+
+operations_alpha <- psych::alpha(operations_items)
+
+operations_alpha
+operations_alpha$total
+operations_alpha$item.stats
+```
+
+```{r}
+#| label: operations-factor
+
+operations_fa <- psych::fa(
+  operations_items,
+  nfactors = 1,
+  rotate = "none",
+  fm = "minres"
+)
+
+operations_fa
+operations_fa$loadings
+operations_fa$communality
+```
+
+## Measurement Questions
+
+For each candidate measure:
+
+1. What is the Cronbach’s alpha?
+2. Do the item-total statistics suggest that every item contributes?
+3. Does any item correlate weakly or negatively with the others?
+4. Do the factor loadings support one common factor?
+5. Is a one-factor interpretation reasonable based on the wording?
+6. Do you recommend creating an index?
+
+**Your answer:**
+
+# Create Indexes Only When Justified
+
+Only create an index when both the statistical evidence and item wording support combining the items.
+
+```{r}
+#| label: create-indexes
+
+data <- data |>
+  mutate(
+    employee_proficiency_index = rowMeans(
+      pick(q3:q6),
+      na.rm = TRUE
+    ),
+    operational_effectiveness_index = rowMeans(
+      pick(q30:q34),
+      na.rm = TRUE
+    ),
+    across(
+      ends_with("_index"),
+      \(x) if_else(
+        is.nan(x),
+        NA_real_,
+        x
+      )
+    )
+  )
+```
+
+If an index is not justified, remove its calculation and explain why the items should remain separate.
+
+```{r}
+#| label: check-indexes
+
+data |>
+  select(ends_with("_index")) |>
+  summary()
+```
+
+# Data Preparation Narrative
+
+Write a concise narrative covering:
+
+- How the SPSS data were imported
+- What the data dictionary showed
+- Which labels were corrected
+- Which variables were excluded
+- How missing values were handled
+- Which variables were reverse-coded
+- Which variables were not reverse-coded and why
+- What reliability and factor analysis indicated
+- Whether each index was created
+- Any remaining data-quality limitations
+
+::: {.callout-note title="Data Preparation Narrative"}
+
+Write your narrative here.
+
+:::
+
+# Final Data Dictionary
+
+```{r}
+#| label: final-dictionary
+
+final_dictionary <- tibble(
+  variable = names(data),
+  variable_label = map_chr(
+    data,
+    \(x) attr(x, "label") %||% ""
+  ),
+  class = map_chr(
+    data,
+    \(x) class(x)[1]
+  ),
+  n_distinct = map_int(
+    data,
+    n_distinct
+  ),
+  value_labels = map_chr(
+    data,
+    \(x) {
+      labs <- attr(x, "labels")
+
+      if (is.null(labs)) {
+        ""
+      } else {
+        str_c(
+          names(labs),
+          "=",
+          unname(labs),
+          collapse = "; "
+        )
+      }
+    }
+  )
+)
+
+final_dictionary |>
+  gt()
+```
+
+# Save the Cleaned SPSS File
+
+Replace `BV` with your own initials if necessary.
+
+```{r}
+#| label: save-cleaned-data
+
+data |>
+  write_sav("Case 31 Data_efcu_1_cleaned_BV.sav")
+```
+
