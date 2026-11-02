@@ -1,0 +1,240 @@
+---
+title: "IC10-2-Individual Analytics Objective/Method Confirmation"
+author: "Brian Vuong"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    embed-resources: true
+---
+
+# Individual Analytics Objective and Method Confirmation
+
+## Project
+
+**Client:** Wellness Ranch Equine Assisted Therapy  
+**Project:** MSDM Culminating Experience Project  
+**Student:** Brian Vuong  
+**Faculty Lead:** Dr. Sonya Zhang  
+**Team Members:** Alexa Bueno, Kevin Bachez, Ron Sabilla, and Brian Vuong
+
+## Purpose of This Document
+
+This document records the tasks required after the faculty lead’s feedback on the initial project presentation. It also documents the revised analytics objectives, proposed data science methods, variables, method justifications, and faculty-lead confirmation.
+
+The revised structure combines Google Ad Grants readiness and optimization into one connected objective. This creates a progression from campaign preparation to implementation, launch, testing, and evaluation. A separate analytics objective focuses on content marketing and donor outreach because increasing donations is Wellness Ranch’s primary organizational priority.
+
+# Task List and Member Responsibilities
+
+| Task | Responsible Member(s) | Expected Output |
+|---|---|---|
+| Revise AO1 to include SEO implementation, website improvements, link-building activities, documentation, and evaluation | Alexa Bueno | Updated AO1 objective, method plan, implementation log, and evaluation plan |
+| Complete technical and on-page SEO analysis | Alexa Bueno | SEO audit, local-search analysis, backlink opportunities, and prioritized improvement list |
+| Implement selected SEO and website improvements | Alexa Bueno with team support | Documented website changes, implementation dates, and post-implementation evaluation |
+| Maintain and validate GA4 measurement across all analytics objectives | Kevin Bachez with all team members | Validated events, conversion definitions, data dictionary, and KPI reporting framework |
+| Define and validate donation, inquiry, phone-click, and program-interest events | Kevin Bachez | Event and conversion tracking plan distinguishing intent signals from confirmed outcomes |
+| Connect GA4, Search Console, campaign, and outreach data where possible | Kevin Bachez | Integrated measurement plan and documented data limitations |
+| Evaluate Google for Nonprofits and Google Ad Grants readiness | Brian Vuong | Eligibility review, readiness assessment, gap analysis, and documentation of application status |
+| Prepare Google Search campaign structure | Brian Vuong | Keyword groups, search-intent categories, campaign structure, ad-group plan, and landing-page recommendations |
+| Prepare for Google Ad Grants activation and campaign launch | Brian Vuong with team support | Campaign launch checklist, account ownership plan, compliance plan, and optimization routine |
+| Develop donor-focused content and impact storytelling | Ron Sabilla | Content themes, audience-message matrix, donation-focused content recommendations, and implementation plan |
+| Plan and evaluate donor outreach through email or social media | Ron Sabilla with team support | Outreach campaign plan, content calendar, channel recommendations, and performance measures |
+| Coordinate implementation activities across all analytics objectives | All team members | Shared implementation schedule, responsibility matrix, and progress documentation |
+| Compare baseline and post-implementation performance | All team members | Before-and-after evaluation using validated KPIs and documented limitations |
+| Maintain the project report and references | All team members | Updated Chapter 1, Chapter 2, Chapter 3, citations, references, and appendices |
+
+# Revised Analytics Objectives
+
+## AO1: SEO and Website Optimization
+
+Improve Wellness Ranch’s organic visibility and website effectiveness by identifying, prioritizing, implementing, and evaluating technical SEO, on-page SEO, local SEO, link-building, and website improvements.
+
+## AO2: Analytics and Conversion Measurement
+
+Establish reliable measurement and evaluate digital performance across the project by validating GA4, Search Console, campaign, website, and conversion data.
+
+## AO3: Google Ad Grants Campaign Development and Optimization
+
+Prepare for, launch, and optimize Google Search advertising through Google Ad Grants by evaluating readiness, developing campaign structures, preparing landing pages, validating conversion tracking, monitoring compliance, and evaluating campaign performance when data become available.
+
+## AO4: Content Marketing and Donor Outreach
+
+Strengthen donor engagement and encourage donations through donor-focused content, impact storytelling, and a selected email or social-media outreach campaign that can be implemented and evaluated using measurable engagement and conversion outcomes.
+
+# Analytics Methods to Employ
+
+## AO1: SEO and Website Optimization
+
+AO1 will use a descriptive SEO audit, search-intent classification, a weighted prioritization matrix, implementation documentation, and before-and-after evaluation. The descriptive audit will summarize technical, on-page, local, and off-page conditions across Wellness Ranch’s important pages. Search Console data will be used to evaluate organic impressions, clicks, click-through rate, average position, and search queries. Search queries will be categorized by branded or non-branded status and by informational, navigational, local, or transactional intent. This will help the team determine whether pages are reaching new audiences and whether search visibility supports the organization’s service and fundraising objectives.
+
+The team will create a weighted prioritization matrix that ranks potential improvements by issue severity, organizational importance, search opportunity, implementation effort, and relationship to a primary audience or conversion action. The selected improvements will be implemented when approved by the client. Each change will be documented with the page, issue, recommendation, implementation date, responsible person, and expected outcome. After implementation, the team will compare relevant baseline and post-implementation measures. The analysis will be interpreted as descriptive evidence rather than proof that a specific SEO change caused a ranking improvement.
+
+### AO1 Data and Variables
+
+| Data or Variable | Description | Use in Analysis |
+|---|---|---|
+| Organic impressions | Number of times a page or query appeared in search results | Measure search visibility |
+| Organic clicks | Number of clicks from search results | Measure traffic generated by organic search |
+| Organic CTR | Clicks divided by impressions | Evaluate search-result appeal |
+| Average position | Average search-result position for pages or queries | Evaluate visibility |
+| Search query | Terms used by searchers | Classify search intent and topic |
+| Branded status | Whether a query includes the Wellness Ranch brand | Separate existing awareness from discovery |
+| Search intent | Informational, navigational, local, or transactional | Match content to user needs |
+| Technical issue severity | Importance of a technical or on-page problem | Prioritize improvements |
+| Page purpose | Service, donation, information, contact, volunteer, or internship page | Connect pages to organizational goals |
+| Referring domains | External websites linking to Wellness Ranch | Evaluate link-building opportunities |
+| Implementation status | Not started, in progress, or completed | Track project execution |
+| Implementation date | Date a change was made | Establish the post-implementation period |
+
+These methods are appropriate because AO1 must move beyond identifying problems. The project is intended to implement selected improvements, document the work, and evaluate whether the changes improve visibility or website effectiveness.
+
+## AO2: Analytics and Conversion Measurement
+
+AO2 will use tracking-quality assurance, event validation, descriptive funnel analysis, acquisition analysis, and baseline-to-post-implementation comparisons. GA4 events will be tested through Google Tag Assistant, GA4 DebugView, and Realtime reports. The team will verify that events fire under the correct conditions, fire once per intended action, and contain the required parameters.
+
+The team will distinguish between engagement signals and meaningful outcomes. Donation-page views, donation-button clicks, phone clicks, form starts, and CTA clicks may indicate intent, but they do not necessarily confirm that a donation or inquiry was completed. Successful inquiry submissions should be measured separately from form starts. Because donations occur through an external platform, GA4 may be able to measure donation-page views and donation-button clicks without directly observing completed donations. Confirmed donations should therefore be validated through the external donation platform or client records when available.
+
+Descriptive analysis will compare traffic sources, landing pages, devices, campaigns, engagement, and conversion actions. Conversion rates will be calculated only when the numerator and denominator are clearly defined. Baseline and post-implementation comparisons will be used to evaluate changes in performance, but causal conclusions will not be made unless the project has sufficient data and an appropriate comparison design.
+
+### AO2 Data and Variables
+
+| Data or Variable | Description | Use in Analysis |
+|---|---|---|
+| Users and sessions | Website traffic volume | Describe acquisition and reach |
+| Source and medium | Origin and type of traffic | Compare acquisition channels |
+| Campaign | Marketing campaign associated with a visit | Evaluate campaign performance |
+| Landing page | First page visited in a session | Evaluate entry-point effectiveness |
+| Engaged sessions | Sessions meeting GA4 engagement criteria | Measure meaningful website activity |
+| Engagement rate | Engaged sessions divided by sessions | Evaluate interaction quality |
+| Event name | Recorded website interaction | Confirm event consistency |
+| Event parameters | Details such as form ID, CTA text, or page location | Validate event quality |
+| Form start | Beginning of a contact or inquiry form | Measure early funnel activity |
+| Form submission | Successful completion of an inquiry form | Measure inquiry conversion |
+| Phone click | Click on a phone number or call link | Measure contact intent |
+| Donation-button click | Click leading to the external donation platform | Measure donation intent |
+| Confirmed donation | Completed donation validated through platform or client records | Measure the primary fundraising outcome |
+| Program-interest action | Action indicating interest in Wellness Ranch services | Measure service-related engagement |
+| Device category | Smartphone, computer, or tablet | Identify device differences |
+| Geography | Geographic location when available and appropriate | Evaluate local reach |
+
+These methods are appropriate because AO2’s purpose is to establish a reliable measurement foundation. Accurate measurement is necessary for evaluating SEO changes, Google Search campaigns, donor outreach, and other project activities.
+
+## AO3: Google Ad Grants Campaign Development and Optimization
+
+AO3 will use a readiness assessment, document review, gap analysis, keyword and search-intent analysis, campaign planning, landing-page evaluation, implementation documentation, and post-launch performance analysis when data are available.
+
+The readiness assessment will evaluate the technical, organizational, and environmental conditions required for Google Ad Grants. Technical readiness will include website quality, landing-page relevance, mobile usability, GA4 conversion tracking, and account access. Organizational readiness will include ownership, staff capacity, approval procedures, available management time, and post-project responsibilities. Environmental readiness will include nonprofit eligibility, Google Ad Grants requirements, search demand, competition, privacy expectations, and the local service context.
+
+The team will classify each readiness area as **Ready**, **Partially Ready**, or **Not Ready** based on documented evidence. The analysis will also identify the sequence of work from Google for Nonprofits verification and application support through website readiness, campaign preparation, activation, launch, monitoring, and optimization.
+
+Keyword research will group potential search terms by intent and topic, such as equine-assisted therapy, local therapy services, mental-health support, educational searches, donations, and volunteering. The team will use these categories to develop campaign and ad-group structures. Landing pages will be evaluated for message relevance, service clarity, trust information, accessibility, calls to action, and conversion tracking.
+
+If the campaign launches during the project period, the team will analyze impressions, clicks, click-through rate, search terms, conversions, conversion rate, landing-page engagement, and compliance measures. If campaign data are not available, AO3 will provide a pre-launch keyword and intent analysis, campaign structure, landing-page recommendations, readiness assessment, and ongoing management procedure.
+
+### AO3 Data and Variables
+
+| Data or Variable | Description | Use in Analysis |
+|---|---|---|
+| Eligibility status | Evidence that Google Ad Grants requirements are satisfied | Evaluate application readiness |
+| Verification status | Status of Google for Nonprofits and account verification | Identify application progress |
+| Website readiness | Status of website, service pages, and landing pages | Identify launch barriers |
+| Conversion-tracking status | Whether meaningful GA4 events are validated | Determine measurement readiness |
+| Keyword | Search term considered for campaign use | Build keyword groups |
+| Search intent | Informational, local, transactional, donation, or navigational | Match ads and landing pages to user needs |
+| Campaign theme | Topic or audience category for a campaign | Organize campaign structure |
+| Ad group | Group of related keywords and advertisements | Evaluate campaign organization |
+| Landing page | Page receiving campaign traffic | Evaluate relevance and conversion readiness |
+| Impression | Number of ad displays | Measure reach |
+| Click | Number of ad interactions | Measure traffic generation |
+| CTR | Clicks divided by impressions | Evaluate ad relevance |
+| Conversion | Defined action after an ad interaction | Measure campaign outcome |
+| Conversion rate | Conversions divided by clicks or sessions | Evaluate campaign effectiveness |
+| Account owner | Person or team responsible for management | Evaluate sustainability |
+| Compliance status | Status of required program conditions | Monitor account risk |
+| Readiness classification | Ready, Partially Ready, or Not Ready | Summarize overall readiness |
+
+These methods are appropriate because Google Ad Grants readiness involves more than eligibility. The organization must also have the website, conversion tracking, campaign structure, staffing, and management procedures necessary to sustain the account. The method therefore connects preparation, implementation, launch, and evaluation.
+
+## AO4: Content Marketing and Donor Outreach
+
+AO4 will use a content audit, audience-message matrix, donor-journey analysis, campaign planning, descriptive engagement analysis, implementation documentation, and pre- and post-campaign evaluation.
+
+The content audit will review current donor-facing website content, social-media content, email communication, donation messaging, impact statements, and calls to action. Content will be classified by audience, topic, message, platform, intended action, and stage of the donor journey. The team will identify gaps in impact communication, donation instructions, trust information, and opportunities for donor engagement.
+
+The audience-message matrix will connect donor motivations to appropriate content and calls to action. For example, donors may respond to information about community impact, service accessibility, client outcomes that can be responsibly shared, or specific organizational needs. The team will select an outreach channel based on client capacity, available audience access, privacy requirements, and ease of measurement.
+
+If the outreach campaign is implemented, the team will measure reach, impressions, engagement, clicks, donation-page visits, donation-button clicks, and confirmed donations when external platform data are available. Email measures may include sends, deliveries, opens, clicks, and unsubscribe activity. Social-media measures may include reach, engagement, link clicks, and referral traffic. Confirmed donations should be kept separate from donation intent signals.
+
+### AO4 Data and Variables
+
+| Data or Variable | Description | Use in Analysis |
+|---|---|---|
+| Content type | Email, social post, website page, story, video, or appeal | Compare content formats |
+| Audience | Donor, supporter, volunteer, partner, or community member | Match content to audience |
+| Message theme | Impact, accessibility, services, community, or fundraising need | Evaluate message strategy |
+| Platform | Email, website, Facebook, Instagram, or other approved channel | Compare distribution channels |
+| Reach or impressions | Number of people exposed to content | Measure awareness |
+| Engagement | Likes, comments, shares, saves, or other interactions | Measure audience response |
+| Link clicks | Clicks from content to the website or donation page | Measure action intent |
+| Donation-page views | Visits to the donation page | Measure fundraising interest |
+| Donation-button clicks | Clicks toward the external donation platform | Measure donation intent |
+| Confirmed donations | Completed donations validated through platform records | Measure fundraising outcome |
+| Email open rate | Opens divided by delivered emails | Evaluate email attention |
+| Email click-through rate | Clicks divided by delivered or opened emails | Evaluate email action |
+| Campaign date | Date content was distributed | Establish comparison periods |
+| Content implementation status | Planned, published, or completed | Track execution |
+
+These methods are appropriate because the revised AO4 focuses on implementation and evaluation, not only on recommending content. The team will develop donor-focused content, implement a selected outreach campaign, measure engagement and conversion behavior, and document the results and limitations.
+
+# Faculty Lead Confirmation
+
+## Confirmation of the Analytics Objective
+
+The faculty lead provided written feedback supporting the revised analytics-objective structure. The feedback recommended combining the previous Google Ad Grants readiness objective with Google Ad Grants optimization because both activities form a connected progression from campaign preparation to implementation, launch, and evaluation.
+
+The revised AO3 objective is:
+
+> **Prepare for, launch, and optimize Google Search advertising through Google Ad Grants by evaluating readiness, developing campaign structures, preparing landing pages, validating conversion tracking, monitoring compliance, and evaluating campaign performance when data are available.**
+
+The faculty lead’s written communication also supported a separate donor-outreach objective because increasing donations is Wellness Ranch’s primary organizational priority.
+
+## Confirmation of the Analytics Method
+
+The faculty lead’s written feedback supports the proposed method direction for AO3. The method combines readiness assessment, website and landing-page evaluation, conversion-tracking validation, keyword and search-intent analysis, campaign preparation, implementation documentation, and post-launch performance evaluation.
+
+The method is appropriate because it reflects the actual progression of Google Search advertising:
+
+1. Verify nonprofit and Google Ad Grants readiness.
+2. Evaluate website, landing pages, and conversion tracking.
+3. Develop keywords, campaign structures, and advertisements.
+4. Activate and launch the campaign if approval is granted.
+5. Monitor compliance, engagement, conversions, and landing-page performance.
+6. Optimize the campaign using documented evidence.
+
+The team will not claim that Google Ad Grants caused changes in donations or inquiries unless sufficient post-launch data and an appropriate comparison period are available. If campaign launch or approval is delayed, the analysis will focus on readiness, campaign preparation, measurement requirements, implementation barriers, and recommendations for future management.
+
+## Written Confirmation Record
+
+**Faculty lead:** Dr. Sonya Zhang
+
+**Written confirmation date:** October 22, 2026
+
+**Confirmation source:** Written email feedback following the initial Wellness Ranch project presentation.
+
+**Confirmation summary:** The faculty lead recommended combining Google Ad Grants readiness and optimization into one objective focused on campaign development and optimization. The proposed structure includes readiness assessment, keyword research, campaign setup, landing-page development, launch, testing, optimization, and evaluation. The faculty lead also recommended a separate donor-focused content and outreach objective because donations are Wellness Ranch’s highest priority.
+
+**Student acknowledgment:** The revised objectives and methods above reflect the faculty lead’s written guidance and will be incorporated into the project report.
+
+# Remaining Questions and Follow-Up Items
+
+- Confirm the final names and responsibilities for all team members.
+- Confirm whether Google for Nonprofits verification and the Google Ad Grants application have been completed.
+- Confirm the current approval status and expected timeline.
+- Confirm the account owner and post-project management responsibilities.
+- Confirm which landing pages will be developed or improved.
+- Confirm whether the external donation platform can provide confirmed donation records or exports.
+- Confirm which donor-outreach channel will be implemented for AO4.
+- Document any changes to the analytics objectives or methods after further faculty or client feedback.
