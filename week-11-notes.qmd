@@ -1,0 +1,95 @@
+---
+title: "Week 11 Notes"
+author: "Brian Vuong"
+date: 'today'
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-expand: 2
+    toc-location: right
+    number-sections: true
+    number-depth: 3
+    code-link: true
+    code-tools: true
+    code-fold: true
+    code-overflow: wrap
+    code-copy: true
+    embed-resources: true
+    theme: cosmo
+    html-math-method: katex
+editor: visual
+execute:
+  freeze: auto
+  warning: false
+---
+
+# Week 11 lecture
+
+Dr Jung went over Case 31 assignment
+
+went over secondary data and primary data like GA4 data
+
+asks groups if client hand over secondary data
+
+went over Google cloud console
+
+begin Data Analysis planning with or without data
+
+use case 31 table as reference for Data Analysis planning
+
+- descriptive statistic
+
+- cross tabulation
+
+Hypothesis tests is divided into parametric test and non-parametric test
+
+Parametric test or metric test deals with t test and z test
+
+independent samples deals with two groups
+
+Independent samples for non-parametric tests deals with chi-square, median, K-S
+
+T test and Z test are identical if the sample size are the same for both
+
+T test cover both small and big sample size
+
+Z test only cover large same size
+
+ANOVA is used for three or more groups
+
+Two groups is reserved for T-test
+
+Type of statistic can change based on nominal or ordinal scale
+
+Chi-square is used in both independent sample and paired sample
+
+Multivariate techniques is split into dependence and interdependence techniques
+
+Dependence technique is where at least one independent variable can be identified
+
+One dependent variable
+
+- cross-tabulation
+
+- analysis of variance and covariance
+
+- multiple regression
+
+More than one variable
+
+- multivariate analysis of variance and covariance
+
+- canonical correlation
+
+- multiple discriminant analysis
+
+Variable interdependence
+
+- factor analysis
+
+Interobject similarity
+
+- cluster analysis
+
+- multidimensional scaling
