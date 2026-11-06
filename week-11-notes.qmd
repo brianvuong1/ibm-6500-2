@@ -93,3 +93,9 @@ Interobject similarity
 - cluster analysis
 
 - multidimensional scaling
+
+Setting up five step sequence of hypothesis test
+
+- report test statistics and p values associated
+
+- refer to the output while you describe the findings
