@@ -1,0 +1,669 @@
+
+---
+title: "Case 31: Employees Federal Credit Union"
+subtitle: "Survey Data Analysis and Research Findings"
+author: "Your Name"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    transition: fade
+    background-transition: fade
+    center: false
+    width: 1280
+    height: 720
+    smaller: true
+    code-fold: true
+    code-summary: "Show R Code"
+    css: styles.css
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+
+```{r}
+#| label: setup
+#| include: false
+
+library(haven)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(knitr)
+library(scales)
+
+# Import SPSS dataset
+efcu <- read_sav("Case 31 Data_efcu_4.sav")
+
+names(efcu) <- make.unique(
+  toupper(trimws(names(efcu))),
+  sep = "_"
+)
+
+# Display imported variables for troubleshooting
+print(names(efcu))
+
+# Professional chart colors
+navy <- "#17365D"
+teal <- "#17A398"
+lightblue <- "#70A9D6"
+gold <- "#E9B44C"
+
+# Chart theme
+theme_set(
+  theme_minimal(base_size = 17) +
+    theme(
+      plot.title = element_text(
+        face = "bold",
+        color = navy,
+        size = 20
+      ),
+      plot.subtitle = element_text(size = 13),
+      axis.title = element_text(size = 13),
+      panel.grid.minor = element_blank(),
+      legend.position = "bottom",
+      plot.margin = margin(12, 15, 12, 15)
+    )
+)
+
+# Convert SPSS labels into readable categories
+to_category <- function(x) {
+  as.character(haven::as_factor(x))
+}
+
+# Calculate frequency and percentages
+frequency_table <- function(data, variable) {
+
+  data |>
+    transmute(
+      Response = to_category(.data[[variable]])
+    ) |>
+    filter(!is.na(Response)) |>
+    count(Response, name = "Count") |>
+    mutate(
+      Percent = 100 * Count / sum(Count)
+    )
+}
+
+# Check necessary variables
+required_vars <- c(
+  paste0("Q", 3:8),
+  paste0("Q", 13:26),
+  "Q37",
+  "Q38"
+)
+
+missing_vars <- setdiff(
+  required_vars,
+  names(efcu)
+)
+
+if (length(missing_vars) > 0) {
+  stop(
+    "Missing variables: ",
+    paste(missing_vars, collapse = ", "),
+    "\nImported columns: ",
+    paste(names(efcu), collapse = ", ")
+  )
+}
+
+# Dataset sample size
+sample_size <- nrow(efcu)
+```
+
+
+# Introduction
+
+## Employees Federal Credit Union
+
+### Case 31: Survey Data Analysis
+
+**Purpose**
+
+Analyze members' perceptions of Employees Federal Credit Union using survey data.
+
+**Key areas explored**
+
+- Employee service quality
+- Financial rates and services
+- Awareness of financial products
+- Overall credit union evaluation
+
+**Data source:** Case 31 cleaned SPSS dataset
+
+---
+
+## Research Approach
+
+The analysis follows three steps:
+
+1. **Descriptive statistics:** Identify frequencies, percentages, and central tendencies.
+2. **Data visualization:** Use charts to identify meaningful patterns.
+3. **Inferential statistics:** Apply appropriate tests and interpret their results.
+
+The primary objective is to communicate meaningful insights rather than simply report statistical calculations.
+
+---
+
+## Dataset Overview
+
+```{r}
+#| label: tbl-dataset
+#| tbl-cap: "Overview of the Case 31 Dataset"
+
+data.frame(
+  Measure = c(
+    "Survey respondents",
+    "Dataset variables",
+    "Data source"
+  ),
+  Value = c(
+    nrow(efcu),
+    ncol(efcu),
+    "Case 31 SPSS"
+  )
+) |>
+  kable()
+```
+
+**Interpretation**
+
+This dataset contains survey responses about Employees Federal Credit Union's services, products, and member experiences.
+
+# Research Question 1 (R1)
+
+## Employee Service Quality
+
+This exploratory analysis examines survey items measuring employees' courtesy, helpfulness, professionalism, and availability.
+
+Variables examined: Q3, Q4, Q5, and Q6.
+
+---
+
+## Visualizing Employee Service Ratings
+
+```{r}
+#| label: fig-employee-service
+#| fig-cap: "Distribution of Employee Service Ratings"
+#| fig-width: 11
+#| fig-height: 5.5
+
+employee_data <- efcu |>
+  select(Q3, Q4, Q5, Q6) |>
+  pivot_longer(
+    cols = everything(),
+    names_to = "Question",
+    values_to = "Rating"
+  ) |>
+  mutate(
+    Question = recode(
+      Question,
+      Q3 = "Courtesy",
+      Q4 = "Helpfulness",
+      Q5 = "Professionalism",
+      Q6 = "Availability"
+    ),
+    Rating = to_category(Rating)
+  ) |>
+  filter(!is.na(Rating)) |>
+  count(Question, Rating) |>
+  group_by(Question) |>
+  mutate(Percent = 100 * n / sum(n)) |>
+  ungroup()
+
+ggplot(
+  employee_data,
+  aes(x = Question, y = Percent, fill = Rating)
+) +
+  geom_col(width = 0.7) +
+  scale_fill_brewer(palette = "Blues") +
+  scale_y_continuous(
+    labels = label_percent(scale = 1)
+  ) +
+  labs(
+    title = "How Members Rate Credit Union Employees",
+    subtitle = "Percentage distribution by service dimension",
+    x = NULL,
+    y = "Percentage of Responses",
+    fill = "Rating"
+  )
+```
+
+---
+
+## Employee Service: Mean Ratings
+
+
+```{r}
+#| label: fig-employee-means
+#| fig-cap: "Average Employee Service Scores"
+#| fig-width: 10
+#| fig-height: 5
+
+service_vars <- c("Q3", "Q4", "Q5", "Q6")
+
+service_data <- efcu |>
+  select(all_of(service_vars))
+
+mean_data <- data.frame(
+  Dimension = c(
+    "Courtesy",
+    "Helpfulness",
+    "Professionalism",
+    "Availability"
+  ),
+  Mean = sapply(
+    service_data,
+    function(x) mean(as.numeric(x), na.rm = TRUE)
+  )
+)
+
+ggplot(
+  mean_data,
+  aes(x = reorder(Dimension, Mean), y = Mean)
+) +
+  geom_col(fill = teal, width = 0.65) +
+  geom_text(
+    aes(label = round(Mean, 2)),
+    hjust = -0.2,
+    size = 5
+  ) +
+  coord_flip() +
+  scale_y_continuous(
+    limits = c(0, max(mean_data$Mean, na.rm = TRUE) * 1.2)
+  ) +
+  labs(
+    title = "Employee Service Performance",
+    subtitle = "Average coded response for each dimension",
+    x = NULL,
+    y = "Mean Score"
+  )
+```
+
+
+---
+
+## R1: Findings and Interpretation
+
+Use the employee-service charts to answer the applicable research question.
+
+**Descriptive insights**
+
+- Highest-rated service dimension: [Insert finding]
+- Lowest-rated service dimension: [Insert finding]
+- Overall response pattern: [Insert finding]
+
+**Statistical analysis**
+
+- Test required: [Insert test from analysis table]
+- Test result: [Insert statistic and p-value]
+
+**Key insight**
+
+[Explain what the data suggest about employee service and the implications for the credit union.]
+
+# Research Question 2 (R2)
+
+## Perceptions of Financial Rates
+
+This exploratory analysis compares members' opinions about:
+
+- Q7: Rates on share (savings) accounts
+- Q8: Rates charged on borrowed funds
+
+---
+
+## Financial Rate Perceptions
+
+```{r}
+#| label: fig-rate-perceptions
+#| fig-cap: "Distribution of Financial Rate Perceptions"
+#| fig-width: 11
+#| fig-height: 5.5
+
+rates_data <- efcu |>
+  select(Q7, Q8) |>
+  pivot_longer(
+    everything(),
+    names_to = "Service",
+    values_to = "Response"
+  ) |>
+  mutate(
+    Service = recode(
+      Service,
+      Q7 = "Savings Account Rates",
+      Q8 = "Borrowing Rates"
+    ),
+    Response = to_category(Response)
+  ) |>
+  filter(!is.na(Response)) |>
+  count(Service, Response) |>
+  group_by(Service) |>
+  mutate(Percent = 100 * n / sum(n)) |>
+  ungroup()
+
+ggplot(
+  rates_data,
+  aes(
+    x = Service,
+    y = Percent,
+    fill = Response
+  )
+) +
+  geom_col(width = 0.65) +
+  scale_fill_brewer(palette = "Set2") +
+  scale_y_continuous(
+    labels = label_percent(scale = 1)
+  ) +
+  labs(
+    title = "Members' Opinions About Financial Rates",
+    subtitle = "Comparison of savings and borrowing rate responses",
+    x = NULL,
+    y = "Percentage of Responses",
+    fill = "Survey Response"
+  )
+```
+
+---
+
+## R2: Descriptive Statistics
+
+```{r}
+#| label: tbl-financial-rates
+#| tbl-cap: "Frequency Distribution for Financial Rate Opinions"
+
+bind_rows(
+  frequency_table(efcu, "Q7") |>
+    mutate(Question = "Q7: Savings Rates"),
+  frequency_table(efcu, "Q8") |>
+    mutate(Question = "Q8: Borrowing Rates")
+) |>
+  select(Question, Response, Count, Percent) |>
+  mutate(Percent = round(Percent, 1)) |>
+  kable()
+```
+
+---
+
+## R2: Findings and Interpretation
+
+**Descriptive insights**
+
+- Most common opinion about savings rates: [Insert result]
+- Most common opinion about borrowing rates: [Insert result]
+- Notable differences between the two: [Insert result]
+
+**Statistical analysis**
+
+- Test required: [Insert test]
+- Statistical result: [Insert result]
+
+**Key insight**
+
+[Explain what members' perceptions suggest about the credit union's financial offerings.]
+
+# Research Question 5 (R5)
+
+## Awareness of Financial Products
+
+The questionnaire contains multiple items measuring members' awareness of credit union financial products.
+
+Variables examined: Q13 through Q26.
+
+---
+
+## Financial Product Awareness
+
+```{r}
+#| label: fig-product-awareness
+#| fig-cap: "Survey Responses on Financial Product Awareness"
+#| fig-width: 12
+#| fig-height: 7
+
+product_names <- c(
+  Q13 = "Regular Share Account",
+  Q14 = "Special Subaccounts",
+  Q15 = "Christmas Club",
+  Q16 = "Individual Retirement Account",
+  Q17 = "MasterCard Credit Card",
+  Q18 = "Signature Loans",
+  Q19 = "New Car Loans",
+  Q20 = "Late Model Car Loans",
+  Q21 = "Older Model Car Loans",
+  Q22 = "Household/Appliance Loans",
+  Q23 = "Recreational Loans",
+  Q24 = "Share Collateralized Loans",
+  Q25 = "IRA Loans",
+  Q26 = "Line of Credit Loans"
+)
+
+awareness_data <- efcu |>
+  select(all_of(names(product_names))) |>
+  pivot_longer(
+    everything(),
+    names_to = "Product",
+    values_to = "Response"
+  ) |>
+  mutate(
+    Product = recode(
+      Product, !!!product_names
+    ),
+    Response = to_category(Response)
+  ) |>
+  filter(!is.na(Response)) |>
+  count(Product, Response) |>
+  group_by(Product) |>
+  mutate(Percent = 100 * n / sum(n)) |>
+  ungroup()
+
+ggplot(
+  awareness_data,
+  aes(
+    x = Product,
+    y = Percent,
+    fill = Response
+  )
+) +
+  geom_col(width = 0.75) +
+  coord_flip() +
+  scale_fill_brewer(palette = "Set2") +
+  scale_y_continuous(
+    labels = label_percent(scale = 1)
+  ) +
+  labs(
+    title = "Awareness of Credit Union Financial Products",
+    subtitle = "Percentage distribution of awareness responses",
+    x = NULL,
+    y = "Percentage of Responses",
+    fill = "Response"
+  ) +
+  theme(
+    axis.text.y = element_text(size = 11),
+    legend.position = "bottom"
+  )
+```
+
+---
+
+## R5: Product Awareness Insights
+
+Using the product awareness chart, identify:
+
+- Products with the highest reported awareness.
+- Products with the lowest reported awareness.
+- Opportunities to improve financial product communication.
+
+**Statistical analysis**
+
+- Test required: [Insert test]
+- Result: [Insert result]
+
+**Key insight**
+
+[Identify the most important awareness gap and explain why it matters for Employees Federal Credit Union.]
+
+# Research Question 6 (R6)
+
+## Overall Credit Union Evaluation
+
+This exploratory analysis uses:
+
+- Q37: Overall rating of credit union management and operations
+- Q38: Whether the respondent lives in the headquarters area
+
+---
+
+## Overall Credit Union Ratings
+
+```{r}
+#| label: fig-overall-ratings
+#| fig-cap: "Overall Credit Union Ratings"
+#| fig-width: 10
+#| fig-height: 5
+
+overall_data <- frequency_table(efcu, "Q37")
+
+ggplot(
+  overall_data,
+  aes(
+    x = reorder(Response, Percent),
+    y = Percent
+  )
+) +
+  geom_col(
+    fill = navy,
+    width = 0.7
+  ) +
+  geom_text(
+    aes(label = paste0(round(Percent, 1), "%")),
+    hjust = -0.15,
+    size = 5
+  ) +
+  coord_flip() +
+  scale_y_continuous(
+    limits = c(0, max(overall_data$Percent) * 1.2)
+  ) +
+  labs(
+    title = "Overall Evaluation of Employees Federal Credit Union",
+    subtitle = "Distribution of member ratings",
+    x = "Rating",
+    y = "Percentage of Respondents"
+  )
+```
+
+---
+
+## Comparing Ratings by Location
+
+```{r}
+#| label: fig-location-ratings
+#| fig-cap: "Credit Union Ratings by Respondent Location"
+#| fig-width: 11
+#| fig-height: 5.5
+
+location_data <- efcu |>
+  transmute(
+    Location = to_category(Q38),
+    Rating = to_category(Q37)
+  ) |>
+  filter(
+    !is.na(Location),
+    !is.na(Rating)
+  ) |>
+  count(Location, Rating) |>
+  group_by(Location) |>
+  mutate(Percent = 100 * n / sum(n)) |>
+  ungroup()
+
+ggplot(
+  location_data,
+  aes(
+    x = Location,
+    y = Percent,
+    fill = Rating
+  )
+) +
+  geom_col(
+    position = "fill",
+    width = 0.65
+  ) +
+  scale_y_continuous(
+    labels = percent
+  ) +
+  scale_fill_brewer(palette = "Blues") +
+  labs(
+    title = "Do Overall Ratings Differ by Location?",
+    subtitle = "Rating distributions within respondent location groups",
+    x = "Respondent Location",
+    y = "Share of Responses",
+    fill = "Overall Rating"
+  )
+```
+
+---
+
+## R6: Findings and Interpretation
+
+**Descriptive insights**
+
+- Most common overall evaluation: [Insert finding]
+- Differences by location: [Insert finding]
+- Main pattern: [Insert finding]
+
+**Statistical analysis**
+
+- Test required: [Insert test]
+- Statistical result: [Insert result]
+
+**Key insight**
+
+[Explain what the findings suggest about overall perceptions of credit union management and operations.]
+
+# Overall Research Findings
+
+## Summary of Research Results
+
+| Area | Main Finding | Implication |
+|---|---|---|
+| R1 | [Insert result] | [Insert implication] |
+| R2 | [Insert result] | [Insert implication] |
+| R5 | [Insert result] | [Insert implication] |
+| R6 | [Insert result] | [Insert implication] |
+
+---
+
+## Recommendations
+
+Based on the results, Employees Federal Credit Union should consider:
+
+1. **Employee service:** Address any service dimensions with comparatively weaker evaluations.
+2. **Financial rates:** Evaluate areas where member perceptions indicate concerns.
+3. **Product awareness:** Improve communication about financial offerings with low awareness.
+4. **Member experience:** Investigate differences in overall ratings across respondent groups.
+
+These recommendations should be revised to reflect the actual findings.
+
+# Conclusion
+
+## Final Takeaways
+
+- Descriptive statistics reveal patterns in member perceptions.
+- Visualizations make these patterns easier to understand.
+- Inferential statistical tests help evaluate whether observed differences are statistically meaningful.
+- The findings can support evidence-based improvements in credit union operations.
+
+**Final message**
+
+The most important outcome of this analysis is not the statistical calculation itself, but what the results reveal about members' experiences and opportunities for improvement.
+
+# References
+
+## Data Sources
+
+- Case 31: Employees Federal Credit Union questionnaire.
+- Case 31 cleaned SPSS dataset.
+- Case 31 data analysis assignment instructions.
+
+*All visualizations are generated using R and ggplot2.*
