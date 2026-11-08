@@ -1,0 +1,1319 @@
+---
+title: "M08 Reflection: Summary Tables with gtsummary"
+subtitle: "Statistical Reporting and the Wellness Ranch CEP Project"
+author: "IBM 6400 Student"
+institute: "Cal Poly Pomona"
+date: today
+date-format: "MMMM D, YYYY"
+format:
+  revealjs:
+    theme: serif
+    width: 1600
+    height: 900
+    footer: "M08 Reflection | Wellness Ranch CEP"
+    transition: slide
+    transition-speed: default
+    incremental: false
+    toc: true
+    toc-depth: 1
+    slide-number: true
+    scrollable: true
+    smaller: true
+    code-fold: true
+    code-overflow: wrap
+    number-sections: false
+    embed-resources: true
+editor: source
+execute:
+  echo: false
+  warning: false
+  message: false
+  freeze: false
+---
+
+<style>
+.reveal {
+  font-family: Georgia, serif;
+  color: #263449;
+}
+
+.reveal h1 {
+  color: #17365D;
+  font-weight: bold;
+}
+
+.reveal h2 {
+  color: #17365D;
+  border-bottom: 3px solid #18A999;
+  padding-bottom: 12px;
+}
+
+.reveal strong {
+  color: #087E78;
+}
+
+.reveal table {
+  font-size: 0.72em;
+}
+
+.reveal th {
+  background-color: #17365D;
+  color: white;
+  padding: 12px;
+}
+
+.reveal td {
+  padding: 10px;
+}
+
+.reveal blockquote {
+  border-left: 5px solid #18A999;
+  padding-left: 20px;
+  background: #F1F8F7;
+}
+
+.reveal .slide-number {
+  color: #17365D;
+}
+
+.reveal .slides section::after {
+  content: "WELLNESS RANCH | IBM 6400";
+  position: absolute;
+  right: 15px;
+  bottom: 18px;
+  color: #18A999;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+}
+</style>
+
+```{r}
+#| label: setup
+#| include: false
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(gtsummary)
+library(gt)
+library(broom)
+library(knitr)
+library(scales)
+
+navy <- "#17365D"
+teal <- "#18A999"
+
+theme_set(
+  theme_minimal(base_size = 16) +
+    theme(
+      plot.title = element_text(
+        face = "bold",
+        color = navy
+      ),
+      panel.grid.minor = element_blank(),
+      legend.position = "bottom"
+    )
+)
+
+# Wellness Ranch GA4 export
+data_file <- "wellness_ranch_ga4.csv"
+
+# This analysis expects a session-level metric export,
+# aggregated by device category and acquisition channel.
+# Required fields:
+# deviceCategory
+# sessionDefaultChannelGroup
+# sessions
+# engagedSessions
+# averageSessionDuration
+
+required_columns <- c(
+  "devicecategory",
+  "sessiondefaultchannelgroup",
+  "sessions",
+  "engagedsessions",
+  "averagesessionduration"
+)
+
+data_available <- file.exists(data_file)
+analysis_ready <- FALSE
+regression_ready <- FALSE
+
+if (data_available) {
+
+  ga4 <- read.csv(
+    data_file,
+    check.names = FALSE,
+    stringsAsFactors = FALSE
+  )
+
+  # Standardize exported GA4 field names
+  names(ga4) <- gsub(
+    "[^a-z0-9]",
+    "",
+    tolower(names(ga4))
+  )
+
+  analysis_ready <- all(
+    required_columns %in% names(ga4)
+  )
+
+  if (analysis_ready) {
+
+    ga4 <- ga4 |>
+      transmute(
+        device = as.factor(devicecategory),
+        channel = as.factor(
+          sessiondefaultchannelgroup
+        ),
+        sessions = as.numeric(sessions),
+        engaged = as.numeric(engagedsessions),
+        duration = as.numeric(
+          averagesessionduration
+        )
+      ) |>
+      filter(
+        !is.na(device),
+        !is.na(channel),
+        !is.na(sessions),
+        !is.na(engaged),
+        !is.na(duration),
+        sessions > 0,
+        engaged >= 0,
+        engaged <= sessions,
+        duration >= 0
+      )
+
+    ga4 <- ga4 |>
+      mutate(
+        not_engaged = sessions - engaged,
+        engagement_rate = engaged / sessions
+      )
+
+    analysis_ready <- nrow(ga4) > 0
+
+    if (analysis_ready) {
+
+      regression_ready <-
+        nrow(ga4) >= 20 &&
+        n_distinct(ga4$device) >= 2 &&
+        n_distinct(ga4$channel) >= 2 &&
+        n_distinct(ga4$duration) >= 2
+    }
+  }
+}
+```
+
+# Introduction
+
+## Reflection on Module 08
+
+### Statistical Reporting and Professional Communication
+
+Module 08 introduced an important lesson about statistical analysis: producing accurate calculations is only one part of the analytical process.
+
+An analyst must also communicate results in a way that readers can understand and use.
+
+This module focused on the R package **gtsummary**, which helps transform statistical output into organized and professional tables.
+
+The concepts are especially relevant to my MSDM CEP project involving Wellness Ranch, where our team has access to Google Analytics 4 (GA4).
+
+The project provides an opportunity to connect classroom statistical methods with a real client and real digital marketing questions.
+
+::: notes
+Introduce the Wellness Ranch project and explain how the module relates to interpreting website analytics.
+:::
+
+---
+
+## Learning Objectives
+
+Through Module 08, I focused on developing the following skills:
+
+::: {.incremental}
+1. Creating statistical summary tables using gtsummary.
+2. Understanding the differences among gtsummary, gt, and gtExtras.
+3. Conducting cross-tabulation and testing categorical associations.
+4. Applying multiple regression to business data.
+5. Communicating statistical findings through Quarto and RevealJS.
+:::
+
+These skills support a more structured and reproducible approach to data analysis.
+
+---
+
+## Connecting the Module to Wellness Ranch
+
+::: {.columns}
+
+::: {.column width="50%"}
+
+### Academic Perspective
+
+The module provides tools for analyzing datasets, evaluating research questions, and reporting results.
+
+It also demonstrates how statistical programming and visual communication can work together.
+
+:::
+
+::: {.column width="50%"}
+
+### Professional Perspective
+
+Wellness Ranch is the client for our MSDM CEP project.
+
+Our team has access to GA4, which provides information about website traffic, acquisition channels, engagement, and visitor behavior.
+
+These data can support business and marketing analysis.
+
+:::
+
+:::
+
+The project makes the module relevant because it involves interpreting data for an actual organization rather than analyzing statistics only for classroom exercises.
+
+---
+
+# Prompt 1: Capabilities of gtsummary
+
+## Essay Prompt 1
+
+> In Step 1, you have seen how to create a summary table and modify it for various statistical analyses. Summarize the package's capabilities as explained by the speaker. How may the {gtsummary} benefit you for your school work or career?
+
+---
+
+## Understanding gtsummary
+
+The gtsummary package provides a convenient way to generate formatted statistical tables directly from R.
+
+Its main advantage is that it combines statistical reporting and presentation formatting in a consistent workflow.
+
+Instead of manually copying results into tables, researchers can generate tables directly from their analysis code.
+
+Important capabilities include:
+
+::: {.incremental}
+- Descriptive statistics using frequencies, percentages, means, medians, and standard deviations.
+- Comparisons between groups.
+- Hypothesis-testing results and p-values.
+- Cross-tabulation of categorical variables.
+- Regression model reporting.
+- Customization of table labels, headers, and numerical formatting.
+:::
+
+The package allows statistical tables to be reproduced when the underlying dataset changes.
+
+---
+
+## Important gtsummary Functions
+
+| Function | Purpose |
+|---|---|
+| `tbl_summary()` | Creates descriptive summary tables |
+| `tbl_cross()` | Summarizes relationships between categorical variables |
+| `add_p()` | Adds statistical significance tests |
+| `add_overall()` | Includes overall summary statistics |
+| `add_n()` | Displays sample sizes |
+| `tbl_regression()` | Formats regression model results |
+| `modify_header()` | Customizes table headings |
+| `as_gt()` | Converts output into a gt table |
+
+These functions make it easier to create consistent statistical reports without extensive manual formatting.
+
+---
+
+## Example: Professional Summary Table
+
+```{r}
+#| label: tbl-gtsummary-example
+#| tbl-cap: "Example of a Statistical Summary Table"
+
+trial |>
+  select(
+    age,
+    grade,
+    response,
+    trt
+  ) |>
+  tbl_summary(
+    by = trt,
+    missing = "no"
+  ) |>
+  add_overall() |>
+  add_p() |>
+  bold_labels()
+```
+
+This example uses the built-in gtsummary trial dataset to demonstrate how descriptive statistics and hypothesis tests can be combined into one table.
+
+---
+
+## How gtsummary Benefits My Schoolwork
+
+For academic assignments, gtsummary can improve both efficiency and presentation quality.
+
+The package is useful because it:
+
+- Reduces repetitive formatting tasks.
+- Organizes statistical results consistently.
+- Makes research findings easier to compare.
+- Supports reproducible statistical reporting.
+- Integrates with Quarto for HTML reports and presentations.
+
+I see particular value in using gtsummary for research assignments that require multiple tables and statistical tests.
+
+Rather than spending time manually formatting results, I can focus more attention on selecting appropriate methods and interpreting the findings.
+
+---
+
+## Professional Applications: Wellness Ranch
+
+The techniques from this module can be applied to Wellness Ranch's GA4 data.
+
+For example, our team could use statistical tables to compare website engagement across acquisition channels and device categories.
+
+We could also summarize website performance indicators and analyze relationships among traffic and engagement measures.
+
+These analyses could help identify areas where digital marketing strategies may need further evaluation.
+
+**My main takeaway is that gtsummary helps bridge the gap between technical statistical output and professional business reporting.**
+
+::: notes
+Explain how tables can make complex analytics easier for a client to understand.
+:::
+
+---
+
+## Reflection on Prompt 1
+
+Before this module, I primarily thought about statistical analysis as calculating measures and performing tests.
+
+After learning about gtsummary, I better understand how the presentation of those results affects their usefulness.
+
+An organized table allows readers to identify patterns and differences without searching through raw statistical output.
+
+For my future schoolwork and career, I expect gtsummary to be valuable because it combines analytical accuracy with efficient reporting.
+
+In a client-facing project such as Wellness Ranch, this can help turn website analytics into evidence that supports meaningful discussions about marketing performance.
+
+---
+
+# Prompt 2: Extended gtsummary Presentation
+
+## Essay Prompt 2
+
+> In Step 2, you watched the extended presentation of the {gtsummary} package by Dr. Daniel Sjoberg, the creator of the package.
+>
+> 2.1. How does it differ from gt and gtExtras?
+>
+> 2.2. Give three things you learned newly that were not explained in the lecture in Step 1.
+
+---
+
+## Prompt 2.1: gtsummary vs. gt vs. gtExtras
+
+Although these three packages can be used together, each focuses on a different aspect of reporting.
+
+| Package | Main Purpose |
+|---|---|
+| gtsummary | Creating statistical summary and regression tables |
+| gt | Creating and styling general-purpose tables |
+| gtExtras | Providing additional visual and formatting features for gt tables |
+
+The most important distinction is that gtsummary is designed specifically for statistical reporting.
+
+The gt package provides a more general system for presenting data in tables, while gtExtras extends the visual capabilities of gt.
+
+---
+
+## How the Three Packages Work Together
+
+::: {.columns}
+
+::: {.column width="50%"}
+
+### Statistical Analysis
+
+**gtsummary**
+
+- Descriptive statistics
+- Group comparisons
+- Hypothesis testing
+- Regression summaries
+- Statistical formatting
+
+:::
+
+::: {.column width="50%"}
+
+### Visual Presentation
+
+**gt and gtExtras**
+
+- Table titles and subtitles
+- Fonts, colors, and layout
+- Conditional formatting
+- Embedded visual indicators
+- Additional styling options
+
+:::
+
+:::
+
+A useful approach is to create the statistical table using gtsummary and then use gt to further customize its appearance.
+
+This separates the statistical analysis from the visual design while maintaining a reproducible workflow.
+
+---
+
+## Example: Combining gtsummary and gt
+
+```{r}
+#| label: tbl-styled-summary
+#| tbl-cap: "Customized Statistical Table"
+
+trial |>
+  select(
+    age,
+    grade,
+    trt
+  ) |>
+  tbl_summary(
+    by = trt,
+    missing = "no"
+  ) |>
+  add_p() |>
+  bold_labels() |>
+  as_gt() |>
+  gt::tab_header(
+    title = "Statistical Summary",
+    subtitle = "Comparison of Treatment Groups"
+  ) |>
+  gt::tab_options(
+    table.font.size = gt::px(14)
+  )
+```
+
+This example demonstrates how statistical reporting and table styling can be integrated into one workflow.
+
+---
+
+## Prompt 2.2: Three Advanced Capabilities
+
+Three additional capabilities that extend beyond basic summary-table creation are particularly valuable to my learning.
+
+::: {.fragment .fade-in}
+
+**1. Regression models can be automatically formatted.**
+
+The `tbl_regression()` function can convert fitted statistical models into readable tables with coefficients, confidence intervals, and p-values.
+
+:::
+
+::: {.fragment .fade-in}
+
+**2. Table formatting can be extensively customized.**
+
+Functions such as `modify_header()` and `modify_footnote_header()` allow analysts to adjust how statistical information is presented.
+
+:::
+
+::: {.fragment .fade-in}
+
+**3. Multiple statistical tables can be combined.**
+
+Functions including `tbl_merge()` and `tbl_stack()` allow several analyses to be brought together into a coordinated report.
+
+:::
+
+::: aside
+These are advanced capabilities documented by gtsummary. Their exact coverage in the assigned Step 2 video should be confirmed against the lecture.
+:::
+
+---
+
+## Why These Capabilities Matter
+
+These features are important because real-world analysis often involves more than one statistical test or table.
+
+For example, the Wellness Ranch CEP project could require descriptive summaries, comparisons between website visitor groups, and regression analysis.
+
+Using compatible reporting functions would help maintain a consistent format across these analyses.
+
+I also learned that combining packages is often more effective than relying on one package to perform every task.
+
+This approach can make an analytical workflow more flexible and easier to maintain.
+
+---
+
+## Reflection on Prompt 2
+
+My understanding of gtsummary has expanded from basic summary-table generation to a broader statistical reporting workflow.
+
+The package is useful not only because it produces attractive tables, but also because it reduces the need to manually extract and organize model results.
+
+The relationship among gtsummary, gt, and gtExtras also demonstrates the importance of choosing tools based on their strengths.
+
+For future projects, including Wellness Ranch, I would use gtsummary for statistical content and gt or gtExtras when additional presentation customization is needed.
+
+---
+
+# Prompt 3: Cross-Tabulation Analysis
+
+## Essay Prompt 3
+
+> Apply what you learned to your MSDM CEP data. Choose two appropriate variables for cross-tabulation and show if the two variables are associated or not. Use appropriate statistics to test if the two variables are associated. Code, produce the table, and interpret the result.
+
+---
+
+## Wellness Ranch: Cross-Tabulation Research Question
+
+For the Wellness Ranch CEP project, our team has access to Google Analytics 4.
+
+GA4 tracks website traffic and engagement patterns that can be used to examine visitors' interactions with the website.
+
+A useful research question is:
+
+**Is device category associated with whether a website session is engaged?**
+
+The variables are:
+
+- **Device category:** Desktop, mobile, tablet, or other categories recorded by GA4.
+- **Engagement status:** Engaged or not engaged.
+
+The analysis will examine whether engagement patterns differ across device categories.
+
+---
+
+## Research Hypotheses
+
+The hypotheses are:
+
+**Null hypothesis (H0):**
+
+Device category and engagement status are independent.
+
+**Alternative hypothesis (H1):**
+
+Device category and engagement status are associated.
+
+The analysis uses a chi-square test of independence when appropriate.
+
+A statistically significant result would provide evidence of an association between the two variables, but would not establish that device category causes differences in engagement.
+
+---
+
+## Understanding GA4 Engagement
+
+In GA4, an engaged session generally meets at least one of the following conditions:
+
+::: {.incremental}
+- The session lasts longer than 10 seconds.
+- The session contains a key event.
+- The session includes at least two page or screen views.
+:::
+
+These criteria make engaged sessions a useful indicator of website interaction.
+
+For Wellness Ranch, examining engagement by device could help identify whether visitors using different devices interact with the website differently.
+
+This information may be relevant when evaluating the mobile and desktop experiences.
+
+---
+
+## Preparing Wellness Ranch GA4 Data
+
+The analysis uses a GA4 export containing session counts by device category and acquisition channel.
+
+```{r}
+#| label: ga4-data-status
+
+if (analysis_ready) {
+
+  cat("Wellness Ranch GA4 dataset loaded.\n\n")
+
+  data.frame(
+    Measure = c(
+      "Export rows",
+      "Total sessions",
+      "Engaged sessions",
+      "Device categories",
+      "Acquisition channels"
+    ),
+    Value = c(
+      nrow(ga4),
+      sum(ga4$sessions),
+      sum(ga4$engaged),
+      n_distinct(ga4$device),
+      n_distinct(ga4$channel)
+    )
+  ) |>
+    knitr::kable()
+
+} else {
+
+  cat(
+    "Our CEP team has GA4 access for Wellness Ranch.\n\n",
+    "The required GA4 session-metric export",
+    " is not included in this report.\n",
+    "Statistical results cannot be established",
+    " until the data are imported."
+  )
+}
+```
+
+---
+
+## Cross-Tabulation of Engagement by Device
+
+```{r}
+#| label: tbl-wellness-cross
+#| tbl-cap: "Website Engagement by Device Category"
+
+if (analysis_ready) {
+
+  device_counts <- ga4 |>
+    group_by(device) |>
+    summarise(
+      Engaged = sum(engaged),
+      Not_Engaged = sum(not_engaged),
+      .groups = "drop"
+    ) |>
+    mutate(
+      Total = Engaged + Not_Engaged,
+      Engagement_Rate = 100 * Engaged / Total
+    )
+
+  device_counts |>
+    gt() |>
+    tab_header(
+      title = "Wellness Ranch Website Engagement",
+      subtitle = "Session engagement by device category"
+    ) |>
+    fmt_number(
+      columns = c(Engaged, Not_Engaged, Total),
+      decimals = 0
+    ) |>
+    fmt_number(
+      columns = Engagement_Rate,
+      decimals = 1
+    )
+
+} else {
+
+  cat(
+    "Cross-tabulation requires the Wellness Ranch",
+    " GA4 session export."
+  )
+}
+```
+
+---
+
+## Visualizing Engagement Across Devices
+
+```{r}
+#| label: fig-wellness-engagement
+#| fig-cap: "Engagement Rate Across Device Categories"
+#| fig-width: 11
+#| fig-height: 5.5
+
+if (analysis_ready) {
+
+  ggplot(
+    device_counts,
+    aes(
+      x = reorder(device, Engagement_Rate),
+      y = Engagement_Rate
+    )
+  ) +
+    geom_col(
+      fill = teal,
+      width = 0.7
+    ) +
+    geom_text(
+      aes(
+        label = paste0(
+          round(Engagement_Rate, 1),
+          "%"
+        )
+      ),
+      hjust = -0.15,
+      size = 5
+    ) +
+    coord_flip() +
+    scale_y_continuous(
+      limits = c(0, 110)
+    ) +
+    labs(
+      title = "Wellness Ranch Website Engagement",
+      subtitle = "Percentage of engaged sessions by device",
+      x = "Device Category",
+      y = "Engagement Rate (%)"
+    )
+
+} else {
+
+  cat(
+    "The engagement chart will be generated",
+    " from the GA4 export once available."
+  )
+}
+```
+
+---
+
+## Chi-Square Test of Association
+
+```{r}
+#| label: chi-square-test
+
+if (analysis_ready) {
+
+  observed <- as.matrix(
+    device_counts[, c("Engaged", "Not_Engaged")]
+  )
+
+  rownames(observed) <- as.character(
+    device_counts$device
+  )
+
+  valid_table <- nrow(observed) >= 2 &&
+    all(colSums(observed) > 0) &&
+    all(rowSums(observed) > 0)
+
+  if (valid_table) {
+
+    initial_test <- suppressWarnings(
+      chisq.test(observed, correct = FALSE)
+    )
+
+    if (any(initial_test$expected < 5)) {
+
+      association_test <- chisq.test(
+        observed,
+        simulate.p.value = TRUE,
+        B = 10000
+      )
+
+    } else {
+
+      association_test <- initial_test
+
+    }
+
+    cat(
+      "Test:", association_test$method, "\n"
+    )
+
+    cat(
+      "Chi-square statistic:",
+      round(
+        unname(association_test$statistic),
+        3
+      ),
+      "\n"
+    )
+
+    cat(
+      "p-value:",
+      signif(association_test$p.value, 4),
+      "\n\n"
+    )
+
+    if (association_test$p.value < 0.05) {
+
+      cat(
+        "The results provide evidence",
+        " of an association between",
+        " device category and engagement status."
+      )
+
+    } else {
+
+      cat(
+        "The results do not provide",
+        " sufficient evidence of an association",
+        " between device category and",
+        " engagement status."
+      )
+
+    }
+
+  } else {
+
+    cat(
+      "The available export does not contain",
+      " enough categories for this test."
+    )
+  }
+
+} else {
+
+  cat(
+    "A chi-square test has been specified,",
+    " but cannot be calculated without",
+    " observed GA4 session counts."
+  )
+}
+```
+
+---
+
+## Interpretation of the Cross-Tabulation
+
+The objective of this analysis is to determine whether engagement status differs across device categories for Wellness Ranch website sessions.
+
+The most important descriptive measures are the number of engaged and non-engaged sessions and the engagement rate within each device category.
+
+A chi-square test can then evaluate whether the distribution of engagement status is statistically associated with device category.
+
+Since the actual GA4 export has not been provided for this reflection, I cannot report an observed chi-square statistic or claim a significant relationship.
+
+However, the analysis establishes a reproducible framework that can be applied to the client's data.
+
+---
+
+## Business Implications for Wellness Ranch
+
+If website engagement differs meaningfully across devices, the findings could help Wellness Ranch identify opportunities to improve the visitor experience.
+
+Potential business applications include:
+
+::: {.incremental}
+- Examining whether mobile visitors engage differently from desktop visitors.
+- Reviewing mobile navigation and page usability.
+- Investigating differences in acquisition-channel performance.
+- Prioritizing website improvements using engagement evidence.
+:::
+
+A significant statistical association alone would not identify the cause of any differences. Additional website performance and user-experience analysis would still be needed.
+
+::: notes
+Explain how engagement data can guide investigation without assuming that statistical association proves causation.
+:::
+
+---
+
+# Prompt 4: Multiple Regression Analysis
+
+## Essay Prompt 4
+
+> Using the MSDM CEP data, run multiple regression. The dependent variable can be continuous or dichotomous. Regress a dependent variable on a set of independent variables. Code, produce the table, and interpret the result.
+
+---
+
+## Wellness Ranch: Multiple Regression Research Question
+
+For the regression analysis, I would examine factors associated with average session duration on the Wellness Ranch website.
+
+**Research question:**
+
+How are website traffic volume, device category, and acquisition channel associated with average session duration?
+
+The analysis uses the following variables:
+
+| Role | Variable |
+|---|---|
+| Dependent | Average session duration |
+| Independent 1 | Number of sessions |
+| Independent 2 | Device category |
+| Independent 3 | Session default channel group |
+
+This analysis uses multiple linear regression because the dependent variable is continuous.
+
+---
+
+## Regression Model
+
+The model can be expressed as:
+
+\[
+\text{Duration}_i =
+\beta_0 +
+\beta_1\log(1+\text{Sessions}_i) +
+\boldsymbol{\beta}_2\text{Device}_i +
+\boldsymbol{\beta}_3\text{Channel}_i +
+\varepsilon_i
+\]
+
+The model examines how average session duration varies with traffic volume, device category, and acquisition channel.
+
+Categorical predictors are represented using indicator variables.
+
+Using the logarithm of session counts can help reduce the influence of extremely large traffic-volume differences.
+
+This model estimates associations, not causal effects.
+
+---
+
+## Why Multiple Regression Is Useful
+
+Multiple regression is useful because website behavior may be related to several factors simultaneously.
+
+For example, website engagement may vary by both device and acquisition channel.
+
+Analyzing these factors together allows the model to estimate relationships while accounting for the other included predictors.
+
+For Wellness Ranch, this approach could provide a more complete picture than examining individual metrics separately.
+
+However, model interpretation must account for the level of aggregation in GA4 exports and the quality of the available data.
+
+---
+
+## Running the Regression Model
+
+```{r}
+#| label: wellness-regression-model
+
+if (regression_ready) {
+
+  regression_data <- ga4 |>
+    filter(
+      is.finite(duration),
+      is.finite(sessions),
+      sessions > 0
+    ) |>
+    mutate(
+      log_sessions = log1p(sessions)
+    )
+
+  regression_model <- lm(
+    duration ~ log_sessions + device + channel,
+    data = regression_data,
+    weights = sessions
+  )
+
+  regression_summary <- summary(regression_model)
+
+  print(regression_summary)
+
+} else {
+
+  cat(
+    "The regression model is specified",
+    " for Wellness Ranch GA4 data.\n\n",
+    "It requires sufficient observations",
+    " across device and acquisition-channel",
+    " categories to estimate the model."
+  )
+}
+```
+
+---
+
+## Regression Results Using gtsummary
+
+```{r}
+#| label: tbl-wellness-regression
+#| tbl-cap: "Regression Model for Wellness Ranch Session Duration"
+
+if (regression_ready) {
+
+  regression_model |>
+    tbl_regression(
+      intercept = TRUE,
+      estimate_fun = label_style_number(
+        digits = 3
+      )
+    ) |>
+    bold_labels()
+
+} else {
+
+  cat(
+    "Regression coefficients, confidence",
+    " intervals, and p-values will be",
+    " calculated from the GA4 export."
+  )
+}
+```
+
+---
+
+## Regression Coefficient Visualization
+
+```{r}
+#| label: fig-wellness-regression
+#| fig-cap: "Regression Coefficients with Confidence Intervals"
+#| fig-width: 11
+#| fig-height: 5.5
+
+if (regression_ready) {
+
+  coefficients <- broom::tidy(
+    regression_model,
+    conf.int = TRUE
+  ) |>
+    filter(term != "(Intercept)") |>
+    filter(
+      !is.na(estimate),
+      is.finite(conf.low),
+      is.finite(conf.high)
+    )
+
+  ggplot(
+    coefficients,
+    aes(
+      x = reorder(term, estimate),
+      y = estimate
+    )
+  ) +
+    geom_pointrange(
+      aes(
+        ymin = conf.low,
+        ymax = conf.high
+      ),
+      color = teal,
+      linewidth = 0.8
+    ) +
+    geom_hline(
+      yintercept = 0,
+      linetype = "dashed",
+      color = navy
+    ) +
+    coord_flip() +
+    labs(
+      title = "Factors Associated with Session Duration",
+      subtitle = "Coefficient estimates and 95% confidence intervals",
+      x = "Predictor",
+      y = "Estimated Coefficient"
+    )
+
+} else {
+
+  cat(
+    "Coefficient visualization requires",
+    " the Wellness Ranch GA4 regression data."
+  )
+}
+```
+
+---
+
+## Regression Model Fit
+
+```{r}
+#| label: tbl-regression-fit
+#| tbl-cap: "Wellness Ranch Regression Model Fit"
+
+if (regression_ready) {
+
+  model_fit <- broom::glance(
+    regression_model
+  )
+
+  data.frame(
+    Statistic = c(
+      "R-squared",
+      "Adjusted R-squared",
+      "F-statistic",
+      "Model p-value",
+      "Observations"
+    ),
+    Value = c(
+      round(model_fit$r.squared, 3),
+      round(model_fit$adj.r.squared, 3),
+      round(model_fit$statistic, 3),
+      signif(model_fit$p.value, 3),
+      model_fit$nobs
+    )
+  ) |>
+    knitr::kable()
+
+} else {
+
+  cat(
+    "Model performance statistics",
+    " cannot be reported until the",
+    " regression has been estimated."
+  )
+}
+```
+
+---
+
+## Interpretation of Multiple Regression
+
+The purpose of this analysis is to understand how multiple website characteristics relate to average session duration.
+
+The regression coefficients estimate associations between each predictor and average session duration while controlling for the other included predictors.
+
+A positive coefficient indicates a higher predicted duration, while a negative coefficient indicates a lower predicted duration, subject to the predictor's coding.
+
+Statistical significance and confidence intervals help assess the uncertainty associated with the estimates.
+
+Because the GA4 export is not yet available in this report, I cannot identify statistically significant predictors or quantify the model's explanatory power.
+
+The analysis is therefore specified but does not yet provide empirical regression findings.
+
+---
+
+## Important Statistical Considerations
+
+GA4 exports frequently contain aggregated data instead of individual visitor observations.
+
+This creates several considerations:
+
+::: {.incremental}
+- Aggregated observations may not be statistically independent.
+- Device and channel groups may differ substantially in size.
+- Weighted regression may be useful when rows represent different numbers of sessions.
+- Regression assumptions and residual patterns should be evaluated.
+- Associations should not be interpreted as proof of causation.
+:::
+
+For this reason, the proposed model is best treated as an exploratory analysis until the data structure and assumptions have been examined.
+
+---
+
+## Business Implications of Regression
+
+If an appropriate regression model identifies meaningful relationships, Wellness Ranch may be able to use the results to guide additional marketing investigation.
+
+Potential applications include:
+
+- Comparing visitor behavior across acquisition channels.
+- Evaluating differences between desktop and mobile sessions.
+- Identifying traffic segments associated with longer visits.
+- Investigating opportunities to improve visitor engagement.
+
+The goal is not to maximize a single metric without context.
+
+Instead, the analysis should help Wellness Ranch better understand how visitors interact with its website and which questions deserve further attention.
+
+---
+
+# Overall Reflection
+
+## What I Learned from Module 08
+
+Module 08 reinforced three important lessons.
+
+::: {.fragment .fade-in}
+
+**First, statistical reporting is part of data analysis.**
+
+Results become more valuable when they are organized clearly and presented consistently.
+
+:::
+
+::: {.fragment .fade-in}
+
+**Second, different statistical methods answer different questions.**
+
+Cross-tabulation is useful for categorical associations, while multiple regression can examine relationships involving several predictors.
+
+:::
+
+::: {.fragment .fade-in}
+
+**Third, results must be interpreted in context.**
+
+Statistical significance alone does not explain what a finding means for an organization.
+
+:::
+
+---
+
+## Connection to My CEP Project
+
+The Wellness Ranch project provides a practical opportunity to apply these concepts.
+
+Our access to GA4 makes it possible to examine visitor engagement and digital marketing performance using real client data.
+
+This module helped me recognize how statistical tables and models could improve the quality of our reporting.
+
+Rather than simply reporting traffic or engagement metrics, we can formulate research questions and evaluate whether patterns are supported by the data.
+
+The techniques from Module 08 could therefore help our team produce more organized, transparent, and useful client-facing analysis.
+
+---
+
+## Skills I Can Apply in My Career
+
+::: {.columns}
+
+::: {.column width="50%"}
+
+### Technical Skills
+
+- R programming
+- Statistical summary tables
+- Cross-tabulation
+- Regression analysis
+- Data visualization
+- Quarto reporting
+
+:::
+
+::: {.column width="50%"}
+
+### Professional Skills
+
+- Research communication
+- Evidence-based decision-making
+- Business analytics
+- Client reporting
+- Analytical interpretation
+- Reproducible workflows
+
+:::
+
+:::
+
+These skills are relevant to marketing analytics, business intelligence, research, and consulting.
+
+---
+
+## Final Reflection
+
+The most important lesson I learned from Module 08 is that effective data analysis requires a combination of statistical knowledge, programming ability, and communication skills.
+
+The gtsummary package makes statistical reporting more efficient and consistent.
+
+Cross-tabulation and regression provide structured approaches to investigating relationships in data.
+
+The Wellness Ranch CEP project offers an opportunity to apply these techniques to real digital analytics questions.
+
+Ultimately, I see the value of these tools not simply in producing statistical output, but in helping organizations understand information and make more informed decisions.
+
+---
+
+# References
+
+## References and Learning Resources
+
+1. Sjoberg, D. D., et al. (2021). Reproducible summary tables with the gtsummary package. *The R Journal, 13*(1), 570–580.
+
+2. gtsummary documentation.  
+   https://www.danieldsjoberg.com/gtsummary/
+
+3. gt package documentation.  
+   https://gt.rstudio.com/
+
+4. gtExtras package documentation.  
+   https://jthomasmock.github.io/gtExtras/
+
+5. Quarto RevealJS documentation.  
+   https://quarto.org/docs/presentations/revealjs/
+
+6. Google Analytics documentation.  
+   https://support.google.com/analytics/
+
+7. IBM 6400 Module 08 instructional materials. Cal Poly Pomona.
+
+---
+
+# Thank You
+
+## End of Module 08 Reflection
+
+**Statistical Reporting with gtsummary**
+
+Wellness Ranch CEP Project
+
+Google Analytics 4 | Data Analysis | Business Insights
+
+IBM 6400 — Cal Poly Pomona
