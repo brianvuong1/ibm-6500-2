@@ -5,12 +5,6 @@ author: "Notes on Baron and Kenny (1986)"
 format: html
 ---
 
-# Article Information
-
-- **Authors:** Reuben M. Baron and David A. Kenny
-- **Year:** 1986
-- **Journal:** *Journal of Personality and Social Psychology*, 51(6), 1173-1182
-- **Article focus:** How moderators and mediators differ conceptually, strategically, and statistically.
 
 # Central Thesis
 
