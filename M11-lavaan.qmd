@@ -1,0 +1,574 @@
+---
+title: "Confirmatory Factor Analysis in R: Study Note"
+author: "Your Full Name"
+date: today
+format:
+  html:
+    toc: true
+    number-sections: true
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Introduction
+
+## Purpose of the Assignment
+
+This study note explains confirmatory factor analysis (CFA) and demonstrates how to conduct CFA in R using the `lavaan` package. The analyses use the SAQ-8 data from the UCLA seminar.
+
+The goals are to:
+
+- Distinguish confirmatory factor analysis from exploratory factor analysis.
+- Explain observed indicators, latent factors, factor loadings, and residuals.
+- Specify and estimate CFA models in R.
+- Understand model identification and degrees of freedom.
+- Interpret standardized factor loadings and residual variances.
+- Evaluate model fit using chi-square, CFI, TLI, RMSEA, and SRMR.
+- Compare one-factor, two-factor, and second-order CFA models.
+- Organize reproducible analyses using Quarto.
+
+## Confirmatory Factor Analysis and Exploratory Factor Analysis
+
+Exploratory factor analysis (EFA) is used when the underlying factor structure is not known. The researcher allows the data to suggest how many factors exist and which items belong to each factor.
+
+Confirmatory factor analysis (CFA) is used when the researcher has a proposed factor structure. The researcher specifies which observed items measure each latent factor and then evaluates how well the proposed model reproduces the relationships among the observed variables.
+
+In this assignment, CFA is used to evaluate whether the SAQ items measure one general anxiety factor, multiple factors, or a higher-order factor.
+
+# Data and Software
+
+## Required Packages
+```{r}
+library(haven)
+library(lavaan)
+```
+
+## Importing the SAQ-8 Data
+
+The data are available from the UCLA OARC seminar webpage.
+
+```{r}
+library(haven)
+
+dat <- read_sav(
+  "https://stats.oarc.ucla.edu/wp-content/uploads/2018/05/SAQ.sav"
+)
+
+```
+
+## Examining the Data
+
+```{r}
+str(dat)
+dim(dat)
+names(dat)
+summary(dat[, 1:8])
+```
+
+The first eight variables are the SAQ items. These items are observed indicators because they are directly measured from participants' questionnaire responses.
+
+## Correlation Matrix
+
+```{r}
+round(cor(dat[, 1:8], use = "complete.obs"), 2)
+```
+
+The correlation matrix describes the relationships among the observed questionnaire items. The diagonal values are equal to 1 because each item is perfectly correlated with itself. The off-diagonal values show the correlations between pairs of items.
+
+Several moderate correlations suggest that the items may share one or more underlying latent factors. However, correlations alone cannot determine the correct factor structure. CFA is used to formally test proposed models.
+
+## Covariance Matrix for Three Items
+
+```{r}
+round(cov(dat[, 3:5], use = "complete.obs"), 2)
+```
+
+The diagonal values represent item variances. The off-diagonal values represent covariances between the items. Because the covariance matrix is symmetrical, each covariance appears twice.
+
+# CFA Concepts
+
+## Observed Indicators and Latent Factors
+
+Observed indicators are variables that are directly measured. In this example, the questionnaire items `q01` through `q08` are observed indicators.
+
+A latent factor is an underlying construct that is not directly observed. In the one-factor model, the latent factor represents SPSS Anxiety.
+
+The factor is measured indirectly through the observed items.
+
+## The Measurement Model
+
+A basic measurement model can be written as:
+
+\[
+y_i = \tau_i + \lambda_i \eta + \epsilon_i
+\]
+
+where:
+
+- \(y_i\) is an observed item.
+- \(\tau_i\) is the item intercept.
+- \(\lambda_i\) is the factor loading.
+- \(\eta\) is the latent factor.
+- \(\epsilon_i\) is the residual for the item.
+
+A factor loading describes the strength and direction of the relationship between an observed item and its latent factor. A larger absolute standardized loading indicates that the factor explains more of the item's variance.
+
+A residual represents the part of an observed item's variance that is not explained by the latent factor.
+
+## The Model-Implied Covariance Matrix
+
+CFA estimates a model-implied covariance matrix:
+
+\[
+\Sigma(\theta) = \Lambda \Psi \Lambda' + \Theta_{\epsilon}
+\]
+
+where:
+
+- \(\Lambda\) is the factor-loading matrix.
+- \(\Psi\) is the variance-covariance matrix of the latent factors.
+- \(\Theta_{\epsilon}\) is the variance-covariance matrix of the residuals.
+
+The purpose of CFA is to determine whether the model-implied covariance matrix is a reasonable representation of the observed covariance matrix.
+
+## Path Diagrams
+
+In a CFA path diagram:
+
+- Squares represent observed indicators.
+- Circles represent latent factors.
+- One-way arrows represent factor loadings.
+- Two-way arrows represent variances or covariances.
+- Residuals represent unexplained variance in the observed indicators.
+
+## Model Identification and Degrees of Freedom
+
+For a model with \(p\) observed indicators, the number of unique variances and covariances is:
+
+\[
+\frac{p(p+1)}{2}
+\]
+
+For three observed indicators:
+
+\[
+\frac{3(3+1)}{2} = 6
+\]
+
+Therefore, a three-item model has six known values.
+
+Degrees of freedom are calculated as:
+
+\[
+df = \text{number of known values} - \text{number of free parameters}
+\]
+
+A fixed parameter is assigned a specific value and is not estimated. A free parameter is estimated from the data.
+
+A model is:
+
+- Under-identified when \(df < 0\).
+- Just-identified or saturated when \(df = 0\).
+- Over-identified when \(df > 0\).
+
+An over-identified model is desirable because it has positive degrees of freedom and can be evaluated using model-fit statistics.
+
+# One-Factor CFA
+
+## Three-Item Model
+
+The first model assumes that items `q03`, `q04`, and `q05` measure one latent factor called `f`.
+
+```{r}
+three_item_model <- '
+  f =~ q03 + q04 + q05
+'
+```
+
+The syntax:
+
+```r
+f =~ q03 + q04 + q05
+```
+
+means that the latent factor `f` is measured by the observed indicators `q03`, `q04`, and `q05`.
+
+## Marker-Variable Method
+
+By default, `lavaan` uses the marker-variable method. The first loading is fixed to 1 so that the scale of the latent factor can be established.
+
+```{r}
+three_item_marker <- cfa(
+  three_item_model,
+  data = dat
+)
+
+summary(
+  three_item_marker,
+  standardized = TRUE,
+  fit.measures = TRUE
+)
+```
+
+## Variance-Standardization Method
+
+An alternative is to fix the variance of the latent factor to 1 and freely estimate the factor loadings.
+
+```{r}
+three_item_variance <- '
+  f =~ NA*q03 + q04 + q05
+  f ~~ 1*f
+'
+
+three_item_variance_fit <- cfa(
+  three_item_variance,
+  data = dat
+)
+
+summary(
+  three_item_variance_fit,
+  standardized = TRUE,
+  fit.measures = TRUE
+)
+```
+
+The marker-variable method fixes one loading to 1. The variance-standardization method fixes the latent factor variance to 1. These methods use different scaling conventions, but they should produce equivalent model-fit results when specified correctly.
+
+## Number of Parameters
+
+For three observed indicators, there are six known values:
+
+\[
+\frac{3(4)}{2} = 6
+\]
+
+The model contains:
+
+- Three factor loadings.
+- One factor variance.
+- Three residual variances.
+
+The residual covariances are fixed to zero. One loading is fixed to 1 for identification. Therefore, the model has six free parameters and zero degrees of freedom:
+
+\[
+df = 6 - 6 = 0
+\]
+
+This is a just-identified model. It can be estimated, but its model fit cannot be meaningfully evaluated because it reproduces the observed covariance matrix exactly.
+
+# Eight-Item One-Factor CFA
+
+## Model Specification
+
+The following model assumes that all eight items measure one general SPSS Anxiety factor.
+
+```{r}
+one_factor_model <- '
+  anxiety =~ q01 + q02 + q03 + q04 + q05 + q06 + q07 + q08
+'
+```
+
+## Estimating the Model
+
+```{r}
+one_factor_fit <- cfa(
+  one_factor_model,
+  data = dat,
+  missing = "fiml"
+)
+
+summary(
+  one_factor_fit,
+  standardized = TRUE,
+  fit.measures = TRUE
+)
+```
+
+## Factor Loadings
+
+```{r}
+parameterEstimates(
+  one_factor_fit,
+  standardized = TRUE
+)
+```
+
+The unstandardized loading depends on the scale of the latent factor. The standardized loading is easier to interpret because it places the observed items and latent factor on standardized scales.
+
+Positive standardized loadings indicate that higher scores on the factor are associated with higher scores on the item. Negative loadings indicate an inverse relationship.
+
+## Residual Variances
+
+Residual variances show how much variance in each item remains unexplained by the latent factor.
+
+A large residual variance indicates that the item contains substantial variance not explained by the general anxiety factor. A smaller residual variance indicates that the item is more strongly explained by the factor.
+
+## Model-Fit Statistics
+
+```{r}
+fitMeasures(
+  one_factor_fit,
+  c("chisq", "df", "pvalue", "cfi", "tli", "rmsea", "srmr")
+)
+```
+
+The main fit statistics are interpreted together:
+
+- The chi-square test evaluates the difference between the observed and model-implied covariance matrices. A significant result indicates some discrepancy, although chi-square is sensitive to large samples.
+- CFI compares the proposed model with a baseline independence model. Larger values indicate better fit.
+- TLI adjusts model fit for model complexity. Larger values indicate better fit.
+- RMSEA measures approximate error of fit. Smaller values indicate better fit.
+- SRMR measures the average standardized difference between observed and predicted correlations. Smaller values indicate better fit.
+
+The one-factor model should not be judged using one statistic alone. The overall pattern of fit statistics, factor loadings, residual variances, and theoretical considerations should be considered.
+
+## Interpretation
+
+The one-factor model provides a test of whether all eight questionnaire items can be treated as indicators of one general anxiety construct.
+
+After examining the output, I will report whether:
+
+1. The model converged successfully.
+2. The factor loadings were statistically significant.
+3. The standardized loadings were reasonably large.
+4. The residual variances were acceptable.
+5. The global fit statistics supported the model.
+
+Based on the complete pattern of results, I will determine whether the one-factor model appears to represent the data adequately.
+
+# Two-Factor CFA
+
+## Uncorrelated Two-Factor Model
+
+The UCLA example separates the items into two factors. The first factor includes `q01`, `q03`, `q04`, `q05`, and `q08`. The second factor includes `q06` and `q07`.
+
+```{r}
+uncorrelated_two_factor_model <- '
+  f1 =~ q01 + q03 + q04 + q05 + q08
+  f2 =~ q06 + q07
+  f1 ~~ 0*f2
+'
+```
+
+```{r}
+uncorrelated_two_factor_fit <- cfa(
+  uncorrelated_two_factor_model,
+  data = dat
+)
+
+summary(
+  uncorrelated_two_factor_fit,
+  standardized = TRUE,
+  fit.measures = TRUE
+)
+```
+
+The two factors are constrained to be uncorrelated. This model assumes that the two latent constructs are completely independent.
+
+## Correlated Two-Factor Model
+
+```{r}
+correlated_two_factor_model <- '
+  f1 =~ q01 + q03 + q04 + q05 + q08
+  f2 =~ q06 + q07
+  f1 ~~ f2
+'
+```
+
+```{r}
+correlated_two_factor_fit <- cfa(
+  correlated_two_factor_model,
+  data = dat
+)
+
+summary(
+  correlated_two_factor_fit,
+  standardized = TRUE,
+  fit.measures = TRUE
+)
+```
+
+This model allows the two latent factors to correlate. A factor correlation indicates that the underlying constructs share variance.
+
+## Comparing the Models
+
+```{r}
+rbind(
+  one_factor = fitMeasures(
+    one_factor_fit,
+    c("chisq", "df", "cfi", "tli", "rmsea", "srmr")
+  ),
+  uncorrelated_two_factor = fitMeasures(
+    uncorrelated_two_factor_fit,
+    c("chisq", "df", "cfi", "tli", "rmsea", "srmr")
+  ),
+  correlated_two_factor = fitMeasures(
+    correlated_two_factor_fit,
+    c("chisq", "df", "cfi", "tli", "rmsea", "srmr")
+  )
+)
+```
+
+The preferred model should have a theoretically meaningful structure and acceptable fit. A more complex model should not be preferred solely because it has more parameters. The improvement in fit should be meaningful and theoretically justified.
+
+# Second-Order CFA
+
+## Model Specification
+
+A second-order CFA model assumes that the correlation between the first-order factors is explained by a broader, higher-order factor.
+
+```{r}
+second_order_model <- '
+  f1 =~ q01 + q03 + q04 + q05 + q08
+  f2 =~ q06 + q07
+  overall_anxiety =~ f1 + f2
+'
+```
+
+```{r}
+second_order_fit <- cfa(
+  second_order_model,
+  data = dat
+)
+
+summary(
+  second_order_fit,
+  standardized = TRUE,
+  fit.measures = TRUE
+)
+```
+
+In this model:
+
+- `f1` and `f2` are first-order latent factors.
+- `overall_anxiety` is a second-order latent factor.
+- The second-order factor explains the association between the first-order factors.
+
+## Interpreting the Second-Order Model
+
+The standardized loadings from the second-order factor to the first-order factors indicate how strongly the broader anxiety construct explains each first-order factor.
+
+A strong second-order loading suggests that the first-order factor is closely related to the general anxiety construct.
+
+The second-order model is theoretically appropriate only if it makes sense to assume that the first-order factors are dimensions of a broader construct.
+
+## Comparing Fit
+
+```{r}
+rbind(
+  one_factor = fitMeasures(
+    one_factor_fit,
+    c("chisq", "df", "cfi", "tli", "rmsea", "srmr")
+  ),
+  correlated_two_factor = fitMeasures(
+    correlated_two_factor_fit,
+    c("chisq", "df", "cfi", "tli", "rmsea", "srmr")
+  ),
+  second_order = fitMeasures(
+    second_order_fit,
+    c("chisq", "df", "cfi", "tli", "rmsea", "srmr")
+  )
+)
+```
+
+The model that is most appropriate should be selected using both statistical evidence and theory. A model with good fit is not automatically correct if its factor structure lacks theoretical meaning.
+
+# Practice Questions and Answers
+
+## 1. What is the difference between EFA and CFA?
+
+EFA explores the possible factor structure without requiring the researcher to specify which items belong to each factor. CFA tests a previously specified factor structure. In CFA, the researcher determines the relationships between observed indicators and latent factors before estimating the model.
+
+## 2. What are the observed indicators and latent factors in the SAQ-8 example?
+
+The observed indicators are the questionnaire items `q01` through `q08`. The latent factor represents the underlying construct of SPSS Anxiety. In the two-factor model, the items measure two first-order latent factors. In the second-order model, the first-order factors are explained by an overall anxiety factor.
+
+## 3. What do factor loadings represent?
+
+Factor loadings represent the strength and direction of the relationship between an observed item and a latent factor. Larger absolute standardized loadings indicate that the factor explains more of the item's variance.
+
+## 4. What do residual variances represent?
+
+Residual variances represent the portion of an item's variance that is not explained by the latent factor. A large residual variance indicates that the item contains substantial unique or unexplained variance.
+
+## 5. How many unique variances and covariances are available for three observed indicators?
+
+The number is:
+
+\[
+\frac{3(3+1)}{2} = 6
+\]
+
+There are three variances and three unique covariances.
+
+## 6. What is the difference between a fixed parameter and a free parameter?
+
+A fixed parameter is assigned a specific value and is not estimated from the data. A free parameter is estimated from the observed data.
+
+## 7. Why is a model with negative degrees of freedom under-identified?
+
+Negative degrees of freedom mean that the model has more free parameters than known values in the observed covariance matrix. The data do not provide enough information to estimate all of the model parameters.
+
+## 8. Why does fixing one loading and setting residual covariances to zero help identify a model?
+
+Fixing one loading establishes the scale of the latent factor. Setting residual covariances to zero reduces the number of free parameters and reflects the assumption that item residuals are independent.
+
+## 9. What is the difference between a just-identified model and an over-identified model?
+
+A just-identified model has zero degrees of freedom. It can be estimated but cannot be tested for model fit. An over-identified model has positive degrees of freedom, allowing the researcher to evaluate how well the model fits the data.
+
+## 10. How should chi-square, CFI, TLI, and RMSEA be interpreted?
+
+Chi-square tests whether the model-implied covariance matrix differs from the observed covariance matrix. A significant result indicates some discrepancy, but chi-square is sensitive to sample size.
+
+CFI and TLI compare the proposed model with a baseline model. Higher values generally indicate better fit. RMSEA evaluates approximate model error, with lower values generally indicating better fit. These statistics should be interpreted together rather than individually.
+
+## 11. What is the difference between correlated and uncorrelated factors?
+
+Correlated factors are allowed to share variance. Uncorrelated factors are constrained to have a covariance of zero. The correlated model is appropriate when the underlying constructs are theoretically related.
+
+## 12. What does a second-order factor represent?
+
+A second-order factor represents a broader latent construct that explains the relationships among first-order factors. In this example, an overall anxiety factor explains the correlation between the first-order factors.
+
+## 13. Which model appears most theoretically and statistically appropriate?
+
+The most appropriate model is the one that combines acceptable model fit with a theoretically meaningful interpretation. I will compare the one-factor, correlated two-factor, and second-order models using their fit statistics, standardized loadings, residual variances, and theoretical justification.
+
+## 14. What additional information would be useful before making a final decision?
+
+Additional information could include:
+
+- The theoretical development of the questionnaire.
+- Results from exploratory factor analysis.
+- Factor loadings from previous research.
+- Modification indices.
+- Cross-validation using a new sample.
+- Reliability estimates for each factor.
+- Evidence of measurement invariance across groups.
+- The content and wording of the items.
+
+# Summary of Important Lessons
+
+CFA is used to test a proposed measurement model. Observed indicators are used to measure latent factors. Factor loadings describe the relationships between indicators and factors, while residual variances describe unexplained item variance.
+
+Model identification is necessary before parameters can be estimated. Fixed parameters establish the scale of latent factors and reduce the number of parameters that must be estimated.
+
+Degrees of freedom are based on the number of known values minus the number of free parameters. Positive degrees of freedom allow model fit to be evaluated.
+
+Model-fit statistics should be interpreted together. A theoretically justified model with acceptable fit, meaningful loadings, and reasonable residual variances is preferable to a model selected only because it has the best numerical fit.
+
+# References
+
+UCLA Institute for Digital Research and Education. (n.d.). *Confirmatory Factor Analysis in R with lavaan*.
+
+https://stats.oarc.ucla.edu/r/seminars/rcfa/
+
+Rosseel, Y. (2012). `lavaan`: An R package for structural equation modeling. *Journal of Statistical Software, 48*(2), 1–36.
+
+# Appendix
+
+[GitHub repository](https://github.com/brianvuong1/ibm-6500-2)
