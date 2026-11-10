@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Notes on Baron and Kenny (1986)">
+
+<title>The Moderator-Mediator Variable Distinction in Social Psychological Research</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="m11-summarize_files/libs/clipboard/clipboard.min.js"></script>
+<script src="m11-summarize_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="m11-summarize_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="m11-summarize_files/libs/quarto-html/popper.min.js"></script>
+<script src="m11-summarize_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="m11-summarize_files/libs/quarto-html/anchor.min.js"></script>
+<link href="m11-summarize_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="m11-summarize_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="m11-summarize_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="m11-summarize_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="m11-summarize_files/libs/bootstrap/bootstrap-917079515d91bccb85b543faf8aa8bb6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The Moderator-Mediator Variable Distinction in Social Psychological Research</h1>
+<p class="subtitle lead">Summary and important concepts</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Notes on Baron and Kenny (1986) </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="article-information" class="level1">
+<h1>Article Information</h1>
+<ul>
+<li><strong>Authors:</strong> Reuben M. Baron and David A. Kenny</li>
+<li><strong>Year:</strong> 1986</li>
+<li><strong>Journal:</strong> <em>Journal of Personality and Social Psychology</em>, 51(6), 1173-1182</li>
+<li><strong>Article focus:</strong> How moderators and mediators differ conceptually, strategically, and statistically.</li>
+</ul>
+</section>
+<section id="central-thesis" class="level1">
+<h1>Central Thesis</h1>
+<p>Researchers should not use <em>moderator</em> and <em>mediator</em> interchangeably.</p>
+<ul>
+<li>A <strong>moderator</strong> explains <strong>when, for whom, or under what conditions</strong> a predictor has an effect.</li>
+<li>A <strong>mediator</strong> explains <strong>how or why</strong> a predictor produces an effect.</li>
+</ul>
+<p>This distinction affects theory, research design, measurement, and statistical analysis.</p>
+</section>
+<section id="core-definitions" class="level1">
+<h1>Core Definitions</h1>
+<section id="moderator" class="level2">
+<h2 class="anchored" data-anchor-id="moderator">Moderator</h2>
+<p>A moderator is a variable that changes the <strong>direction or strength</strong> of the relationship between an independent variable and a dependent variable.</p>
+<p>Moderation is usually represented by an interaction:</p>
+<p><span class="math display">\[
+Y = b_0 + b_1X + b_2Z + b_3XZ + e
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(X\)</span> = predictor or independent variable</li>
+<li><span class="math inline">\(Z\)</span> = moderator</li>
+<li><span class="math inline">\(Y\)</span> = outcome</li>
+<li><span class="math inline">\(XZ\)</span> = interaction term</li>
+</ul>
+<p>Moderation is supported when the interaction term is significant.</p>
+<p><strong>Main question:</strong> Does the effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> differ across levels of <span class="math inline">\(Z\)</span>?</p>
+</section>
+<section id="mediator" class="level2">
+<h2 class="anchored" data-anchor-id="mediator">Mediator</h2>
+<p>A mediator explains the process through which a predictor affects an outcome.</p>
+<p><span class="math display">\[
+X \rightarrow M \rightarrow Y
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(X\)</span> affects <span class="math inline">\(M\)</span></li>
+<li><span class="math inline">\(M\)</span> affects <span class="math inline">\(Y\)</span></li>
+<li>The effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> decreases when <span class="math inline">\(M\)</span> is included in the model</li>
+</ul>
+<p><strong>Main question:</strong> Through what process does <span class="math inline">\(X\)</span> affect <span class="math inline">\(Y\)</span>?</p>
+</section>
+</section>
+<section id="moderator-versus-mediator" class="level1">
+<h1>Moderator Versus Mediator</h1>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Moderator</th>
+<th>Mediator</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Main question</td>
+<td>When or for whom does an effect occur?</td>
+<td>How or why does an effect occur?</td>
+</tr>
+<tr class="even">
+<td>Role</td>
+<td>Changes the strength or direction of an effect</td>
+<td>Explains or transmits an effect</td>
+</tr>
+<tr class="odd">
+<td>Statistical signal</td>
+<td>Significant interaction, such as <span class="math inline">\(X \times Z\)</span></td>
+<td><span class="math inline">\(X\)</span> predicts <span class="math inline">\(M\)</span>, and <span class="math inline">\(M\)</span> predicts <span class="math inline">\(Y\)</span></td>
+</tr>
+<tr class="even">
+<td>Causal position</td>
+<td>Usually an antecedent or condition</td>
+<td>Part of a causal chain</td>
+</tr>
+<tr class="odd">
+<td>Research emphasis</td>
+<td>Identifies groups or situations</td>
+<td>Explains underlying mechanisms</td>
+</tr>
+<tr class="even">
+<td>Useful wording</td>
+<td>“The effect depends on…”</td>
+<td>“The effect occurs because…”</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="testing-moderation" class="level1">
+<h1>Testing Moderation</h1>
+<section id="categorical-predictor-and-categorical-moderator" class="level2">
+<h2 class="anchored" data-anchor-id="categorical-predictor-and-categorical-moderator">Categorical Predictor and Categorical Moderator</h2>
+<p>Use a factorial ANOVA. With two dichotomous variables, this is a <span class="math inline">\(2 \times 2\)</span> ANOVA.</p>
+<p>Moderation is shown by a significant interaction between the predictor and moderator.</p>
+<p>Simple effects should generally be examined after an interaction has been found.</p>
+</section>
+<section id="categorical-moderator-and-continuous-predictor" class="level2">
+<h2 class="anchored" data-anchor-id="categorical-moderator-and-continuous-predictor">Categorical Moderator and Continuous Predictor</h2>
+<p>The article cautions against relying only on separate correlations for each moderator group.</p>
+<p>Correlations may differ because of:</p>
+<ul>
+<li>Unequal variance</li>
+<li>Restriction of range</li>
+<li>Unequal measurement error</li>
+</ul>
+<p>The preferred approach is to compare <strong>unstandardized regression coefficients</strong> across groups.</p>
+</section>
+<section id="continuous-moderator-and-categorical-predictor" class="level2">
+<h2 class="anchored" data-anchor-id="continuous-moderator-and-categorical-predictor">Continuous Moderator and Categorical Predictor</h2>
+<p>Regress the outcome on the predictor, moderator, and their product:</p>
+<p><span class="math display">\[
+Y = b_0 + b_1X + b_2Z + b_3XZ + e
+\]</span></p>
+<p>The <span class="math inline">\(XZ\)</span> coefficient tests linear moderation.</p>
+<p>If theory suggests a nonlinear relationship, polynomial terms such as <span class="math inline">\(Z^2\)</span> and <span class="math inline">\(XZ^2\)</span> may be included.</p>
+</section>
+<section id="continuous-predictor-and-continuous-moderator" class="level2">
+<h2 class="anchored" data-anchor-id="continuous-predictor-and-continuous-moderator">Continuous Predictor and Continuous Moderator</h2>
+<p>Use an interaction regression for a linear moderation hypothesis.</p>
+<p>If a step-like effect is theoretically expected, the moderator may be divided at a theoretically justified point. However, the authors note that psychological theories often do not specify exact cutoff points.</p>
+</section>
+<section id="measurement-error" class="level2">
+<h2 class="anchored" data-anchor-id="measurement-error">Measurement Error</h2>
+<p>Measurement error in the predictor or moderator can reduce the ability to detect interactions.</p>
+<p>When reliability differs across groups, regression slopes may be biased. Researchers may need:</p>
+<ul>
+<li>Reliability estimates</li>
+<li>Multiple indicators</li>
+<li>Structural-equation modeling</li>
+<li>Measurement-error corrections</li>
+</ul>
+</section>
+</section>
+<section id="testing-mediation" class="level1">
+<h1>Testing Mediation</h1>
+<p>Baron and Kenny recommend three regression equations:</p>
+<ol type="1">
+<li>Regress the mediator <span class="math inline">\(M\)</span> on the predictor <span class="math inline">\(X\)</span>.</li>
+<li>Regress the outcome <span class="math inline">\(Y\)</span> on the predictor <span class="math inline">\(X\)</span>.</li>
+<li>Regress the outcome <span class="math inline">\(Y\)</span> on both <span class="math inline">\(X\)</span> and <span class="math inline">\(M\)</span>.</li>
+</ol>
+<p>The basic conditions for mediation are:</p>
+<ul>
+<li><span class="math inline">\(X\)</span> significantly predicts <span class="math inline">\(M\)</span>.</li>
+<li><span class="math inline">\(X\)</span> significantly predicts <span class="math inline">\(Y\)</span>.</li>
+<li><span class="math inline">\(M\)</span> significantly predicts <span class="math inline">\(Y\)</span> when <span class="math inline">\(X\)</span> is included.</li>
+<li>The effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> is smaller after <span class="math inline">\(M\)</span> is added.</li>
+</ul>
+<p><strong>Complete mediation</strong> occurs when the effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> disappears after controlling for <span class="math inline">\(M\)</span>.</p>
+<p><strong>Partial mediation</strong> occurs when the effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> decreases but does not disappear.</p>
+<p>The indirect effect is commonly represented as <span class="math inline">\(ab\)</span>:</p>
+<ul>
+<li><span class="math inline">\(a\)</span> = effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(M\)</span></li>
+<li><span class="math inline">\(b\)</span> = effect of <span class="math inline">\(M\)</span> on <span class="math inline">\(Y\)</span> while controlling for <span class="math inline">\(X\)</span></li>
+</ul>
+</section>
+<section id="threats-to-mediation-inference" class="level1">
+<h1>Threats to Mediation Inference</h1>
+<section id="measurement-error-1" class="level2">
+<h2 class="anchored" data-anchor-id="measurement-error-1">Measurement Error</h2>
+<p>Mediators are often psychological constructs and may be measured unreliably.</p>
+<p>Measurement error can:</p>
+<ul>
+<li>Make the mediator’s effect appear too small</li>
+<li>Make the direct effect of the predictor appear too large</li>
+<li>Distort the estimated mediation pathway</li>
+</ul>
+<p>Multiple indicators and latent-variable models can help address this problem.</p>
+</section>
+<section id="feedback-or-reverse-causation" class="level2">
+<h2 class="anchored" data-anchor-id="feedback-or-reverse-causation">Feedback or Reverse Causation</h2>
+<p>Regression mediation models assume that the outcome does not cause the mediator.</p>
+<p>If feedback is possible, the proposed mediator and outcome may be incorrectly ordered.</p>
+<p>Researchers may need:</p>
+<ul>
+<li>Experimental manipulation</li>
+<li>Two-stage least squares</li>
+<li>Structural-equation modeling</li>
+</ul>
+</section>
+<section id="correlation-is-not-enough" class="level2">
+<h2 class="anchored" data-anchor-id="correlation-is-not-enough">Correlation Is Not Enough</h2>
+<p>A correlation between a third variable and the outcome does not establish mediation.</p>
+<p>A mediator must fit a theoretically plausible causal sequence.</p>
+</section>
+</section>
+<section id="combining-moderation-and-mediation" class="level1">
+<h1>Combining Moderation and Mediation</h1>
+<p>The article presents a combined model in which a variable can function as both a moderator and a mediator.</p>
+<p>For example:</p>
+<ul>
+<li><span class="math inline">\(C\)</span> = manipulated control</li>
+<li><span class="math inline">\(S\)</span> = stressor</li>
+<li><span class="math inline">\(P\)</span> = perceived control</li>
+<li><span class="math inline">\(O\)</span> = outcome</li>
+<li><span class="math inline">\(CS\)</span> = control-by-stressor interaction</li>
+<li><span class="math inline">\(PS\)</span> = perceived-control-by-stressor interaction</li>
+</ul>
+<p>The analysis proceeds in stages:</p>
+<ol type="1">
+<li>Test the effects of <span class="math inline">\(C\)</span>, <span class="math inline">\(S\)</span>, and <span class="math inline">\(CS\)</span> on <span class="math inline">\(O\)</span>.</li>
+<li>Test whether <span class="math inline">\(C\)</span>, <span class="math inline">\(S\)</span>, and <span class="math inline">\(CS\)</span> predict <span class="math inline">\(P\)</span>.</li>
+<li>Test whether <span class="math inline">\(P\)</span> accounts for the outcome while controlling for <span class="math inline">\(C\)</span>, <span class="math inline">\(S\)</span>, and <span class="math inline">\(CS\)</span>.</li>
+<li>Add <span class="math inline">\(PS\)</span> to determine whether perceived control explains the moderating effect.</li>
+</ol>
+<p>This framework distinguishes:</p>
+<ul>
+<li><strong>Mediation:</strong> A predictor changes a mediator, which changes the outcome.</li>
+<li><strong>Moderation:</strong> The effect of one variable depends on another variable.</li>
+<li><strong>Mediated moderation:</strong> A mediator explains an observed interaction.</li>
+<li><strong>Moderated mediation:</strong> The size of a mediation effect changes across levels of another variable.</li>
+</ul>
+</section>
+<section id="strategic-implications" class="level1">
+<h1>Strategic Implications</h1>
+<section id="start-with-the-pattern-of-evidence" class="level2">
+<h2 class="anchored" data-anchor-id="start-with-the-pattern-of-evidence">Start With the Pattern of Evidence</h2>
+<p>Moderators are often introduced when a predictor-outcome relationship is weak, inconsistent, or limited to certain groups or settings.</p>
+<p>Mediation is usually examined when the predictor-outcome relationship is strong and the researcher wants to explain its mechanism.</p>
+</section>
+<section id="use-moderation-to-generate-mechanisms" class="level2">
+<h2 class="anchored" data-anchor-id="use-moderation-to-generate-mechanisms">Use Moderation to Generate Mechanisms</h2>
+<p>Finding that race, gender, self-monitoring, or another variable moderates an effect can be a first step toward identifying the underlying process.</p>
+<p>A useful moderator should not only improve prediction. It should also suggest a plausible mediator.</p>
+</section>
+<section id="use-mediation-to-suggest-interventions" class="level2">
+<h2 class="anchored" data-anchor-id="use-mediation-to-suggest-interventions">Use Mediation to Suggest Interventions</h2>
+<p>Identifying a mediator can show where an intervention should operate.</p>
+<p>For example, if perceived control mediates the effect of a stressful environment, an intervention could increase actual control or change the environment.</p>
+</section>
+<section id="match-research-operations-to-the-hypothesis" class="level2">
+<h2 class="anchored" data-anchor-id="match-research-operations-to-the-hypothesis">Match Research Operations to the Hypothesis</h2>
+<ul>
+<li>A moderator hypothesis requires evidence that the effect changes across levels of the moderator.</li>
+<li>A mediator hypothesis requires evidence that the predictor changes the proposed mechanism.</li>
+<li>Manipulating a variable does not automatically establish mediation.</li>
+<li>The mediator must be measured and connected to the outcome.</li>
+</ul>
+</section>
+</section>
+<section id="applications-discussed-in-the-article" class="level1">
+<h1>Applications Discussed in the Article</h1>
+<section id="personal-control-and-crowding" class="level2">
+<h2 class="anchored" data-anchor-id="personal-control-and-crowding">Personal Control and Crowding</h2>
+<p>Some crowding research treated control ambiguously.</p>
+<p>To claim that perceived control mediates the effect of density, researchers must show that:</p>
+<ol type="1">
+<li>Density changes perceived control.</li>
+<li>Perceived control predicts the outcome.</li>
+<li>The density-outcome relationship decreases when perceived control is included.</li>
+</ol>
+<p>Without an independent measure of perceived control, a strong mediation claim is not justified.</p>
+<p>The evidence may instead support control as a moderator: density may have worse effects when control is low.</p>
+<p>Other processes, such as arousal or labeling, could still mediate the effect of density.</p>
+</section>
+<section id="behavioral-intention-and-behavior" class="level2">
+<h2 class="anchored" data-anchor-id="behavioral-intention-and-behavior">Behavioral Intention and Behavior</h2>
+<p>Behavioral intention is presented as a possible mediator of the effects of attitudes and norms on behavior.</p>
+<p>However, variables such as the following may moderate the intention-behavior relationship:</p>
+<ul>
+<li>Gender</li>
+<li>Time delay</li>
+<li>Perceived likelihood of cooperation</li>
+<li>Skill</li>
+<li>Resources</li>
+</ul>
+<p>For example, gender moderation would be tested with a Gender <span class="math inline">\(\times\)</span> Behavioral Intention interaction.</p>
+</section>
+<section id="traits-attitudes-and-behavior" class="level2">
+<h2 class="anchored" data-anchor-id="traits-attitudes-and-behavior">Traits, Attitudes, and Behavior</h2>
+<p>Self-monitoring and self-consciousness may moderate how well traits or attitudes predict behavior.</p>
+<p>Researchers should also investigate mechanisms such as:</p>
+<ul>
+<li>Attention</li>
+<li>Impression management</li>
+<li>Coping</li>
+<li>Information processing</li>
+</ul>
+<p>A combined model can ask both:</p>
+<ul>
+<li>Who is more likely to act consistently with a disposition?</li>
+<li>Why does that consistency occur?</li>
+</ul>
+</section>
+</section>
+<section id="important-concepts-to-remember" class="level1">
+<h1>Important Concepts to Remember</h1>
+<ul>
+<li><strong>Moderator = condition.</strong> It changes the strength or direction of an effect.</li>
+<li><strong>Mediator = mechanism.</strong> It carries or explains an effect.</li>
+<li><strong>Interaction is central to moderation.</strong></li>
+<li><strong>A main effect alone does not establish moderation.</strong></li>
+<li><strong>A causal chain is central to mediation.</strong></li>
+<li><strong>Partial mediation is common.</strong></li>
+<li><strong>Measurement quality affects both moderation and mediation analyses.</strong></li>
+<li><strong>The same variable can have different roles in different models.</strong></li>
+<li><strong>Moderation and mediation can coexist.</strong></li>
+<li><strong>Statistical significance is not enough.</strong></li>
+<li><strong>Theory, temporal order, measurement, manipulation, and alternative explanations matter.</strong></li>
+</ul>
+</section>
+<section id="quick-study-guide" class="level1">
+<h1>Quick Study Guide</h1>
+<section id="if-the-question-is-when-does-x-affect-y" class="level2">
+<h2 class="anchored" data-anchor-id="if-the-question-is-when-does-x-affect-y">If the question is “When does X affect Y?”</h2>
+<p>Test moderation:</p>
+<p><span class="math display">\[
+X \times Z \rightarrow Y
+\]</span></p>
+<p>Look for a significant interaction.</p>
+</section>
+<section id="if-the-question-is-how-does-x-affect-y" class="level2">
+<h2 class="anchored" data-anchor-id="if-the-question-is-how-does-x-affect-y">If the question is “How does X affect Y?”</h2>
+<p>Test mediation:</p>
+<p><span class="math display">\[
+X \rightarrow M \rightarrow Y
+\]</span></p>
+<p>Then examine whether the direct effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> decreases when <span class="math inline">\(M\)</span> is included.</p>
+</section>
+<section id="if-the-question-is-when-and-how-does-x-affect-y" class="level2">
+<h2 class="anchored" data-anchor-id="if-the-question-is-when-and-how-does-x-affect-y">If the question is “When and how does X affect Y?”</h2>
+<p>Use a combined model that tests:</p>
+<ul>
+<li>Interaction effects</li>
+<li>Indirect effects</li>
+<li>Direct effects</li>
+<li>Possible mediated moderation</li>
+<li>Possible moderated mediation</li>
+</ul>
+</section>
+</section>
+<section id="one-paragraph-summary" class="level1">
+<h1>One-Paragraph Summary</h1>
+<p>Baron and Kenny distinguish between moderators and mediators in social-psychological research. A moderator identifies the conditions under which a predictor affects an outcome, whereas a mediator explains the process through which that effect occurs. Moderation is typically tested through an interaction between the predictor and moderator. Mediation is tested by showing that the predictor affects the mediator, the mediator affects the outcome, and the predictor’s direct effect decreases after the mediator is included. The authors emphasize that these are conceptual and causal distinctions, not simply differences between experimental and measured variables. They also show how moderation and mediation can be studied together to improve theoretical explanation and intervention design.</p>
+</section>
+<section id="citation" class="level1">
+<h1>Citation</h1>
+<p>Baron, R. M., &amp; Kenny, D. A. (1986). The moderator-mediator variable distinction in social psychological research: Conceptual, strategic, and statistical considerations. <em>Journal of Personality and Social Psychology, 51</em>(6), 1173–1182.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

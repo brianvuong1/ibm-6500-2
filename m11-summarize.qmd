@@ -1,0 +1,335 @@
+---
+title: "The Moderator-Mediator Variable Distinction in Social Psychological Research"
+subtitle: "Summary and important concepts"
+author: "Notes on Baron and Kenny (1986)"
+format: html
+---
+
+# Article Information
+
+- **Authors:** Reuben M. Baron and David A. Kenny
+- **Year:** 1986
+- **Journal:** *Journal of Personality and Social Psychology*, 51(6), 1173-1182
+- **Article focus:** How moderators and mediators differ conceptually, strategically, and statistically.
+
+# Central Thesis
+
+Researchers should not use *moderator* and *mediator* interchangeably.
+
+- A **moderator** explains **when, for whom, or under what conditions** a predictor has an effect.
+- A **mediator** explains **how or why** a predictor produces an effect.
+
+This distinction affects theory, research design, measurement, and statistical analysis.
+
+# Core Definitions
+
+## Moderator
+
+A moderator is a variable that changes the **direction or strength** of the relationship between an independent variable and a dependent variable.
+
+Moderation is usually represented by an interaction:
+
+$$
+Y = b_0 + b_1X + b_2Z + b_3XZ + e
+$$
+
+Where:
+
+- $X$ = predictor or independent variable
+- $Z$ = moderator
+- $Y$ = outcome
+- $XZ$ = interaction term
+
+Moderation is supported when the interaction term is significant.
+
+**Main question:** Does the effect of $X$ on $Y$ differ across levels of $Z$?
+
+## Mediator
+
+A mediator explains the process through which a predictor affects an outcome.
+
+$$
+X \rightarrow M \rightarrow Y
+$$
+
+Where:
+
+- $X$ affects $M$
+- $M$ affects $Y$
+- The effect of $X$ on $Y$ decreases when $M$ is included in the model
+
+**Main question:** Through what process does $X$ affect $Y$?
+
+# Moderator Versus Mediator
+
+| Feature | Moderator | Mediator |
+|---|---|---|
+| Main question | When or for whom does an effect occur? | How or why does an effect occur? |
+| Role | Changes the strength or direction of an effect | Explains or transmits an effect |
+| Statistical signal | Significant interaction, such as $X \times Z$ | $X$ predicts $M$, and $M$ predicts $Y$ |
+| Causal position | Usually an antecedent or condition | Part of a causal chain |
+| Research emphasis | Identifies groups or situations | Explains underlying mechanisms |
+| Useful wording | “The effect depends on…” | “The effect occurs because…” |
+
+# Testing Moderation
+
+## Categorical Predictor and Categorical Moderator
+
+Use a factorial ANOVA. With two dichotomous variables, this is a $2 \times 2$ ANOVA.
+
+Moderation is shown by a significant interaction between the predictor and moderator.
+
+Simple effects should generally be examined after an interaction has been found.
+
+## Categorical Moderator and Continuous Predictor
+
+The article cautions against relying only on separate correlations for each moderator group.
+
+Correlations may differ because of:
+
+- Unequal variance
+- Restriction of range
+- Unequal measurement error
+
+The preferred approach is to compare **unstandardized regression coefficients** across groups.
+
+## Continuous Moderator and Categorical Predictor
+
+Regress the outcome on the predictor, moderator, and their product:
+
+$$
+Y = b_0 + b_1X + b_2Z + b_3XZ + e
+$$
+
+The $XZ$ coefficient tests linear moderation.
+
+If theory suggests a nonlinear relationship, polynomial terms such as $Z^2$ and $XZ^2$ may be included.
+
+## Continuous Predictor and Continuous Moderator
+
+Use an interaction regression for a linear moderation hypothesis.
+
+If a step-like effect is theoretically expected, the moderator may be divided at a theoretically justified point. However, the authors note that psychological theories often do not specify exact cutoff points.
+
+## Measurement Error
+
+Measurement error in the predictor or moderator can reduce the ability to detect interactions.
+
+When reliability differs across groups, regression slopes may be biased. Researchers may need:
+
+- Reliability estimates
+- Multiple indicators
+- Structural-equation modeling
+- Measurement-error corrections
+
+# Testing Mediation
+
+Baron and Kenny recommend three regression equations:
+
+1. Regress the mediator $M$ on the predictor $X$.
+2. Regress the outcome $Y$ on the predictor $X$.
+3. Regress the outcome $Y$ on both $X$ and $M$.
+
+The basic conditions for mediation are:
+
+- $X$ significantly predicts $M$.
+- $X$ significantly predicts $Y$.
+- $M$ significantly predicts $Y$ when $X$ is included.
+- The effect of $X$ on $Y$ is smaller after $M$ is added.
+
+**Complete mediation** occurs when the effect of $X$ on $Y$ disappears after controlling for $M$.
+
+**Partial mediation** occurs when the effect of $X$ on $Y$ decreases but does not disappear.
+
+The indirect effect is commonly represented as $ab$:
+
+- $a$ = effect of $X$ on $M$
+- $b$ = effect of $M$ on $Y$ while controlling for $X$
+
+# Threats to Mediation Inference
+
+## Measurement Error
+
+Mediators are often psychological constructs and may be measured unreliably.
+
+Measurement error can:
+
+- Make the mediator's effect appear too small
+- Make the direct effect of the predictor appear too large
+- Distort the estimated mediation pathway
+
+Multiple indicators and latent-variable models can help address this problem.
+
+## Feedback or Reverse Causation
+
+Regression mediation models assume that the outcome does not cause the mediator.
+
+If feedback is possible, the proposed mediator and outcome may be incorrectly ordered.
+
+Researchers may need:
+
+- Experimental manipulation
+- Two-stage least squares
+- Structural-equation modeling
+
+## Correlation Is Not Enough
+
+A correlation between a third variable and the outcome does not establish mediation.
+
+A mediator must fit a theoretically plausible causal sequence.
+
+# Combining Moderation and Mediation
+
+The article presents a combined model in which a variable can function as both a moderator and a mediator.
+
+For example:
+
+- $C$ = manipulated control
+- $S$ = stressor
+- $P$ = perceived control
+- $O$ = outcome
+- $CS$ = control-by-stressor interaction
+- $PS$ = perceived-control-by-stressor interaction
+
+The analysis proceeds in stages:
+
+1. Test the effects of $C$, $S$, and $CS$ on $O$.
+2. Test whether $C$, $S$, and $CS$ predict $P$.
+3. Test whether $P$ accounts for the outcome while controlling for $C$, $S$, and $CS$.
+4. Add $PS$ to determine whether perceived control explains the moderating effect.
+
+This framework distinguishes:
+
+- **Mediation:** A predictor changes a mediator, which changes the outcome.
+- **Moderation:** The effect of one variable depends on another variable.
+- **Mediated moderation:** A mediator explains an observed interaction.
+- **Moderated mediation:** The size of a mediation effect changes across levels of another variable.
+
+# Strategic Implications
+
+## Start With the Pattern of Evidence
+
+Moderators are often introduced when a predictor-outcome relationship is weak, inconsistent, or limited to certain groups or settings.
+
+Mediation is usually examined when the predictor-outcome relationship is strong and the researcher wants to explain its mechanism.
+
+## Use Moderation to Generate Mechanisms
+
+Finding that race, gender, self-monitoring, or another variable moderates an effect can be a first step toward identifying the underlying process.
+
+A useful moderator should not only improve prediction. It should also suggest a plausible mediator.
+
+## Use Mediation to Suggest Interventions
+
+Identifying a mediator can show where an intervention should operate.
+
+For example, if perceived control mediates the effect of a stressful environment, an intervention could increase actual control or change the environment.
+
+## Match Research Operations to the Hypothesis
+
+- A moderator hypothesis requires evidence that the effect changes across levels of the moderator.
+- A mediator hypothesis requires evidence that the predictor changes the proposed mechanism.
+- Manipulating a variable does not automatically establish mediation.
+- The mediator must be measured and connected to the outcome.
+
+# Applications Discussed in the Article
+
+## Personal Control and Crowding
+
+Some crowding research treated control ambiguously.
+
+To claim that perceived control mediates the effect of density, researchers must show that:
+
+1. Density changes perceived control.
+2. Perceived control predicts the outcome.
+3. The density-outcome relationship decreases when perceived control is included.
+
+Without an independent measure of perceived control, a strong mediation claim is not justified.
+
+The evidence may instead support control as a moderator: density may have worse effects when control is low.
+
+Other processes, such as arousal or labeling, could still mediate the effect of density.
+
+## Behavioral Intention and Behavior
+
+Behavioral intention is presented as a possible mediator of the effects of attitudes and norms on behavior.
+
+However, variables such as the following may moderate the intention-behavior relationship:
+
+- Gender
+- Time delay
+- Perceived likelihood of cooperation
+- Skill
+- Resources
+
+For example, gender moderation would be tested with a Gender $\times$ Behavioral Intention interaction.
+
+## Traits, Attitudes, and Behavior
+
+Self-monitoring and self-consciousness may moderate how well traits or attitudes predict behavior.
+
+Researchers should also investigate mechanisms such as:
+
+- Attention
+- Impression management
+- Coping
+- Information processing
+
+A combined model can ask both:
+
+- Who is more likely to act consistently with a disposition?
+- Why does that consistency occur?
+
+# Important Concepts to Remember
+
+- **Moderator = condition.** It changes the strength or direction of an effect.
+- **Mediator = mechanism.** It carries or explains an effect.
+- **Interaction is central to moderation.**
+- **A main effect alone does not establish moderation.**
+- **A causal chain is central to mediation.**
+- **Partial mediation is common.**
+- **Measurement quality affects both moderation and mediation analyses.**
+- **The same variable can have different roles in different models.**
+- **Moderation and mediation can coexist.**
+- **Statistical significance is not enough.**
+- **Theory, temporal order, measurement, manipulation, and alternative explanations matter.**
+
+# Quick Study Guide
+
+## If the question is “When does X affect Y?”
+
+Test moderation:
+
+$$
+X \times Z \rightarrow Y
+$$
+
+Look for a significant interaction.
+
+## If the question is “How does X affect Y?”
+
+Test mediation:
+
+$$
+X \rightarrow M \rightarrow Y
+$$
+
+Then examine whether the direct effect of $X$ on $Y$ decreases when $M$ is included.
+
+## If the question is “When and how does X affect Y?”
+
+Use a combined model that tests:
+
+- Interaction effects
+- Indirect effects
+- Direct effects
+- Possible mediated moderation
+- Possible moderated mediation
+
+# One-Paragraph Summary
+
+Baron and Kenny distinguish between moderators and mediators in social-psychological research. A moderator identifies the conditions under which a predictor affects an outcome, whereas a mediator explains the process through which that effect occurs. Moderation is typically tested through an interaction between the predictor and moderator. Mediation is tested by showing that the predictor affects the mediator, the mediator affects the outcome, and the predictor's direct effect decreases after the mediator is included. The authors emphasize that these are conceptual and causal distinctions, not simply differences between experimental and measured variables. They also show how moderation and mediation can be studied together to improve theoretical explanation and intervention design.
+
+# Citation
+
+Baron, R. M., & Kenny, D. A. (1986). The moderator-mediator variable distinction in social psychological research: Conceptual, strategic, and statistical considerations. *Journal of Personality and Social Psychology, 51*(6), 1173–1182.
