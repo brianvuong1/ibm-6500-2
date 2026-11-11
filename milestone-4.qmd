@@ -1,0 +1,315 @@
+---
+title: "Milestone 4: SQL Pack"
+author: "Brian"
+format: html
+---
+
+# Query 1: Total Events by Date
+
+```
+SELECT
+  event_date,
+  COUNT(*) AS total_events
+FROM
+  `your-project.analytics_123456789.events_*`
+WHERE
+  _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+GROUP BY
+  event_date
+ORDER BY
+  event_date;
+```
+
+# Explanation
+
+This query counts the total number of GA4 events recorded on each date during the selected time period. The `_TABLE_SUFFIX` filter limits the query to January 2026 and avoids scanning unnecessary tables. The output can be used to identify changes in overall website or app activity over time.
+
+# Caveat
+
+The query counts all events, so one user can contribute multiple events.
+
+# Query 2: Event Counts and Unique Users
+
+```
+SELECT
+  event_name,
+  COUNT(*) AS event_count,
+  COUNT(DISTINCT user_pseudo_id) AS unique_users
+FROM
+  `your-project.analytics_123456789.events_*`
+WHERE
+  _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+  AND event_name IN (
+    'page_view',
+    'session_start',
+    'add_to_cart',
+    'purchase'
+  )
+GROUP BY
+  event_name
+ORDER BY
+  event_count DESC;
+```
+
+# Explanation
+
+This query compares the frequency of several important GA4 event types. `COUNT(*)` measures how many times each event occurred, while `COUNT(DISTINCT user_pseudo_id)` estimates the number of unique users who triggered each event. This is useful for comparing general traffic with important conversion-related actions.
+
+# Caveat
+
+The `user_pseudo_id` value is an anonymous GA4 identifier and may not represent a confirmed individual person.
+
+# Query 3: Page Views by Page Location
+
+```
+SELECT
+  page_location.value.string_value AS page_location,
+  COUNT(*) AS page_views
+FROM
+  `your-project.analytics_123456789.events_*`,
+  UNNEST(event_params) AS page_location
+WHERE
+  _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+  AND event_name = 'page_view'
+  AND page_location.key = 'page_location'
+GROUP BY
+  page_location
+ORDER BY
+  page_views DESC;
+```
+
+# Explanation
+
+This query extracts the `page_location` parameter from the repeated `event_params` field. It counts how many page-view events occurred for each URL. The results show which pages received the most traffic during the selected date range.
+
+# Caveat
+
+Some page-view events may not contain a usable `page_location` value, and URLs with different query parameters may be counted as separate pages.
+
+# Query 4: Form Submissions by Form ID
+
+```
+SELECT
+  form_parameter.value.string_value AS form_id,
+  COUNT(*) AS form_submissions,
+  COUNT(DISTINCT user_pseudo_id) AS submitting_users
+FROM
+  `your-project.analytics_123456789.events_*`,
+  UNNEST(event_params) AS form_parameter
+WHERE
+  _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+  AND event_name = 'form_submit'
+  AND form_parameter.key = 'form_id'
+GROUP BY
+  form_id
+ORDER BY
+  form_submissions DESC;
+```
+
+# Explanation
+
+This query extracts the `form_id` parameter from `event_params` for events named `form_submit`. It reports both the total number of form submissions and the number of unique users submitting each form. This is useful for determining which forms are used most frequently.
+
+# Caveat
+
+This query assumes that the form submission event is consistently named `form_submit` and that the form identifier is stored under the parameter key `form_id`.
+
+# Query 5: Daily Purchase Revenue
+
+```
+SELECT
+  event_date,
+  COUNT(*) AS purchase_count,
+  COUNT(DISTINCT user_pseudo_id) AS purchasing_users,
+  SUM(ecommerce.purchase_revenue) AS total_revenue
+FROM
+  `your-project.analytics_123456789.events_*`
+WHERE
+  _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+  AND event_name = 'purchase'
+GROUP BY
+  event_date
+ORDER BY
+  event_date;
+```
+
+# Explanation
+
+This query summarizes ecommerce performance by date. It counts purchases, counts unique purchasing users, and adds the revenue recorded for purchase events. The results can be used to identify high-revenue days and compare purchase volume with the number of purchasing users.
+
+# Caveat
+
+Revenue values depend on how the GA4 ecommerce implementation is configured. Missing or incorrectly configured revenue values may cause the total to be incomplete.
+
+# Query 6: Daily Sessions Using a CTE
+
+```
+WITH session_events AS (
+  SELECT
+    event_date,
+    user_pseudo_id,
+    (
+      SELECT
+        value.int_value
+      FROM
+        UNNEST(event_params)
+      WHERE
+        key = 'ga_session_id'
+    ) AS ga_session_id
+  FROM
+    `your-project.analytics_123456789.events_*`
+  WHERE
+    _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+)
+
+SELECT
+  event_date,
+  COUNT(
+    DISTINCT CONCAT(
+      user_pseudo_id,
+      '-',
+      CAST(ga_session_id AS STRING)
+    )
+  ) AS sessions
+FROM
+  session_events
+WHERE
+  ga_session_id IS NOT NULL
+GROUP BY
+  event_date
+ORDER BY
+  event_date;
+```
+
+# Explanation
+
+This query uses a common table expression to create a reusable set of events containing the GA4 session ID. The final query counts distinct combinations of `user_pseudo_id` and `ga_session_id` to estimate the number of sessions per day. The CTE makes the query easier to read and separates parameter extraction from the final aggregation.
+
+# Caveat
+
+The session count depends on the availability and accuracy of the `ga_session_id` parameter. The same session ID may not be unique across users, which is why the user ID is included in the distinct combination.
+
+# Query 7: User Funnel Summary
+
+```
+WITH user_events AS (
+  SELECT
+    user_pseudo_id,
+    MAX(IF(event_name = 'page_view', 1, 0)) AS had_page_view,
+    MAX(IF(event_name = 'add_to_cart', 1, 0)) AS added_to_cart,
+    MAX(IF(event_name = 'purchase', 1, 0)) AS made_purchase
+  FROM
+    `your-project.analytics_123456789.events_*`
+  WHERE
+    _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+  GROUP BY
+    user_pseudo_id
+)
+
+SELECT
+  COUNT(*) AS total_users,
+  SUM(had_page_view) AS users_with_page_view,
+  SUM(added_to_cart) AS users_with_add_to_cart,
+  SUM(made_purchase) AS users_with_purchase,
+  SAFE_DIVIDE(
+    SUM(added_to_cart),
+    SUM(had_page_view)
+  ) AS add_to_cart_rate,
+  SAFE_DIVIDE(
+    SUM(made_purchase),
+    SUM(had_page_view)
+  ) AS purchase_rate
+FROM
+  user_events;
+```
+
+# Explanation
+
+This query creates a user-level funnel using a common table expression. Each user is assigned an indicator showing whether they generated a page view, added an item to a cart, or completed a purchase. The final output summarizes the number of users at each stage and calculates basic conversion rates.
+
+# Caveat
+
+This is a simplified user funnel. It does not verify that events occurred in the correct order or during the same session.
+
+# Query 8: Daily Visitors Compared With Purchases
+
+```
+WITH daily_visitors AS (
+  SELECT
+    event_date,
+    COUNT(DISTINCT user_pseudo_id) AS visitors
+  FROM
+    `your-project.analytics_123456789.events_*`
+  WHERE
+    _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+  GROUP BY
+    event_date
+),
+
+daily_purchases AS (
+  SELECT
+    event_date,
+    COUNT(*) AS purchases,
+    SUM(ecommerce.purchase_revenue) AS revenue
+  FROM
+    `your-project.analytics_123456789.events_*`
+  WHERE
+    _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+    AND event_name = 'purchase'
+  GROUP BY
+    event_date
+)
+
+SELECT
+  visitors.event_date,
+  visitors.visitors,
+  COALESCE(purchases.purchases, 0) AS purchases,
+  COALESCE(purchases.revenue, 0) AS revenue,
+  SAFE_DIVIDE(
+    purchases.purchases,
+    visitors.visitors
+  ) AS purchase_rate
+FROM
+  daily_visitors AS visitors
+LEFT JOIN
+  daily_purchases AS purchases
+USING
+  (event_date)
+ORDER BY
+  visitors.event_date;
+```
+
+# Explanation
+
+This query creates two daily summary tables: one for unique visitors and another for purchases and revenue. It then joins the two summaries using `event_date`. The final output allows daily traffic to be compared with purchases, revenue, and the estimated purchase rate.
+
+# Caveat
+
+The purchase rate is based on daily unique visitors and daily purchases. It should not be interpreted as a perfect user-level conversion rate because users may visit on one day and purchase on another.
+
+# Skills Demonstrated
+
+| Requirement | Query or Queries |
+|---|---|
+| Filtering and scoping | Queries 1, 2, 3, 4, 5, 6, 7, and 8 |
+| Grouping and aggregation | Queries 1, 2, 3, 4, 5, 6, 7, and 8 |
+| `UNNEST(event_params)` | Queries 3, 4, and 6 |
+| Correct parameter value types | Queries 3 and 4 use `string_value`; Query 6 uses `int_value` |
+| CTE structure | Queries 6, 7, and 8 |
+| Joining or combining results | Query 8 |
+| Interpretation | Provided for all eight queries |
+
+# Conclusion
+
+These eight queries demonstrate the core BigQuery GoogleSQL skills required for working with GA4 export data. They show how to limit the scanned date range, summarize events and users, extract nested event parameters, organize logic with CTEs, and combine multiple summaries for analysis.
+
+# Appendix
+
+# GitHub Repository
+
+[GitHub repository](https://github.com/brianvuong1/ibm-6500-2)
+
+# GitHub Pages Report
+
+[GitHub Pages link](https://brianvuong1.github.io/ibm-6500-2/milestone-4)
+

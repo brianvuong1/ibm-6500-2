@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Brian">
+
+<title>Milestone 4: SQL Pack</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="milestone-4_files/libs/clipboard/clipboard.min.js"></script>
+<script src="milestone-4_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="milestone-4_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="milestone-4_files/libs/quarto-html/popper.min.js"></script>
+<script src="milestone-4_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="milestone-4_files/libs/quarto-html/anchor.min.js"></script>
+<link href="milestone-4_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="milestone-4_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="milestone-4_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="milestone-4_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="milestone-4_files/libs/bootstrap/bootstrap-917079515d91bccb85b543faf8aa8bb6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Milestone 4: SQL Pack</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Brian </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="query-1-total-events-by-date" class="level1">
+<h1>Query 1: Total Events by Date</h1>
+<pre><code>SELECT
+  event_date,
+  COUNT(*) AS total_events
+FROM
+  `your-project.analytics_123456789.events_*`
+WHERE
+  _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+GROUP BY
+  event_date
+ORDER BY
+  event_date;</code></pre>
+</section>
+<section id="explanation" class="level1">
+<h1>Explanation</h1>
+<p>This query counts the total number of GA4 events recorded on each date during the selected time period. The <code>_TABLE_SUFFIX</code> filter limits the query to January 2026 and avoids scanning unnecessary tables. The output can be used to identify changes in overall website or app activity over time.</p>
+</section>
+<section id="caveat" class="level1">
+<h1>Caveat</h1>
+<p>The query counts all events, so one user can contribute multiple events.</p>
+</section>
+<section id="query-2-event-counts-and-unique-users" class="level1">
+<h1>Query 2: Event Counts and Unique Users</h1>
+<pre><code>SELECT
+  event_name,
+  COUNT(*) AS event_count,
+  COUNT(DISTINCT user_pseudo_id) AS unique_users
+FROM
+  `your-project.analytics_123456789.events_*`
+WHERE
+  _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+  AND event_name IN (
+    'page_view',
+    'session_start',
+    'add_to_cart',
+    'purchase'
+  )
+GROUP BY
+  event_name
+ORDER BY
+  event_count DESC;</code></pre>
+</section>
+<section id="explanation-1" class="level1">
+<h1>Explanation</h1>
+<p>This query compares the frequency of several important GA4 event types. <code>COUNT(*)</code> measures how many times each event occurred, while <code>COUNT(DISTINCT user_pseudo_id)</code> estimates the number of unique users who triggered each event. This is useful for comparing general traffic with important conversion-related actions.</p>
+</section>
+<section id="caveat-1" class="level1">
+<h1>Caveat</h1>
+<p>The <code>user_pseudo_id</code> value is an anonymous GA4 identifier and may not represent a confirmed individual person.</p>
+</section>
+<section id="query-3-page-views-by-page-location" class="level1">
+<h1>Query 3: Page Views by Page Location</h1>
+<pre><code>SELECT
+  page_location.value.string_value AS page_location,
+  COUNT(*) AS page_views
+FROM
+  `your-project.analytics_123456789.events_*`,
+  UNNEST(event_params) AS page_location
+WHERE
+  _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+  AND event_name = 'page_view'
+  AND page_location.key = 'page_location'
+GROUP BY
+  page_location
+ORDER BY
+  page_views DESC;</code></pre>
+</section>
+<section id="explanation-2" class="level1">
+<h1>Explanation</h1>
+<p>This query extracts the <code>page_location</code> parameter from the repeated <code>event_params</code> field. It counts how many page-view events occurred for each URL. The results show which pages received the most traffic during the selected date range.</p>
+</section>
+<section id="caveat-2" class="level1">
+<h1>Caveat</h1>
+<p>Some page-view events may not contain a usable <code>page_location</code> value, and URLs with different query parameters may be counted as separate pages.</p>
+</section>
+<section id="query-4-form-submissions-by-form-id" class="level1">
+<h1>Query 4: Form Submissions by Form ID</h1>
+<pre><code>SELECT
+  form_parameter.value.string_value AS form_id,
+  COUNT(*) AS form_submissions,
+  COUNT(DISTINCT user_pseudo_id) AS submitting_users
+FROM
+  `your-project.analytics_123456789.events_*`,
+  UNNEST(event_params) AS form_parameter
+WHERE
+  _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+  AND event_name = 'form_submit'
+  AND form_parameter.key = 'form_id'
+GROUP BY
+  form_id
+ORDER BY
+  form_submissions DESC;</code></pre>
+</section>
+<section id="explanation-3" class="level1">
+<h1>Explanation</h1>
+<p>This query extracts the <code>form_id</code> parameter from <code>event_params</code> for events named <code>form_submit</code>. It reports both the total number of form submissions and the number of unique users submitting each form. This is useful for determining which forms are used most frequently.</p>
+</section>
+<section id="caveat-3" class="level1">
+<h1>Caveat</h1>
+<p>This query assumes that the form submission event is consistently named <code>form_submit</code> and that the form identifier is stored under the parameter key <code>form_id</code>.</p>
+</section>
+<section id="query-5-daily-purchase-revenue" class="level1">
+<h1>Query 5: Daily Purchase Revenue</h1>
+<pre><code>SELECT
+  event_date,
+  COUNT(*) AS purchase_count,
+  COUNT(DISTINCT user_pseudo_id) AS purchasing_users,
+  SUM(ecommerce.purchase_revenue) AS total_revenue
+FROM
+  `your-project.analytics_123456789.events_*`
+WHERE
+  _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+  AND event_name = 'purchase'
+GROUP BY
+  event_date
+ORDER BY
+  event_date;</code></pre>
+</section>
+<section id="explanation-4" class="level1">
+<h1>Explanation</h1>
+<p>This query summarizes ecommerce performance by date. It counts purchases, counts unique purchasing users, and adds the revenue recorded for purchase events. The results can be used to identify high-revenue days and compare purchase volume with the number of purchasing users.</p>
+</section>
+<section id="caveat-4" class="level1">
+<h1>Caveat</h1>
+<p>Revenue values depend on how the GA4 ecommerce implementation is configured. Missing or incorrectly configured revenue values may cause the total to be incomplete.</p>
+</section>
+<section id="query-6-daily-sessions-using-a-cte" class="level1">
+<h1>Query 6: Daily Sessions Using a CTE</h1>
+<pre><code>WITH session_events AS (
+  SELECT
+    event_date,
+    user_pseudo_id,
+    (
+      SELECT
+        value.int_value
+      FROM
+        UNNEST(event_params)
+      WHERE
+        key = 'ga_session_id'
+    ) AS ga_session_id
+  FROM
+    `your-project.analytics_123456789.events_*`
+  WHERE
+    _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+)
+
+SELECT
+  event_date,
+  COUNT(
+    DISTINCT CONCAT(
+      user_pseudo_id,
+      '-',
+      CAST(ga_session_id AS STRING)
+    )
+  ) AS sessions
+FROM
+  session_events
+WHERE
+  ga_session_id IS NOT NULL
+GROUP BY
+  event_date
+ORDER BY
+  event_date;</code></pre>
+</section>
+<section id="explanation-5" class="level1">
+<h1>Explanation</h1>
+<p>This query uses a common table expression to create a reusable set of events containing the GA4 session ID. The final query counts distinct combinations of <code>user_pseudo_id</code> and <code>ga_session_id</code> to estimate the number of sessions per day. The CTE makes the query easier to read and separates parameter extraction from the final aggregation.</p>
+</section>
+<section id="caveat-5" class="level1">
+<h1>Caveat</h1>
+<p>The session count depends on the availability and accuracy of the <code>ga_session_id</code> parameter. The same session ID may not be unique across users, which is why the user ID is included in the distinct combination.</p>
+</section>
+<section id="query-7-user-funnel-summary" class="level1">
+<h1>Query 7: User Funnel Summary</h1>
+<pre><code>WITH user_events AS (
+  SELECT
+    user_pseudo_id,
+    MAX(IF(event_name = 'page_view', 1, 0)) AS had_page_view,
+    MAX(IF(event_name = 'add_to_cart', 1, 0)) AS added_to_cart,
+    MAX(IF(event_name = 'purchase', 1, 0)) AS made_purchase
+  FROM
+    `your-project.analytics_123456789.events_*`
+  WHERE
+    _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+  GROUP BY
+    user_pseudo_id
+)
+
+SELECT
+  COUNT(*) AS total_users,
+  SUM(had_page_view) AS users_with_page_view,
+  SUM(added_to_cart) AS users_with_add_to_cart,
+  SUM(made_purchase) AS users_with_purchase,
+  SAFE_DIVIDE(
+    SUM(added_to_cart),
+    SUM(had_page_view)
+  ) AS add_to_cart_rate,
+  SAFE_DIVIDE(
+    SUM(made_purchase),
+    SUM(had_page_view)
+  ) AS purchase_rate
+FROM
+  user_events;</code></pre>
+</section>
+<section id="explanation-6" class="level1">
+<h1>Explanation</h1>
+<p>This query creates a user-level funnel using a common table expression. Each user is assigned an indicator showing whether they generated a page view, added an item to a cart, or completed a purchase. The final output summarizes the number of users at each stage and calculates basic conversion rates.</p>
+</section>
+<section id="caveat-6" class="level1">
+<h1>Caveat</h1>
+<p>This is a simplified user funnel. It does not verify that events occurred in the correct order or during the same session.</p>
+</section>
+<section id="query-8-daily-visitors-compared-with-purchases" class="level1">
+<h1>Query 8: Daily Visitors Compared With Purchases</h1>
+<pre><code>WITH daily_visitors AS (
+  SELECT
+    event_date,
+    COUNT(DISTINCT user_pseudo_id) AS visitors
+  FROM
+    `your-project.analytics_123456789.events_*`
+  WHERE
+    _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+  GROUP BY
+    event_date
+),
+
+daily_purchases AS (
+  SELECT
+    event_date,
+    COUNT(*) AS purchases,
+    SUM(ecommerce.purchase_revenue) AS revenue
+  FROM
+    `your-project.analytics_123456789.events_*`
+  WHERE
+    _TABLE_SUFFIX BETWEEN '20260101' AND '20260131'
+    AND event_name = 'purchase'
+  GROUP BY
+    event_date
+)
+
+SELECT
+  visitors.event_date,
+  visitors.visitors,
+  COALESCE(purchases.purchases, 0) AS purchases,
+  COALESCE(purchases.revenue, 0) AS revenue,
+  SAFE_DIVIDE(
+    purchases.purchases,
+    visitors.visitors
+  ) AS purchase_rate
+FROM
+  daily_visitors AS visitors
+LEFT JOIN
+  daily_purchases AS purchases
+USING
+  (event_date)
+ORDER BY
+  visitors.event_date;</code></pre>
+</section>
+<section id="explanation-7" class="level1">
+<h1>Explanation</h1>
+<p>This query creates two daily summary tables: one for unique visitors and another for purchases and revenue. It then joins the two summaries using <code>event_date</code>. The final output allows daily traffic to be compared with purchases, revenue, and the estimated purchase rate.</p>
+</section>
+<section id="caveat-7" class="level1">
+<h1>Caveat</h1>
+<p>The purchase rate is based on daily unique visitors and daily purchases. It should not be interpreted as a perfect user-level conversion rate because users may visit on one day and purchase on another.</p>
+</section>
+<section id="skills-demonstrated" class="level1">
+<h1>Skills Demonstrated</h1>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Requirement</th>
+<th>Query or Queries</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Filtering and scoping</td>
+<td>Queries 1, 2, 3, 4, 5, 6, 7, and 8</td>
+</tr>
+<tr class="even">
+<td>Grouping and aggregation</td>
+<td>Queries 1, 2, 3, 4, 5, 6, 7, and 8</td>
+</tr>
+<tr class="odd">
+<td><code>UNNEST(event_params)</code></td>
+<td>Queries 3, 4, and 6</td>
+</tr>
+<tr class="even">
+<td>Correct parameter value types</td>
+<td>Queries 3 and 4 use <code>string_value</code>; Query 6 uses <code>int_value</code></td>
+</tr>
+<tr class="odd">
+<td>CTE structure</td>
+<td>Queries 6, 7, and 8</td>
+</tr>
+<tr class="even">
+<td>Joining or combining results</td>
+<td>Query 8</td>
+</tr>
+<tr class="odd">
+<td>Interpretation</td>
+<td>Provided for all eight queries</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>These eight queries demonstrate the core BigQuery GoogleSQL skills required for working with GA4 export data. They show how to limit the scanned date range, summarize events and users, extract nested event parameters, organize logic with CTEs, and combine multiple summaries for analysis.</p>
+</section>
+<section id="appendix" class="level1">
+<h1>Appendix</h1>
+</section>
+<section id="github-repository" class="level1">
+<h1>GitHub Repository</h1>
+<p><a href="https://github.com/brianvuong1/ibm-6500-2">GitHub repository</a></p>
+</section>
+<section id="github-pages-report" class="level1">
+<h1>GitHub Pages Report</h1>
+<p><a href="https://brianvuong1.github.io/ibm-6500-2/milestone-4">GitHub Pages link</a></p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
