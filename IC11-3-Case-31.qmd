@@ -1,0 +1,140 @@
+---
+title: "Case 31: Employees Federal Credit Union"
+subtitle: "Survey Data Analysis and Research Findings"
+author: "Brian"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    transition: fade
+    background-transition: fade
+    center: false
+    width: 1280
+    height: 720
+    smaller: true
+    code-fold: true
+    code-summary: "Show R Code"
+    css: styles.css
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+
+
+# Research Question 3 (R3)
+
+## Members’ Attitudes Toward Employee Proficiency
+
+R3 examines members’ attitudes and beliefs about the proficiency of Employees Federal Credit Union employees. Employee proficiency was measured using Q3–Q6:
+
+- Q3: Employees are courteous
+- Q4: Employees are helpful
+- Q5: Employees are professional
+- Q6: Employees are available
+
+Because these items measure the same general concept, an employee proficiency composite score was created by averaging Q3–Q6. Higher scores indicate more favorable evaluations.
+
+## R3 Analysis
+
+The employee proficiency composite had a mean of **[insert M]** and a standard deviation of **[insert SD]**. The scale midpoint was 3.00.
+
+A one-sample t-test compared the employee proficiency score with the midpoint of the scale. The result was statistically **[significant/not significant]**, *t*([df]) = [insert t], *p* = [insert p].
+
+## R3 Interpretation
+
+Members’ average evaluation of employee proficiency was **[above/about equal to/below]** the scale midpoint. This suggests that members generally viewed Employees Federal Credit Union employees as **[favorable interpretation]**.
+
+The result **[does/does not]** provide evidence that members’ evaluations differ significantly from a neutral evaluation. The factor analysis and reliability analysis were used to determine whether a composite score was appropriate; they are not treated as evidence answering R3 itself.
+
+# Research Question 6 (R6)
+
+## Members’ Attitudes Toward Operational Effectiveness
+
+R6 examines members’ attitudes and beliefs about how effectively Employees Federal Credit Union is operated. Operational effectiveness was measured using the relevant questionnaire items, including:
+
+- Q9: Frequency of account statements
+- Q10: Accuracy of account statements
+- Q11: Ease of understanding account statements
+- Q12: Confidentiality of member accounts
+- Q31: Protection of members’ financial information
+- Q32: Promptness in processing loan applications
+- Q33: Whether financial services meet members’ needs
+- Q34: Ease of completing loan applications
+- Q37: Overall rating of credit union management and operations
+
+Reverse-coded items were aligned so that higher scores represented more favorable evaluations. A composite operational-effectiveness score was created only if the reliability and factor-analysis results supported combining the items.
+
+## R6 Analysis
+
+The operational-effectiveness composite had a mean of **[insert M]** and a standard deviation of **[insert SD]**.
+
+A one-sample t-test compared the operational-effectiveness score with the scale midpoint of 3.00. The result was statistically **[significant/not significant]**, *t*([df]) = [insert t], *p* = [insert p].
+
+## R6 Interpretation
+
+Members’ average evaluation of operational effectiveness was **[above/about equal to/below]** the scale midpoint. This indicates that members generally viewed the credit union’s operations as **[favorable interpretation]**.
+
+The statistical test **[does/does not]** indicate that the average evaluation differs significantly from a neutral response. These findings suggest that the credit union should **[insert practical implication based on your result]**.
+
+# Research Question 4 (R4)
+
+## Differences by Member Residence
+
+R4 examines whether perceptions differ between members who live in the headquarters area and members who live elsewhere. Residence was measured using Q38.
+
+The analysis compared the following outcomes across the two residence groups:
+
+1. Employee proficiency
+2. Awareness of financial services
+3. Operational effectiveness
+
+## R4a: Employee Proficiency by Residence
+
+Members living in the headquarters area had an average employee-proficiency score of **[insert M]** (*SD* = [insert SD]), compared with **[insert M]** (*SD* = [insert SD]) among members living elsewhere.
+
+An independent-samples t-test showed that the difference was statistically **[significant/not significant]**, *t*([df]) = [insert t], *p* = [insert p].
+
+This result suggests that employee-proficiency evaluations **[did/did not]** differ meaningfully according to where members lived.
+
+## R4b: Awareness of Financial Services by Residence
+
+Chi-square tests of independence were used to examine whether awareness of financial products differed by member residence.
+
+The results showed that awareness of **[insert product/item]** differed significantly by residence, χ²([df]) = [insert chi-square], *p* = [insert p]. For the remaining products, the relationships between residence and awareness were **[not statistically significant/significant for the following items: insert items]**.
+
+Overall, these findings suggest that members’ awareness of financial products was **[similar across groups/different across groups]**.
+
+## R4c: Operational Effectiveness by Residence
+
+Members living in the headquarters area had an average operational-effectiveness score of **[insert M]** (*SD* = [insert SD]), compared with **[insert M]** (*SD* = [insert SD]) among members living elsewhere.
+
+An independent-samples t-test showed that the difference was statistically **[significant/not significant]**, *t*([df]) = [insert t], *p* = [insert p].
+
+For categorical operational-effectiveness measures, the chi-square results indicated **[insert summary of significant or nonsignificant findings]**.
+
+## R4 Interpretation
+
+Overall, the findings provide **[strong/limited/no]** evidence that members’ perceptions differ according to residence. The most important difference was **[insert finding]**.
+
+The results suggest that Employees Federal Credit Union should **[insert implication, such as targeting communication or service improvements to a particular member group]**. Because these analyses compare groups rather than manipulate residence, the results show associations and should not be interpreted as evidence of causation.
+
+# Overall Findings
+
+| Research Question | Main Finding | Implication |
+|---|---|---|
+| R3 | Employee proficiency was [above/about equal to/below] the scale midpoint. | [Insert implication.] |
+| R6 | Operational effectiveness was [above/about equal to/below] the scale midpoint. | [Insert implication.] |
+| R4 | Perceptions [did/did not] differ by member residence. | [Insert implication.] |
+
+# Conclusion
+
+The analysis examined members’ evaluations of employee proficiency, operational effectiveness, and differences between members living in the headquarters area and members living elsewhere.
+
+Overall, the results indicate that **[insert overall conclusion]**. The findings can help Employees Federal Credit Union identify strengths in employee service and operations while improving communication or services in areas where members reported less favorable evaluations.
+
+# Appendix
+
+- GitHub Repository: [Paste your GitHub repository link here]
+- GitHub Pages Report: [Paste your GitHub Pages link here]
