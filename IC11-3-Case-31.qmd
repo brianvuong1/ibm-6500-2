@@ -136,5 +136,5 @@ Overall, the results indicate that **[insert overall conclusion]**. The findings
 
 # Appendix
 
-- GitHub Repository: [Paste your GitHub repository link here]
+- GitHub Repository: [https://github.com/brianvuong1/ibm-6500-2]
 - GitHub Pages Report: [Paste your GitHub Pages link here]

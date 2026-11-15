@@ -1,0 +1,109 @@
+---
+title: "Case 31: Employees Federal Credit Union"
+subtitle: "Survey Data Analysis and Research Findings"
+author: "Brian"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    transition: fade
+    background-transition: fade
+    center: false
+    width: 1280
+    height: 720
+    smaller: true
+    code-fold: true
+    code-summary: "Show R Code"
+    css: styles.css
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+
+# Case 31: Hypothesis Testing
+
+## Introduction
+
+This report examines two hypotheses concerning members’ awareness of Credit Union services and their opinions about Credit Union loan rates. A one-way ANOVA was used for H1, and a paired-samples t-test was used for H2.
+
+# Hypothesis 1 (H1)
+
+## Awareness of Regular Share Accounts and Service Satisfaction
+
+H1 examines whether members’ awareness of regular share accounts is related to their opinions about how well the Credit Union’s financial services meet their needs.
+
+- Predictor: Q13, awareness of regular share accounts
+- Outcome: Q33, whether the Credit Union’s financial services meet members’ needs
+
+Q13 contains three awareness groups:
+
+1. Aware and have used the service
+2. Aware but have not used the service
+3. Unaware of the service
+
+## H1 Statistical Analysis
+
+A one-way analysis of variance (ANOVA) was conducted to compare members’ Q33 ratings across the three Q13 awareness groups.
+
+The mean Q33 rating was **[insert mean]** for members who were aware of and had used the regular share account, **[insert mean]** for members who were aware but had not used it, and **[insert mean]** for members who were unaware of the service.
+
+The one-way ANOVA result was statistically **[significant/not significant]**, *F*([df between], [df within]) = [insert F], *p* = [insert p].
+
+If the ANOVA was significant, post-hoc comparisons showed that **[insert which groups differed]**. If the ANOVA was not significant, post-hoc comparisons were not interpreted.
+
+## H1 Decision and Interpretation
+
+The null hypothesis was **[rejected/not rejected]**.
+
+The results indicate that members’ opinions about how well the Credit Union’s financial services meet their needs **[did/did not]** differ according to their awareness of regular share accounts.
+
+This finding suggests that **[insert practical interpretation based on the group means]**. However, the ANOVA identifies differences among awareness groups but does not establish that awareness causes differences in members’ opinions.
+
+# Hypothesis 2 (H2)
+
+## Credit Union Loan Rates and Competitor Comparisons
+
+H2 examines whether members’ opinions of the Credit Union’s loan rates differ from their agreement that the Credit Union’s loan rates are lower than those of competitors.
+
+The two ratings were measured using:
+
+- Q8: Opinion about rates charged on borrowed funds
+- Q30: Agreement that Credit Union loan rates are lower than other institutions
+
+Because the same respondents answered both questions, a paired-samples t-test was appropriate.
+
+## H2 Statistical Analysis
+
+The mean Q8 rating was **[insert mean]** with a standard deviation of **[insert SD]**. The mean Q30 rating was **[insert mean]** with a standard deviation of **[insert SD]**.
+
+The average paired difference between the two ratings was **[insert mean difference]**. The paired-samples t-test result was statistically **[significant/not significant]**, *t*([df]) = [insert t], *p* = [insert p]. The 95% confidence interval for the mean difference was **[insert lower bound]** to **[insert upper bound]**.
+
+## H2 Decision and Interpretation
+
+The null hypothesis was **[rejected/not rejected]**.
+
+The results indicate that members’ opinions about the Credit Union’s loan rates **[did/did not]** differ significantly from their agreement that the Credit Union’s loan rates were lower than those of competitors.
+
+This suggests that **[insert practical interpretation based on the means and direction of the difference]**. Because the two ratings were provided by the same members, the paired-samples t-test accounts for the relationship between the two responses.
+
+# Summary of Hypothesis Tests
+
+| Hypothesis | Statistical Test | Result | Decision |
+|---|---|---|---|
+| H1 | One-way ANOVA | *F*([df], [df]) = [insert F], *p* = [insert p] | [Reject/Do not reject] the null hypothesis |
+| H2 | Paired-samples t-test | *t*([df]) = [insert t], *p* = [insert p] | [Reject/Do not reject] the null hypothesis |
+
+# Overall Conclusion
+
+The analysis tested whether awareness of regular share accounts was associated with differences in members’ evaluations of Credit Union services and whether members gave different ratings to Credit Union loan rates and competitor comparisons.
+
+For H1, the results showed that **[insert conclusion]**. For H2, the results showed that **[insert conclusion]**.
+
+Together, these findings suggest that Employees Federal Credit Union should **[insert recommendation based on the results]**.
+
+# Appendix
+
+- GitHub Repository: [https://github.com/brianvuong1/ibm-6500-2]
+- GitHub Pages Report: [Paste your GitHub Pages link here]
