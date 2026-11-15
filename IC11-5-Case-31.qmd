@@ -1,0 +1,160 @@
+---
+title: "Case 31: Employees Federal Credit Union"
+subtitle: "Survey Data Analysis and Research Findings"
+author: "Brian"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    transition: fade
+    background-transition: fade
+    center: false
+    width: 1280
+    height: 720
+    smaller: true
+    code-fold: true
+    code-summary: "Show R Code"
+    css: styles.css
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+
+# Case 31: Reliability and Factor Analysis
+
+## Purpose
+
+This report evaluates the reliability and factor structure of the multi-item scales used for Research Questions 3 and 6.
+
+The analyses focus only on:
+
+- R3: Q3–Q6, measuring employee proficiency
+- R6: Q31–Q34, measuring operational effectiveness
+
+These analyses determine whether the items can reasonably be combined into composite scales. They do not answer the substantive research questions.
+
+# R3: Employee Proficiency
+
+## Items Analyzed
+
+The R3 scale includes four items:
+
+- Q3: Employees are courteous
+- Q4: Employees are helpful
+- Q5: Employees are professional
+- Q6: Employees are available
+
+Higher scores represent more favorable evaluations of employee proficiency.
+
+## R3 Reliability Analysis
+
+Internal consistency reliability was evaluated using Cronbach’s alpha.
+
+Cronbach’s alpha for the four-item employee-proficiency scale was **[insert alpha]**. The corrected item-total correlations ranged from **[insert minimum]** to **[insert maximum]**.
+
+The item that contributed the most to the scale was **[insert item]**, while the item with the weakest item-total correlation was **[insert item]**.
+
+## R3 Factor Analysis
+
+An exploratory factor analysis was conducted to determine whether Q3–Q6 represented one underlying employee-proficiency factor.
+
+The Kaiser-Meyer-Olkin measure of sampling adequacy was **[insert KMO]**. Bartlett’s test of sphericity was statistically **[significant/not significant]**, χ²([df]) = [insert chi-square], *p* = [insert p].
+
+The factor analysis identified **[insert number]** factor(s) with eigenvalues greater than 1. The first factor explained **[insert percentage]%** of the variance.
+
+| Item | Factor Loading |
+|---|---:|
+| Q3: Employees are courteous | [insert loading] |
+| Q4: Employees are helpful | [insert loading] |
+| Q5: Employees are professional | [insert loading] |
+| Q6: Employees are available | [insert loading] |
+
+The factor loadings were **[generally strong/moderate/weak]**, indicating that the items **[did/did not]** measure a common underlying construct.
+
+## R3 Scale Decision
+
+Based on the reliability and factor-analysis results, the Q3–Q6 items **[will/will not]** be combined into an employee-proficiency composite scale.
+
+The decision is supported by:
+
+- Cronbach’s alpha of **[insert alpha]**
+- Item-total correlations ranging from **[insert range]**
+- Factor loadings ranging from **[insert range]**
+- A factor structure showing **[one common factor/multiple factors/no clear factor]**
+
+If the scale is used in later analyses, the composite score will be calculated by averaging the available responses to Q3–Q6. Higher composite scores will indicate more favorable perceptions of employee proficiency.
+
+# R6: Operational Effectiveness
+
+## Items Analyzed
+
+For R6, reliability and factor analyses were conducted only for the metric items Q31–Q34:
+
+- Q31: Credit Union personnel keep members’ financial information confidential
+- Q32: The Credit Union is prompt in processing loan applications
+- Q33: The Credit Union’s financial services meet members’ needs
+- Q34: Credit Union loan applications are simple and easy to complete
+
+Higher scores represent more favorable evaluations of operational effectiveness.
+
+## R6 Reliability Analysis
+
+Internal consistency reliability was evaluated using Cronbach’s alpha.
+
+Cronbach’s alpha for the four-item operational-effectiveness scale was **[insert alpha]**. The corrected item-total correlations ranged from **[insert minimum]** to **[insert maximum]**.
+
+The item that contributed the most to the scale was **[insert item]**, while the item with the weakest item-total correlation was **[insert item]**.
+
+## R6 Factor Analysis
+
+An exploratory factor analysis was conducted to determine whether Q31–Q34 represented one underlying operational-effectiveness factor.
+
+The Kaiser-Meyer-Olkin measure of sampling adequacy was **[insert KMO]**. Bartlett’s test of sphericity was statistically **[significant/not significant]**, χ²([df]) = [insert chi-square], *p* = [insert p].
+
+The factor analysis identified **[insert number]** factor(s) with eigenvalues greater than 1. The first factor explained **[insert percentage]%** of the variance.
+
+| Item | Factor Loading |
+|---|---:|
+| Q31: Financial information is kept confidential | [insert loading] |
+| Q32: Loan applications are processed promptly | [insert loading] |
+| Q33: Financial services meet members’ needs | [insert loading] |
+| Q34: Loan applications are simple and easy to complete | [insert loading] |
+
+The factor loadings were **[generally strong/moderate/weak]**, indicating that the items **[did/did not]** measure a common underlying construct.
+
+## R6 Scale Decision
+
+Based on the reliability and factor-analysis results, the Q31–Q34 items **[will/will not]** be combined into an operational-effectiveness composite scale.
+
+The decision is supported by:
+
+- Cronbach’s alpha of **[insert alpha]**
+- Item-total correlations ranging from **[insert range]**
+- Factor loadings ranging from **[insert range]**
+- A factor structure showing **[one common factor/multiple factors/no clear factor]**
+
+If the scale is used in later analyses, the composite score will be calculated by averaging the available responses to Q31–Q34. Higher composite scores will indicate more favorable evaluations of operational effectiveness.
+
+# Comparison of Scale Results
+
+| Scale | Items | Cronbach’s Alpha | Factor Structure | Composite Scale Decision |
+|---|---|---:|---|---|
+| Employee proficiency | Q3–Q6 | [insert alpha] | [insert result] | [Create/Do not create] |
+| Operational effectiveness | Q31–Q34 | [insert alpha] | [insert result] | [Create/Do not create] |
+
+# Overall Conclusion
+
+The reliability and factor analyses evaluated whether the items for R3 and R6 formed coherent multi-item scales.
+
+For R3, the results indicated that the employee-proficiency items **[formed/did not form]** a reliable and interpretable scale. Therefore, **[an employee-proficiency composite will/will not]** be created for later analyses.
+
+For R6, the results indicated that the operational-effectiveness items **[formed/did not form]** a reliable and interpretable scale. Therefore, **[an operational-effectiveness composite will/will not]** be created for later analyses.
+
+These analyses evaluate measurement quality only. They do not provide the substantive findings needed to answer R3 or R6.
+
+# Appendix
+
+- GitHub Repository: [https://github.com/brianvuong1/ibm-6500-2]
+- GitHub Pages Report: [Paste your GitHub Pages link here]
