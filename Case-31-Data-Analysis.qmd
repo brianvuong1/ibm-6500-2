@@ -1,0 +1,687 @@
+---
+title: "Case 31: Employees Federal Credit Union"
+subtitle: "Summary of Data Analysis for H5a-H5d"
+author: "Brian"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    transition: fade
+    background-transition: fade
+    center: false
+    width: 1280
+    height: 720
+    smaller: true
+    code-fold: true
+    code-summary: "Show R Code"
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Case 31: Hypothesis Testing H5a-H5d
+
+## Introduction
+
+This analysis examines factors influencing members' overall attitudes toward the managerial and operational efficiency of Employees Federal Credit Union (EFCU).
+
+The analysis focuses on four hypotheses, H5a through H5d, concerning confidentiality, loan processing promptness, adequacy of financial services, and simplicity of loan applications.
+
+A multiple linear regression analysis is used to determine whether these four factors significantly predict members' overall evaluations of the credit union.
+
+# Research Objectives
+
+## Purpose of the Analysis
+
+The primary objective is to identify factors associated with members' overall attitudes toward the credit union's operational efficiency.
+
+The four hypotheses examine:
+
+- H5a: Confidentiality of personal financial information.
+- H5b: Promptness of loan application processing.
+- H5c: Adequacy of financial services in meeting members' needs.
+- H5d: Simplicity and ease of loan applications.
+
+All four hypotheses share the same dependent variable, making multiple regression an appropriate statistical method.
+
+# Data Preparation
+
+## Loading Required Packages
+
+The analysis uses R to import, prepare, and analyze the SPSS survey dataset.
+
+```{r}
+#| label: setup
+
+library(haven)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+```
+
+## Importing the Dataset
+
+The cleaned SPSS dataset contains survey responses collected from members of Employees Federal Credit Union.
+
+```{r}
+#| label: import-data
+
+efcu <- read_sav("Case 31 Data_efcu_4.sav")
+
+# Display dataset dimensions
+dim(efcu)
+
+# Display variable names
+names(efcu)
+
+# Preview dataset
+head(efcu)
+```
+
+## Identifying the Variables
+
+The dependent variable is the overall managerial and operational efficiency rating.
+
+The independent variables represent four specific aspects of the credit union's operations.
+
+| Variable | Role | Description |
+|---|---|---|
+| Q37_r | Dependent | Overall operational efficiency |
+| Q31 | Independent | Confidentiality of financial information |
+| Q32 | Independent | Loan application processing promptness |
+| Q33 | Independent | Adequacy of financial services |
+| Q34 | Independent | Simplicity of loan applications |
+
+The dependent variable Q37_r is the recoded version of the overall management and operations rating.
+
+## Preparing the Regression Data
+
+The five variables are selected and converted to numeric values for regression analysis.
+
+Only valid responses are retained. Responses outside the valid five-point scales and missing observations are excluded.
+
+```{r}
+
+#| label: prepare-data
+
+# Display available variable names
+names(efcu)
+
+# Standardize variable names to uppercase
+names(efcu) <- toupper(names(efcu))
+
+# Create Q37_R if it does not exist
+if (!"Q37_R" %in% names(efcu)) {
+
+  if (!"Q37" %in% names(efcu)) {
+    stop("Neither Q37_R nor Q37 exists in the dataset.")
+  }
+
+  # Reverse Q37 so higher values indicate
+  # more favorable operational evaluations.
+  # Original: 1 = Excellent, 5 = Very Poor
+  # Reversed: 5 = Excellent, 1 = Very Poor
+  efcu$Q37_R <- ifelse(
+    as.numeric(efcu$Q37) %in% 1:5,
+    6 - as.numeric(efcu$Q37),
+    NA_real_
+  )
+}
+
+# Select required variables
+required_vars <- c(
+  "Q37_R", "Q31", "Q32", "Q33", "Q34"
+)
+
+# Identify missing variables
+missing_vars <- setdiff(
+  required_vars,
+  names(efcu)
+)
+
+if (length(missing_vars) > 0) {
+  stop(
+    "Missing variables: ",
+    paste(missing_vars, collapse = ", ")
+  )
+}
+
+# Prepare regression dataset
+regression_data <- efcu |>
+  dplyr::select(dplyr::all_of(required_vars)) |>
+  dplyr::mutate(
+    dplyr::across(
+      dplyr::everything(),
+      ~ as.numeric(.x)
+    )
+  ) |>
+  dplyr::mutate(
+    dplyr::across(
+      dplyr::everything(),
+      ~ ifelse(.x %in% 1:5, .x, NA_real_)
+    )
+  ) |>
+  tidyr::drop_na()
+
+# Rename dependent variable for consistency
+names(regression_data)[
+  names(regression_data) == "Q37_R"
+] <- "Q37_r"
+
+# Display results
+summary(regression_data)
+nrow(regression_data)
+
+```
+
+## Sample Characteristics
+
+The original dataset contains `r nrow(efcu)` observations.
+
+After excluding missing and invalid responses for the five regression variables, the final analysis includes `r nrow(regression_data)` complete observations.
+
+Using complete cases ensures that the same respondents are included when estimating the effects of all four independent variables.
+
+# Hypothesis Development
+
+## H5a: Confidentiality of Financial Information
+
+**Hypothesis H5a:**
+
+Member belief that the credit union keeps personal financial information confidential will positively influence the overall attitude toward the credit union's operational efficiency.
+
+- Independent variable: Q31
+- Dependent variable: Q37_r
+
+Members who believe their personal financial information is protected are expected to evaluate the credit union's operational efficiency more favorably.
+
+## H5b: Loan Processing Promptness
+
+**Hypothesis H5b:**
+
+Loan application processing promptness will positively influence the overall attitude toward the credit union's operational efficiency.
+
+- Independent variable: Q32
+- Dependent variable: Q37_r
+
+Members who believe loan applications are processed promptly are expected to report more favorable attitudes toward the credit union's operational efficiency.
+
+## H5c: Adequacy of Financial Services
+
+**Hypothesis H5c:**
+
+Member satisfaction with the level of financial services in meeting their needs will positively influence the overall attitude toward the credit union's operational efficiency.
+
+- Independent variable: Q33
+- Dependent variable: Q37_r
+
+Members who believe the credit union's services meet their financial needs are expected to evaluate its overall operations more favorably.
+
+## H5d: Simplicity of Loan Applications
+
+**Hypothesis H5d:**
+
+Loan application simplicity and easiness will positively influence the overall attitude toward the credit union's operational efficiency.
+
+- Independent variable: Q34
+- Dependent variable: Q37_r
+
+Members who consider loan applications simple and easy to complete are expected to have more favorable overall attitudes toward the credit union's operational efficiency.
+
+# Multiple Regression Analysis
+
+## Statistical Method
+
+Multiple linear regression is used because the four hypotheses involve different independent variables but share one dependent variable.
+
+The regression equation is:
+
+$$
+Q37_r = \beta_0 + \beta_1Q31 +
+\beta_2Q32 + \beta_3Q33 +
+\beta_4Q34 + \epsilon
+$$
+
+The analysis evaluates the independent contribution of each predictor while controlling for the other three predictors.
+
+The significance level is set at alpha = 0.05.
+
+## Running the Multiple Regression
+
+```{r}
+#| label: regression-model
+
+model_h5 <- lm(
+  Q37_r ~ Q31 + Q32 + Q33 + Q34,
+  data = regression_data
+)
+
+# Regression summary
+summary(model_h5)
+
+# 95% confidence intervals
+confint(model_h5)
+```
+
+## Extracting Regression Statistics
+
+The following code extracts the regression coefficients, p-values, model fit statistics, and overall model significance.
+
+```{r}
+#| label: extract-results
+
+model_summary <- summary(model_h5)
+
+coefficients_table <- as.data.frame(
+  model_summary$coefficients
+)
+
+coefficients_table$Variable <- rownames(
+  coefficients_table
+)
+
+rownames(coefficients_table) <- NULL
+
+names(coefficients_table) <- c(
+  "Estimate",
+  "Std_Error",
+  "t_value",
+  "p_value",
+  "Variable"
+)
+
+r_squared <- model_summary$r.squared
+
+adjusted_r_squared <-
+  model_summary$adj.r.squared
+
+f_statistic <- unname(
+  model_summary$fstatistic[1]
+)
+
+df1 <- unname(
+  model_summary$fstatistic[2]
+)
+
+df2 <- unname(
+  model_summary$fstatistic[3]
+)
+
+model_p_value <- pf(
+  f_statistic,
+  df1,
+  df2,
+  lower.tail = FALSE
+)
+
+# Display model statistics
+data.frame(
+  R_Squared = r_squared,
+  Adjusted_R_Squared = adjusted_r_squared,
+  F_Statistic = f_statistic,
+  Model_P_Value = model_p_value
+) |>
+  kable(digits = 4)
+```
+
+# Regression Results
+
+## Overall Model Fit
+
+The multiple regression model produced an R-squared value of **`r round(r_squared, 4)`** and an adjusted R-squared value of **`r round(adjusted_r_squared, 4)`**.
+
+The four independent variables collectively explained approximately **`r round(r_squared * 100, 2)`%** of the variation in members' overall operational-efficiency ratings.
+
+The overall regression F-statistic was **`r round(f_statistic, 3)`**, with a p-value of **`r format.pval(model_p_value, digits = 3)`**.
+
+The overall regression model was **`r ifelse(model_p_value < 0.05, "statistically significant", "not statistically significant")`** at the 0.05 level.
+
+These findings indicate whether the four operational factors collectively provide statistically significant explanatory power for members' overall evaluations.
+
+## Regression Coefficients
+
+```{r}
+#| label: coefficient-table
+
+coefficients_table |>
+  select(
+    Variable,
+    Estimate,
+    Std_Error,
+    t_value,
+    p_value
+  ) |>
+  kable(
+    digits = 4,
+    caption = "Multiple Regression Coefficients"
+  )
+```
+
+The coefficient estimates indicate the direction and magnitude of each relationship, holding the other predictors constant.
+
+A p-value below 0.05 indicates that a coefficient differs significantly from zero.
+
+Because higher values on the recoded Q37_r represent more favorable evaluations, and the agreement items are coded from strongly disagree to strongly agree, positive coefficients are consistent with the directions proposed in H5a through H5d.
+
+# Individual Hypothesis Testing
+
+## Preparing Hypothesis Decisions
+
+```{r}
+#| label: hypothesis-decisions
+
+hypothesis_results <- coefficients_table |>
+  filter(Variable != "(Intercept)") |>
+  mutate(
+    Hypothesis = case_when(
+      Variable == "Q31" ~ "H5a",
+      Variable == "Q32" ~ "H5b",
+      Variable == "Q33" ~ "H5c",
+      Variable == "Q34" ~ "H5d"
+    ),
+    Decision = ifelse(
+      p_value < 0.05,
+      "Reject H0",
+      "Fail to reject H0"
+    ),
+    Support = ifelse(
+      p_value < 0.05 & Estimate > 0,
+      "Supported",
+      "Not supported"
+    )
+  ) |>
+  arrange(Hypothesis)
+
+hypothesis_results |>
+  select(
+    Hypothesis,
+    Variable,
+    Estimate,
+    p_value,
+    Decision,
+    Support
+  ) |>
+  kable(
+    digits = 4,
+    caption = "Hypothesis Testing Results"
+  )
+```
+
+## H5a: Confidentiality of Financial Information
+
+The regression coefficient for confidentiality of personal financial information (Q31) was **`r round(coef(model_h5)["Q31"], 4)`**.
+
+The p-value was **`r format.pval(coefficients_table$p_value[coefficients_table$Variable == "Q31"], digits = 3)`**.
+
+The relationship was **`r ifelse(coefficients_table$p_value[coefficients_table$Variable == "Q31"] < 0.05, "statistically significant", "not statistically significant")`** at the 0.05 level.
+
+**Hypothesis Decision:**
+
+H5a was **`r hypothesis_results$Support[hypothesis_results$Hypothesis == "H5a"]`**.
+
+The results indicate that confidentiality of personal financial information **`r ifelse(coefficients_table$p_value[coefficients_table$Variable == "Q31"] < 0.05 & coef(model_h5)["Q31"] > 0, "has a statistically significant positive relationship with", "does not demonstrate a statistically significant positive relationship with")`** members' overall attitudes toward operational efficiency, after controlling for the other predictors.
+
+## H5b: Loan Application Processing Promptness
+
+The regression coefficient for loan application processing promptness (Q32) was **`r round(coef(model_h5)["Q32"], 4)`**.
+
+The p-value was **`r format.pval(coefficients_table$p_value[coefficients_table$Variable == "Q32"], digits = 3)`**.
+
+The relationship was **`r ifelse(coefficients_table$p_value[coefficients_table$Variable == "Q32"] < 0.05, "statistically significant", "not statistically significant")`** at the 0.05 level.
+
+**Hypothesis Decision:**
+
+H5b was **`r hypothesis_results$Support[hypothesis_results$Hypothesis == "H5b"]`**.
+
+The results indicate that loan processing promptness **`r ifelse(coefficients_table$p_value[coefficients_table$Variable == "Q32"] < 0.05 & coef(model_h5)["Q32"] > 0, "has a statistically significant positive relationship with", "does not demonstrate a statistically significant positive relationship with")`** members' overall attitudes toward operational efficiency, after controlling for the other predictors.
+
+## H5c: Adequacy of Financial Services
+
+The regression coefficient for adequacy of financial services (Q33) was **`r round(coef(model_h5)["Q33"], 4)`**.
+
+The p-value was **`r format.pval(coefficients_table$p_value[coefficients_table$Variable == "Q33"], digits = 3)`**.
+
+The relationship was **`r ifelse(coefficients_table$p_value[coefficients_table$Variable == "Q33"] < 0.05, "statistically significant", "not statistically significant")`** at the 0.05 level.
+
+**Hypothesis Decision:**
+
+H5c was **`r hypothesis_results$Support[hypothesis_results$Hypothesis == "H5c"]`**.
+
+The results indicate that adequacy of financial services **`r ifelse(coefficients_table$p_value[coefficients_table$Variable == "Q33"] < 0.05 & coef(model_h5)["Q33"] > 0, "has a statistically significant positive relationship with", "does not demonstrate a statistically significant positive relationship with")`** members' overall attitudes toward operational efficiency, after controlling for the other predictors.
+
+## H5d: Simplicity of Loan Applications
+
+The regression coefficient for simplicity and ease of loan applications (Q34) was **`r round(coef(model_h5)["Q34"], 4)`**.
+
+The p-value was **`r format.pval(coefficients_table$p_value[coefficients_table$Variable == "Q34"], digits = 3)`**.
+
+The relationship was **`r ifelse(coefficients_table$p_value[coefficients_table$Variable == "Q34"] < 0.05, "statistically significant", "not statistically significant")`** at the 0.05 level.
+
+**Hypothesis Decision:**
+
+H5d was **`r hypothesis_results$Support[hypothesis_results$Hypothesis == "H5d"]`**.
+
+The results indicate that simplicity of loan applications **`r ifelse(coefficients_table$p_value[coefficients_table$Variable == "Q34"] < 0.05 & coef(model_h5)["Q34"] > 0, "has a statistically significant positive relationship with", "does not demonstrate a statistically significant positive relationship with")`** members' overall attitudes toward operational efficiency, after controlling for the other predictors.
+
+# Regression Diagnostics
+
+## Checking Model Assumptions
+
+Regression diagnostics are performed to evaluate the suitability of the multiple regression model.
+
+The analysis examines:
+
+- Linearity of the relationships.
+- Approximately constant residual variance.
+- Normality of residuals.
+- Potential influential observations.
+- Multicollinearity among predictors.
+
+```{r}
+#| label: diagnostic-plots
+#| fig-width: 8
+#| fig-height: 6
+
+par(mfrow = c(2, 2))
+
+plot(model_h5)
+
+par(mfrow = c(1, 1))
+```
+
+## Multicollinearity Assessment
+
+Variance inflation factors (VIF) are calculated to evaluate multicollinearity among the four independent variables.
+
+Higher VIF values indicate stronger linear relationships among predictors, which can make coefficient estimates less precise.
+
+```{r}
+#| label: vif-analysis
+
+predictor_names <- c(
+  "Q31", "Q32", "Q33", "Q34"
+)
+
+vif_values <- sapply(
+  predictor_names,
+  function(variable) {
+    other_variables <- setdiff(
+      predictor_names,
+      variable
+    )
+
+    auxiliary_model <- lm(
+      reformulate(
+        other_variables,
+        response = variable
+      ),
+      data = regression_data
+    )
+
+    1 / (1 - summary(auxiliary_model)$r.squared)
+  }
+)
+
+data.frame(
+  Predictor = names(vif_values),
+  VIF = as.numeric(vif_values)
+) |>
+  kable(
+    digits = 3,
+    caption = "Variance Inflation Factors"
+  )
+```
+
+## Diagnostic Findings
+
+The regression diagnostic plots provide information about the residual distribution, variance consistency, and potentially influential observations.
+
+The highest calculated variance inflation factor was **`r round(max(vif_values), 3)`**.
+
+The VIF results **`r ifelse(max(vif_values) < 5, "do not indicate substantial multicollinearity using a threshold of 5", "indicate that multicollinearity warrants further investigation using a threshold of 5")`**.
+
+The residual plots should also be reviewed visually before drawing final conclusions about the model assumptions.
+
+# Summary of Findings
+
+## Hypothesis Testing Summary
+
+```{r}
+#| label: final-summary-table
+
+hypothesis_results |>
+  select(
+    Hypothesis,
+    Variable,
+    Estimate,
+    p_value,
+    Support
+  ) |>
+  kable(
+    digits = 4,
+    caption = "Final H5a-H5d Results"
+  )
+```
+
+## Interpretation of Findings
+
+The multiple regression analysis examined four potential predictors of members' overall attitudes toward the operational efficiency of Employees Federal Credit Union.
+
+Of the four hypotheses, **`r sum(hypothesis_results$Support == "Supported")`** received statistical support.
+
+The model explained **`r round(r_squared * 100, 2)`%** of the variance in overall operational-efficiency ratings.
+
+The findings help identify which aspects of the credit union's services are positively associated with members' overall evaluations when the other operational factors are held constant.
+
+# Managerial Implications
+
+## Implications for Employees Federal Credit Union
+
+The regression findings can assist management in identifying operational areas associated with member satisfaction.
+
+Confidentiality, loan processing promptness, adequacy of financial services, and simplicity of loan applications represent important aspects of the member experience.
+
+Management should pay particular attention to factors showing statistically significant positive relationships with overall operational efficiency.
+
+These findings can guide service evaluations and help prioritize operational improvements.
+
+## Recommendations
+
+Employees Federal Credit Union should use the regression findings to evaluate its operational practices.
+
+Recommended actions include:
+
+1. Continue protecting members' confidential financial information.
+2. Monitor and improve loan application processing times.
+3. Evaluate whether existing financial services adequately meet members' needs.
+4. Simplify loan application procedures where possible.
+5. Continue collecting member feedback to monitor operational performance.
+
+The regression results identify associations and should not be interpreted as proof that changing a particular factor will cause an improvement in overall ratings.
+
+# Conclusion
+
+## Overall Conclusion
+
+This analysis tested H5a through H5d using one multiple linear regression model.
+
+The dependent variable was overall managerial and operational efficiency (Q37_r).
+
+The independent variables were confidentiality (Q31), loan processing promptness (Q32), adequacy of financial services (Q33), and loan application simplicity (Q34).
+
+The overall regression model was **`r ifelse(model_p_value < 0.05, "statistically significant", "not statistically significant")`**.
+
+The analysis found that **`r sum(hypothesis_results$Support == "Supported")` out of four hypotheses** were supported.
+
+These findings provide evidence about the relationships between members' perceptions of specific operational practices and their overall evaluation of Employees Federal Credit Union.
+
+# Appendix
+
+## Data Sources
+
+The following materials were used:
+
+- Case 31: Employees Federal Credit Union narrative.
+- Case Exhibit 31.1: EFCU Member Opinion Survey.
+- Case Exhibit 31.2: Codes for Questionnaire.
+- Case 31 cleaned SPSS dataset.
+- IC - M08 - Data Analysis Table - Hypotheses - Case 31.
+
+## R Analysis Information
+
+The statistical analysis was conducted in R using the following packages:
+
+- haven
+- dplyr
+- ggplot2
+- knitr
+
+The primary statistical procedure was multiple linear regression using the `lm()` function.
+
+Statistical significance was evaluated at the 0.05 level.
+
+## GitHub Repository and Pages
+
+The Quarto source code and rendered HTML report are intended for publication through GitHub.
+
+The GitHub repository and published report links are listed below.
+
+```{r}
+#| label: github-links
+#| echo: false
+#| results: asis
+
+repo_url <- paste0(
+  "https://github.com/",
+  "brianvuong1/ibm-6500-2"
+)
+
+pages_url <- paste0(
+  "https://brianvuong1.github.io/",
+  "ibm-6500-2/IC11-6-Case-31.html"
+)
+
+cat(
+  "- [GitHub Repository](", repo_url, ")\n",
+  "- [GitHub Pages Report](", pages_url, ")\n",
+  sep = ""
+)
+```
+
+## Submission Deliverables
+
+The required submission includes:
+
+- `IC11-6-Case-31.qmd`
+- `IC11-6-Case-31.html`
+
+The HTML report is generated by rendering the Quarto source file.
+
+## Final Summary
+
+The H5a-H5d analysis uses one multiple regression model to evaluate four operational factors associated with members' overall attitudes toward Employees Federal Credit Union.
+
+The analysis includes data preparation, regression estimation, statistical significance testing, hypothesis decisions, regression diagnostics, and managerial implications.
+
+The findings provide a quantitative basis for understanding the operational factors associated with members' overall evaluations of the credit union.

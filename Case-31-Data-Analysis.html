@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="Case-31-Data-Analysis_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Case-31-Data-Analysis_files/libs/quarto-html/tabby.min.js"></script>
+<script src="Case-31-Data-Analysis_files/libs/quarto-html/popper.min.js"></script>
+<script src="Case-31-Data-Analysis_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="Case-31-Data-Analysis_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Case-31-Data-Analysis_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="Case-31-Data-Analysis_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Brian">
+  <title>Case 31: Employees Federal Credit Union</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="Case-31-Data-Analysis_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="Case-31-Data-Analysis_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="Case-31-Data-Analysis_files/libs/revealjs/dist/theme/quarto-0427d8d92a431aa6a6430e53ec02a470.css">
+  <link href="Case-31-Data-Analysis_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="Case-31-Data-Analysis_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="Case-31-Data-Analysis_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="Case-31-Data-Analysis_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Case 31: Employees Federal Credit Union</h1>
+  <p class="subtitle">Summary of Data Analysis for H5a-H5d</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Brian
+</div>
+</div>
+</div>
+
+</section>
+<section>
+<section id="case-31-hypothesis-testing-h5a-h5d" class="title-slide slide level1 center">
+<h1>Case 31: Hypothesis Testing H5a-H5d</h1>
+
+</section>
+<section id="introduction" class="slide level2">
+<h2>Introduction</h2>
+<p>This analysis examines factors influencing members’ overall attitudes toward the managerial and operational efficiency of Employees Federal Credit Union (EFCU).</p>
+<p>The analysis focuses on four hypotheses, H5a through H5d, concerning confidentiality, loan processing promptness, adequacy of financial services, and simplicity of loan applications.</p>
+<p>A multiple linear regression analysis is used to determine whether these four factors significantly predict members’ overall evaluations of the credit union.</p>
+</section></section>
+<section>
+<section id="research-objectives" class="title-slide slide level1 center">
+<h1>Research Objectives</h1>
+
+</section>
+<section id="purpose-of-the-analysis" class="slide level2">
+<h2>Purpose of the Analysis</h2>
+<p>The primary objective is to identify factors associated with members’ overall attitudes toward the credit union’s operational efficiency.</p>
+<p>The four hypotheses examine:</p>
+<ul>
+<li>H5a: Confidentiality of personal financial information.</li>
+<li>H5b: Promptness of loan application processing.</li>
+<li>H5c: Adequacy of financial services in meeting members’ needs.</li>
+<li>H5d: Simplicity and ease of loan applications.</li>
+</ul>
+<p>All four hypotheses share the same dependent variable, making multiple regression an appropriate statistical method.</p>
+</section></section>
+<section>
+<section id="data-preparation" class="title-slide slide level1 center">
+<h1>Data Preparation</h1>
+
+</section>
+<section id="loading-required-packages" class="slide level2">
+<h2>Loading Required Packages</h2>
+<p>The analysis uses R to import, prepare, and analyze the SPSS survey dataset.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-label="1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb1-2"><a href="" aria-label="2"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="" aria-label="3"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="" aria-label="4"></a><span class="fu">library</span>(knitr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="importing-the-dataset" class="slide level2">
+<h2>Importing the Dataset</h2>
+<p>The cleaned SPSS dataset contains survey responses collected from members of Employees Federal Credit Union.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-label="1"></a>efcu <span class="ot">&lt;-</span> <span class="fu">read_sav</span>(<span class="st">"Case 31 Data_efcu_4.sav"</span>)</span>
+<span id="cb2-2"><a href="" aria-label="2"></a></span>
+<span id="cb2-3"><a href="" aria-label="3"></a><span class="co"># Display dataset dimensions</span></span>
+<span id="cb2-4"><a href="" aria-label="4"></a><span class="fu">dim</span>(efcu)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 128  53</code></pre>
+</div>
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-label="1"></a><span class="co"># Display variable names</span></span>
+<span id="cb4-2"><a href="" aria-label="2"></a><span class="fu">names</span>(efcu)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "q3"           "q4"           "q5"           "q6"           "q7"          
+ [6] "q8"           "q9"           "q10"          "q11"          "q12"         
+[11] "q13"          "q14"          "q15"          "q16"          "q17"         
+[16] "q18"          "q19"          "q20"          "q21"          "q22"         
+[21] "q23"          "q24"          "q25"          "q26"          "q27"         
+[26] "q30"          "q31"          "q32"          "q33"          "q34"         
+[31] "q37"          "q38"          "Att_employee" "filter_$"     "Q7_r"        
+[36] "Q8_r"         "Q37_r"        "q9_r"         "q10_r"        "q13_r"       
+[41] "q14_r"        "q15_r"        "q16_r"        "q17_r"        "q18_r"       
+[46] "q19_r"        "q20_r"        "q21_r"        "q22_r"        "q23_r"       
+[51] "q24_r"        "q25_r"        "q26_r"       </code></pre>
+</div>
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="" aria-label="1"></a><span class="co"># Preview dataset</span></span>
+<span id="cb6-2"><a href="" aria-label="2"></a><span class="fu">head</span>(efcu)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 53
+  q3        q4        q5       q6      q7       q8       q9      q10     q11    
+  &lt;dbl+lbl&gt; &lt;dbl+lbl&gt; &lt;dbl+lb&gt; &lt;dbl+l&gt; &lt;dbl+lb&gt; &lt;dbl+lb&gt; &lt;dbl+l&gt; &lt;dbl+l&gt; &lt;dbl+l&gt;
+1 4 [Agree] 4 [Agree] 4 [Agre… 4 [Agr…  2 [Hig…  4 [Low] 3 [Abo… 1 [Exc… 1 [Yes]
+2 4 [Agree] 4 [Agree] 4 [Agre… 4 [Agr…  3 [Ave…  3 [Ave… 3 [Abo… 2 [Goo… 1 [Yes]
+3 4 [Agree] 4 [Agree] 4 [Agre… 4 [Agr…  3 [Ave… NA       3 [Abo… 1 [Exc… 1 [Yes]
+4 4 [Agree] 4 [Agree] 3 [Unce… 4 [Agr… NA        3 [Ave… 3 [Abo… 2 [Goo… 1 [Yes]
+5 4 [Agree] 4 [Agree] 4 [Agre… 4 [Agr…  2 [Hig…  4 [Low] 3 [Abo… 2 [Goo… 1 [Yes]
+6 4 [Agree] 4 [Agree] 4 [Agre… 4 [Agr…  3 [Ave…  3 [Ave… 3 [Abo… 2 [Goo… 1 [Yes]
+# ℹ 44 more variables: q12 &lt;dbl+lbl&gt;, q13 &lt;dbl+lbl&gt;, q14 &lt;dbl+lbl&gt;,
+#   q15 &lt;dbl+lbl&gt;, q16 &lt;dbl+lbl&gt;, q17 &lt;dbl+lbl&gt;, q18 &lt;dbl+lbl&gt;, q19 &lt;dbl+lbl&gt;,
+#   q20 &lt;dbl+lbl&gt;, q21 &lt;dbl+lbl&gt;, q22 &lt;dbl+lbl&gt;, q23 &lt;dbl+lbl&gt;, q24 &lt;dbl+lbl&gt;,
+#   q25 &lt;dbl+lbl&gt;, q26 &lt;dbl+lbl&gt;, q27 &lt;dbl+lbl&gt;, q30 &lt;dbl+lbl&gt;, q31 &lt;dbl+lbl&gt;,
+#   q32 &lt;dbl+lbl&gt;, q33 &lt;dbl+lbl&gt;, q34 &lt;dbl+lbl&gt;, q37 &lt;dbl+lbl&gt;, q38 &lt;dbl+lbl&gt;,
+#   Att_employee &lt;dbl&gt;, `filter_$` &lt;dbl+lbl&gt;, Q7_r &lt;dbl+lbl&gt;, Q8_r &lt;dbl+lbl&gt;,
+#   Q37_r &lt;dbl&gt;, q9_r &lt;dbl&gt;, q10_r &lt;dbl&gt;, q13_r &lt;dbl&gt;, q14_r &lt;dbl&gt;, …</code></pre>
+</div>
+</div>
+</section>
+<section id="identifying-the-variables" class="slide level2">
+<h2>Identifying the Variables</h2>
+<p>The dependent variable is the overall managerial and operational efficiency rating.</p>
+<p>The independent variables represent four specific aspects of the credit union’s operations.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Role</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Q37_r</td>
+<td>Dependent</td>
+<td>Overall operational efficiency</td>
+</tr>
+<tr class="even">
+<td>Q31</td>
+<td>Independent</td>
+<td>Confidentiality of financial information</td>
+</tr>
+<tr class="odd">
+<td>Q32</td>
+<td>Independent</td>
+<td>Loan application processing promptness</td>
+</tr>
+<tr class="even">
+<td>Q33</td>
+<td>Independent</td>
+<td>Adequacy of financial services</td>
+</tr>
+<tr class="odd">
+<td>Q34</td>
+<td>Independent</td>
+<td>Simplicity of loan applications</td>
+</tr>
+</tbody>
+</table>
+<p>The dependent variable Q37_r is the recoded version of the overall management and operations rating.</p>
+</section>
+<section id="preparing-the-regression-data" class="slide level2">
+<h2>Preparing the Regression Data</h2>
+<p>The five variables are selected and converted to numeric values for regression analysis.</p>
+<p>Only valid responses are retained. Responses outside the valid five-point scales and missing observations are excluded.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-label="1"></a><span class="co">#| label: prepare-data</span></span>
+<span id="cb8-2"><a href="" aria-label="2"></a></span>
+<span id="cb8-3"><a href="" aria-label="3"></a><span class="co"># Display available variable names</span></span>
+<span id="cb8-4"><a href="" aria-label="4"></a><span class="fu">names</span>(efcu)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "q3"           "q4"           "q5"           "q6"           "q7"          
+ [6] "q8"           "q9"           "q10"          "q11"          "q12"         
+[11] "q13"          "q14"          "q15"          "q16"          "q17"         
+[16] "q18"          "q19"          "q20"          "q21"          "q22"         
+[21] "q23"          "q24"          "q25"          "q26"          "q27"         
+[26] "q30"          "q31"          "q32"          "q33"          "q34"         
+[31] "q37"          "q38"          "Att_employee" "filter_$"     "Q7_r"        
+[36] "Q8_r"         "Q37_r"        "q9_r"         "q10_r"        "q13_r"       
+[41] "q14_r"        "q15_r"        "q16_r"        "q17_r"        "q18_r"       
+[46] "q19_r"        "q20_r"        "q21_r"        "q22_r"        "q23_r"       
+[51] "q24_r"        "q25_r"        "q26_r"       </code></pre>
+</div>
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-label="1"></a><span class="co"># Standardize variable names to uppercase</span></span>
+<span id="cb10-2"><a href="" aria-label="2"></a><span class="fu">names</span>(efcu) <span class="ot">&lt;-</span> <span class="fu">toupper</span>(<span class="fu">names</span>(efcu))</span>
+<span id="cb10-3"><a href="" aria-label="3"></a></span>
+<span id="cb10-4"><a href="" aria-label="4"></a><span class="co"># Create Q37_R if it does not exist</span></span>
+<span id="cb10-5"><a href="" aria-label="5"></a><span class="cf">if</span> (<span class="sc">!</span><span class="st">"Q37_R"</span> <span class="sc">%in%</span> <span class="fu">names</span>(efcu)) {</span>
+<span id="cb10-6"><a href="" aria-label="6"></a></span>
+<span id="cb10-7"><a href="" aria-label="7"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="st">"Q37"</span> <span class="sc">%in%</span> <span class="fu">names</span>(efcu)) {</span>
+<span id="cb10-8"><a href="" aria-label="8"></a>    <span class="fu">stop</span>(<span class="st">"Neither Q37_R nor Q37 exists in the dataset."</span>)</span>
+<span id="cb10-9"><a href="" aria-label="9"></a>  }</span>
+<span id="cb10-10"><a href="" aria-label="10"></a></span>
+<span id="cb10-11"><a href="" aria-label="11"></a>  <span class="co"># Reverse Q37 so higher values indicate</span></span>
+<span id="cb10-12"><a href="" aria-label="12"></a>  <span class="co"># more favorable operational evaluations.</span></span>
+<span id="cb10-13"><a href="" aria-label="13"></a>  <span class="co"># Original: 1 = Excellent, 5 = Very Poor</span></span>
+<span id="cb10-14"><a href="" aria-label="14"></a>  <span class="co"># Reversed: 5 = Excellent, 1 = Very Poor</span></span>
+<span id="cb10-15"><a href="" aria-label="15"></a>  efcu<span class="sc">$</span>Q37_R <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
+<span id="cb10-16"><a href="" aria-label="16"></a>    <span class="fu">as.numeric</span>(efcu<span class="sc">$</span>Q37) <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb10-17"><a href="" aria-label="17"></a>    <span class="dv">6</span> <span class="sc">-</span> <span class="fu">as.numeric</span>(efcu<span class="sc">$</span>Q37),</span>
+<span id="cb10-18"><a href="" aria-label="18"></a>    <span class="cn">NA_real_</span></span>
+<span id="cb10-19"><a href="" aria-label="19"></a>  )</span>
+<span id="cb10-20"><a href="" aria-label="20"></a>}</span>
+<span id="cb10-21"><a href="" aria-label="21"></a></span>
+<span id="cb10-22"><a href="" aria-label="22"></a><span class="co"># Select required variables</span></span>
+<span id="cb10-23"><a href="" aria-label="23"></a>required_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb10-24"><a href="" aria-label="24"></a>  <span class="st">"Q37_R"</span>, <span class="st">"Q31"</span>, <span class="st">"Q32"</span>, <span class="st">"Q33"</span>, <span class="st">"Q34"</span></span>
+<span id="cb10-25"><a href="" aria-label="25"></a>)</span>
+<span id="cb10-26"><a href="" aria-label="26"></a></span>
+<span id="cb10-27"><a href="" aria-label="27"></a><span class="co"># Identify missing variables</span></span>
+<span id="cb10-28"><a href="" aria-label="28"></a>missing_vars <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(</span>
+<span id="cb10-29"><a href="" aria-label="29"></a>  required_vars,</span>
+<span id="cb10-30"><a href="" aria-label="30"></a>  <span class="fu">names</span>(efcu)</span>
+<span id="cb10-31"><a href="" aria-label="31"></a>)</span>
+<span id="cb10-32"><a href="" aria-label="32"></a></span>
+<span id="cb10-33"><a href="" aria-label="33"></a><span class="cf">if</span> (<span class="fu">length</span>(missing_vars) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb10-34"><a href="" aria-label="34"></a>  <span class="fu">stop</span>(</span>
+<span id="cb10-35"><a href="" aria-label="35"></a>    <span class="st">"Missing variables: "</span>,</span>
+<span id="cb10-36"><a href="" aria-label="36"></a>    <span class="fu">paste</span>(missing_vars, <span class="at">collapse =</span> <span class="st">", "</span>)</span>
+<span id="cb10-37"><a href="" aria-label="37"></a>  )</span>
+<span id="cb10-38"><a href="" aria-label="38"></a>}</span>
+<span id="cb10-39"><a href="" aria-label="39"></a></span>
+<span id="cb10-40"><a href="" aria-label="40"></a><span class="co"># Prepare regression dataset</span></span>
+<span id="cb10-41"><a href="" aria-label="41"></a>regression_data <span class="ot">&lt;-</span> efcu <span class="sc">|&gt;</span></span>
+<span id="cb10-42"><a href="" aria-label="42"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(dplyr<span class="sc">::</span><span class="fu">all_of</span>(required_vars)) <span class="sc">|&gt;</span></span>
+<span id="cb10-43"><a href="" aria-label="43"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb10-44"><a href="" aria-label="44"></a>    dplyr<span class="sc">::</span><span class="fu">across</span>(</span>
+<span id="cb10-45"><a href="" aria-label="45"></a>      dplyr<span class="sc">::</span><span class="fu">everything</span>(),</span>
+<span id="cb10-46"><a href="" aria-label="46"></a>      <span class="sc">~</span> <span class="fu">as.numeric</span>(.x)</span>
+<span id="cb10-47"><a href="" aria-label="47"></a>    )</span>
+<span id="cb10-48"><a href="" aria-label="48"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb10-49"><a href="" aria-label="49"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb10-50"><a href="" aria-label="50"></a>    dplyr<span class="sc">::</span><span class="fu">across</span>(</span>
+<span id="cb10-51"><a href="" aria-label="51"></a>      dplyr<span class="sc">::</span><span class="fu">everything</span>(),</span>
+<span id="cb10-52"><a href="" aria-label="52"></a>      <span class="sc">~</span> <span class="fu">ifelse</span>(.x <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, .x, <span class="cn">NA_real_</span>)</span>
+<span id="cb10-53"><a href="" aria-label="53"></a>    )</span>
+<span id="cb10-54"><a href="" aria-label="54"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb10-55"><a href="" aria-label="55"></a>  tidyr<span class="sc">::</span><span class="fu">drop_na</span>()</span>
+<span id="cb10-56"><a href="" aria-label="56"></a></span>
+<span id="cb10-57"><a href="" aria-label="57"></a><span class="co"># Rename dependent variable for consistency</span></span>
+<span id="cb10-58"><a href="" aria-label="58"></a><span class="fu">names</span>(regression_data)[</span>
+<span id="cb10-59"><a href="" aria-label="59"></a>  <span class="fu">names</span>(regression_data) <span class="sc">==</span> <span class="st">"Q37_R"</span></span>
+<span id="cb10-60"><a href="" aria-label="60"></a>] <span class="ot">&lt;-</span> <span class="st">"Q37_r"</span></span>
+<span id="cb10-61"><a href="" aria-label="61"></a></span>
+<span id="cb10-62"><a href="" aria-label="62"></a><span class="co"># Display results</span></span>
+<span id="cb10-63"><a href="" aria-label="63"></a><span class="fu">summary</span>(regression_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Q37_r            Q31             Q32             Q33            Q34       
+ Min.   :1.000   Min.   :1.000   Min.   :2.000   Min.   :2.00   Min.   :1.000  
+ 1st Qu.:4.000   1st Qu.:4.000   1st Qu.:3.000   1st Qu.:3.00   1st Qu.:3.000  
+ Median :4.000   Median :4.000   Median :4.000   Median :4.00   Median :4.000  
+ Mean   :4.066   Mean   :3.934   Mean   :3.736   Mean   :3.62   Mean   :3.471  
+ 3rd Qu.:5.000   3rd Qu.:4.000   3rd Qu.:4.000   3rd Qu.:4.00   3rd Qu.:4.000  
+ Max.   :5.000   Max.   :5.000   Max.   :5.000   Max.   :5.00   Max.   :5.000  </code></pre>
+</div>
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-label="1"></a><span class="fu">nrow</span>(regression_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 121</code></pre>
+</div>
+</div>
+</section>
+<section id="sample-characteristics" class="slide level2">
+<h2>Sample Characteristics</h2>
+<p>The original dataset contains 128 observations.</p>
+<p>After excluding missing and invalid responses for the five regression variables, the final analysis includes 121 complete observations.</p>
+<p>Using complete cases ensures that the same respondents are included when estimating the effects of all four independent variables.</p>
+</section></section>
+<section>
+<section id="hypothesis-development" class="title-slide slide level1 center">
+<h1>Hypothesis Development</h1>
+
+</section>
+<section id="h5a-confidentiality-of-financial-information" class="slide level2">
+<h2>H5a: Confidentiality of Financial Information</h2>
+<p><strong>Hypothesis H5a:</strong></p>
+<p>Member belief that the credit union keeps personal financial information confidential will positively influence the overall attitude toward the credit union’s operational efficiency.</p>
+<ul>
+<li>Independent variable: Q31</li>
+<li>Dependent variable: Q37_r</li>
+</ul>
+<p>Members who believe their personal financial information is protected are expected to evaluate the credit union’s operational efficiency more favorably.</p>
+</section>
+<section id="h5b-loan-processing-promptness" class="slide level2">
+<h2>H5b: Loan Processing Promptness</h2>
+<p><strong>Hypothesis H5b:</strong></p>
+<p>Loan application processing promptness will positively influence the overall attitude toward the credit union’s operational efficiency.</p>
+<ul>
+<li>Independent variable: Q32</li>
+<li>Dependent variable: Q37_r</li>
+</ul>
+<p>Members who believe loan applications are processed promptly are expected to report more favorable attitudes toward the credit union’s operational efficiency.</p>
+</section>
+<section id="h5c-adequacy-of-financial-services" class="slide level2">
+<h2>H5c: Adequacy of Financial Services</h2>
+<p><strong>Hypothesis H5c:</strong></p>
+<p>Member satisfaction with the level of financial services in meeting their needs will positively influence the overall attitude toward the credit union’s operational efficiency.</p>
+<ul>
+<li>Independent variable: Q33</li>
+<li>Dependent variable: Q37_r</li>
+</ul>
+<p>Members who believe the credit union’s services meet their financial needs are expected to evaluate its overall operations more favorably.</p>
+</section>
+<section id="h5d-simplicity-of-loan-applications" class="slide level2">
+<h2>H5d: Simplicity of Loan Applications</h2>
+<p><strong>Hypothesis H5d:</strong></p>
+<p>Loan application simplicity and easiness will positively influence the overall attitude toward the credit union’s operational efficiency.</p>
+<ul>
+<li>Independent variable: Q34</li>
+<li>Dependent variable: Q37_r</li>
+</ul>
+<p>Members who consider loan applications simple and easy to complete are expected to have more favorable overall attitudes toward the credit union’s operational efficiency.</p>
+</section></section>
+<section>
+<section id="multiple-regression-analysis" class="title-slide slide level1 center">
+<h1>Multiple Regression Analysis</h1>
+
+</section>
+<section id="statistical-method" class="slide level2">
+<h2>Statistical Method</h2>
+<p>Multiple linear regression is used because the four hypotheses involve different independent variables but share one dependent variable.</p>
+<p>The regression equation is:</p>
+<p><span class="math display">\[
+Q37_r = \beta_0 + \beta_1Q31 +
+\beta_2Q32 + \beta_3Q33 +
+\beta_4Q34 + \epsilon
+\]</span></p>
+<p>The analysis evaluates the independent contribution of each predictor while controlling for the other three predictors.</p>
+<p>The significance level is set at alpha = 0.05.</p>
+</section>
+<section id="running-the-multiple-regression" class="slide level2">
+<h2>Running the Multiple Regression</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-label="1"></a>model_h5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb14-2"><a href="" aria-label="2"></a>  Q37_r <span class="sc">~</span> Q31 <span class="sc">+</span> Q32 <span class="sc">+</span> Q33 <span class="sc">+</span> Q34,</span>
+<span id="cb14-3"><a href="" aria-label="3"></a>  <span class="at">data =</span> regression_data</span>
+<span id="cb14-4"><a href="" aria-label="4"></a>)</span>
+<span id="cb14-5"><a href="" aria-label="5"></a></span>
+<span id="cb14-6"><a href="" aria-label="6"></a><span class="co"># Regression summary</span></span>
+<span id="cb14-7"><a href="" aria-label="7"></a><span class="fu">summary</span>(model_h5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Q37_r ~ Q31 + Q32 + Q33 + Q34, data = regression_data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.70193 -0.24939  0.00387  0.38004  1.29807 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  1.34721    0.48011   2.806 0.005884 ** 
+Q31          0.18835    0.08901   2.116 0.036472 *  
+Q32          0.30787    0.08302   3.709 0.000321 ***
+Q33          0.29420    0.08650   3.401 0.000921 ***
+Q34         -0.06829    0.07917  -0.863 0.390138    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.6186 on 116 degrees of freedom
+Multiple R-squared:  0.3006,    Adjusted R-squared:  0.2764 
+F-statistic: 12.46 on 4 and 116 DF,  p-value: 1.823e-08</code></pre>
+</div>
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-label="1"></a><span class="co"># 95% confidence intervals</span></span>
+<span id="cb16-2"><a href="" aria-label="2"></a><span class="fu">confint</span>(model_h5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  2.5 %     97.5 %
+(Intercept)  0.39628458 2.29812931
+Q31          0.01206041 0.36463233
+Q32          0.14345074 0.47229769
+Q33          0.12288199 0.46551079
+Q34         -0.22509388 0.08851257</code></pre>
+</div>
+</div>
+</section>
+<section id="extracting-regression-statistics" class="slide level2">
+<h2>Extracting Regression Statistics</h2>
+<p>The following code extracts the regression coefficients, p-values, model fit statistics, and overall model significance.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="" aria-label="1"></a>model_summary <span class="ot">&lt;-</span> <span class="fu">summary</span>(model_h5)</span>
+<span id="cb18-2"><a href="" aria-label="2"></a></span>
+<span id="cb18-3"><a href="" aria-label="3"></a>coefficients_table <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(</span>
+<span id="cb18-4"><a href="" aria-label="4"></a>  model_summary<span class="sc">$</span>coefficients</span>
+<span id="cb18-5"><a href="" aria-label="5"></a>)</span>
+<span id="cb18-6"><a href="" aria-label="6"></a></span>
+<span id="cb18-7"><a href="" aria-label="7"></a>coefficients_table<span class="sc">$</span>Variable <span class="ot">&lt;-</span> <span class="fu">rownames</span>(</span>
+<span id="cb18-8"><a href="" aria-label="8"></a>  coefficients_table</span>
+<span id="cb18-9"><a href="" aria-label="9"></a>)</span>
+<span id="cb18-10"><a href="" aria-label="10"></a></span>
+<span id="cb18-11"><a href="" aria-label="11"></a><span class="fu">rownames</span>(coefficients_table) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb18-12"><a href="" aria-label="12"></a></span>
+<span id="cb18-13"><a href="" aria-label="13"></a><span class="fu">names</span>(coefficients_table) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb18-14"><a href="" aria-label="14"></a>  <span class="st">"Estimate"</span>,</span>
+<span id="cb18-15"><a href="" aria-label="15"></a>  <span class="st">"Std_Error"</span>,</span>
+<span id="cb18-16"><a href="" aria-label="16"></a>  <span class="st">"t_value"</span>,</span>
+<span id="cb18-17"><a href="" aria-label="17"></a>  <span class="st">"p_value"</span>,</span>
+<span id="cb18-18"><a href="" aria-label="18"></a>  <span class="st">"Variable"</span></span>
+<span id="cb18-19"><a href="" aria-label="19"></a>)</span>
+<span id="cb18-20"><a href="" aria-label="20"></a></span>
+<span id="cb18-21"><a href="" aria-label="21"></a>r_squared <span class="ot">&lt;-</span> model_summary<span class="sc">$</span>r.squared</span>
+<span id="cb18-22"><a href="" aria-label="22"></a></span>
+<span id="cb18-23"><a href="" aria-label="23"></a>adjusted_r_squared <span class="ot">&lt;-</span></span>
+<span id="cb18-24"><a href="" aria-label="24"></a>  model_summary<span class="sc">$</span>adj.r.squared</span>
+<span id="cb18-25"><a href="" aria-label="25"></a></span>
+<span id="cb18-26"><a href="" aria-label="26"></a>f_statistic <span class="ot">&lt;-</span> <span class="fu">unname</span>(</span>
+<span id="cb18-27"><a href="" aria-label="27"></a>  model_summary<span class="sc">$</span>fstatistic[<span class="dv">1</span>]</span>
+<span id="cb18-28"><a href="" aria-label="28"></a>)</span>
+<span id="cb18-29"><a href="" aria-label="29"></a></span>
+<span id="cb18-30"><a href="" aria-label="30"></a>df1 <span class="ot">&lt;-</span> <span class="fu">unname</span>(</span>
+<span id="cb18-31"><a href="" aria-label="31"></a>  model_summary<span class="sc">$</span>fstatistic[<span class="dv">2</span>]</span>
+<span id="cb18-32"><a href="" aria-label="32"></a>)</span>
+<span id="cb18-33"><a href="" aria-label="33"></a></span>
+<span id="cb18-34"><a href="" aria-label="34"></a>df2 <span class="ot">&lt;-</span> <span class="fu">unname</span>(</span>
+<span id="cb18-35"><a href="" aria-label="35"></a>  model_summary<span class="sc">$</span>fstatistic[<span class="dv">3</span>]</span>
+<span id="cb18-36"><a href="" aria-label="36"></a>)</span>
+<span id="cb18-37"><a href="" aria-label="37"></a></span>
+<span id="cb18-38"><a href="" aria-label="38"></a>model_p_value <span class="ot">&lt;-</span> <span class="fu">pf</span>(</span>
+<span id="cb18-39"><a href="" aria-label="39"></a>  f_statistic,</span>
+<span id="cb18-40"><a href="" aria-label="40"></a>  df1,</span>
+<span id="cb18-41"><a href="" aria-label="41"></a>  df2,</span>
+<span id="cb18-42"><a href="" aria-label="42"></a>  <span class="at">lower.tail =</span> <span class="cn">FALSE</span></span>
+<span id="cb18-43"><a href="" aria-label="43"></a>)</span>
+<span id="cb18-44"><a href="" aria-label="44"></a></span>
+<span id="cb18-45"><a href="" aria-label="45"></a><span class="co"># Display model statistics</span></span>
+<span id="cb18-46"><a href="" aria-label="46"></a><span class="fu">data.frame</span>(</span>
+<span id="cb18-47"><a href="" aria-label="47"></a>  <span class="at">R_Squared =</span> r_squared,</span>
+<span id="cb18-48"><a href="" aria-label="48"></a>  <span class="at">Adjusted_R_Squared =</span> adjusted_r_squared,</span>
+<span id="cb18-49"><a href="" aria-label="49"></a>  <span class="at">F_Statistic =</span> f_statistic,</span>
+<span id="cb18-50"><a href="" aria-label="50"></a>  <span class="at">Model_P_Value =</span> model_p_value</span>
+<span id="cb18-51"><a href="" aria-label="51"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb18-52"><a href="" aria-label="52"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">R_Squared</th>
+<th style="text-align: right;">Adjusted_R_Squared</th>
+<th style="text-align: right;">F_Statistic</th>
+<th style="text-align: right;">Model_P_Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.3006</td>
+<td style="text-align: right;">0.2764</td>
+<td style="text-align: right;">12.4621</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section></section>
+<section>
+<section id="regression-results" class="title-slide slide level1 center">
+<h1>Regression Results</h1>
+
+</section>
+<section id="overall-model-fit" class="slide level2">
+<h2>Overall Model Fit</h2>
+<p>The multiple regression model produced an R-squared value of <strong>0.3006</strong> and an adjusted R-squared value of <strong>0.2764</strong>.</p>
+<p>The four independent variables collectively explained approximately <strong>30.06%</strong> of the variation in members’ overall operational-efficiency ratings.</p>
+<p>The overall regression F-statistic was <strong>12.462</strong>, with a p-value of <strong>1.82e-08</strong>.</p>
+<p>The overall regression model was <strong>statistically significant</strong> at the 0.05 level.</p>
+<p>These findings indicate whether the four operational factors collectively provide statistically significant explanatory power for members’ overall evaluations.</p>
+</section>
+<section id="regression-coefficients" class="slide level2">
+<h2>Regression Coefficients</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="" aria-label="1"></a>coefficients_table <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="" aria-label="2"></a>  <span class="fu">select</span>(</span>
+<span id="cb19-3"><a href="" aria-label="3"></a>    Variable,</span>
+<span id="cb19-4"><a href="" aria-label="4"></a>    Estimate,</span>
+<span id="cb19-5"><a href="" aria-label="5"></a>    Std_Error,</span>
+<span id="cb19-6"><a href="" aria-label="6"></a>    t_value,</span>
+<span id="cb19-7"><a href="" aria-label="7"></a>    p_value</span>
+<span id="cb19-8"><a href="" aria-label="8"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb19-9"><a href="" aria-label="9"></a>  <span class="fu">kable</span>(</span>
+<span id="cb19-10"><a href="" aria-label="10"></a>    <span class="at">digits =</span> <span class="dv">4</span>,</span>
+<span id="cb19-11"><a href="" aria-label="11"></a>    <span class="at">caption =</span> <span class="st">"Multiple Regression Coefficients"</span></span>
+<span id="cb19-12"><a href="" aria-label="12"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top">
+<caption>Multiple Regression Coefficients</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Std_Error</th>
+<th style="text-align: right;">t_value</th>
+<th style="text-align: right;">p_value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">1.3472</td>
+<td style="text-align: right;">0.4801</td>
+<td style="text-align: right;">2.8060</td>
+<td style="text-align: right;">0.0059</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Q31</td>
+<td style="text-align: right;">0.1883</td>
+<td style="text-align: right;">0.0890</td>
+<td style="text-align: right;">2.1161</td>
+<td style="text-align: right;">0.0365</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Q32</td>
+<td style="text-align: right;">0.3079</td>
+<td style="text-align: right;">0.0830</td>
+<td style="text-align: right;">3.7086</td>
+<td style="text-align: right;">0.0003</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Q33</td>
+<td style="text-align: right;">0.2942</td>
+<td style="text-align: right;">0.0865</td>
+<td style="text-align: right;">3.4013</td>
+<td style="text-align: right;">0.0009</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Q34</td>
+<td style="text-align: right;">-0.0683</td>
+<td style="text-align: right;">0.0792</td>
+<td style="text-align: right;">-0.8626</td>
+<td style="text-align: right;">0.3901</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The coefficient estimates indicate the direction and magnitude of each relationship, holding the other predictors constant.</p>
+<p>A p-value below 0.05 indicates that a coefficient differs significantly from zero.</p>
+<p>Because higher values on the recoded Q37_r represent more favorable evaluations, and the agreement items are coded from strongly disagree to strongly agree, positive coefficients are consistent with the directions proposed in H5a through H5d.</p>
+</section></section>
+<section>
+<section id="individual-hypothesis-testing" class="title-slide slide level1 center">
+<h1>Individual Hypothesis Testing</h1>
+
+</section>
+<section id="preparing-hypothesis-decisions" class="slide level2">
+<h2>Preparing Hypothesis Decisions</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-label="1"></a>hypothesis_results <span class="ot">&lt;-</span> coefficients_table <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="" aria-label="2"></a>  <span class="fu">filter</span>(Variable <span class="sc">!=</span> <span class="st">"(Intercept)"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-3"><a href="" aria-label="3"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb20-4"><a href="" aria-label="4"></a>    <span class="at">Hypothesis =</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-5"><a href="" aria-label="5"></a>      Variable <span class="sc">==</span> <span class="st">"Q31"</span> <span class="sc">~</span> <span class="st">"H5a"</span>,</span>
+<span id="cb20-6"><a href="" aria-label="6"></a>      Variable <span class="sc">==</span> <span class="st">"Q32"</span> <span class="sc">~</span> <span class="st">"H5b"</span>,</span>
+<span id="cb20-7"><a href="" aria-label="7"></a>      Variable <span class="sc">==</span> <span class="st">"Q33"</span> <span class="sc">~</span> <span class="st">"H5c"</span>,</span>
+<span id="cb20-8"><a href="" aria-label="8"></a>      Variable <span class="sc">==</span> <span class="st">"Q34"</span> <span class="sc">~</span> <span class="st">"H5d"</span></span>
+<span id="cb20-9"><a href="" aria-label="9"></a>    ),</span>
+<span id="cb20-10"><a href="" aria-label="10"></a>    <span class="at">Decision =</span> <span class="fu">ifelse</span>(</span>
+<span id="cb20-11"><a href="" aria-label="11"></a>      p_value <span class="sc">&lt;</span> <span class="fl">0.05</span>,</span>
+<span id="cb20-12"><a href="" aria-label="12"></a>      <span class="st">"Reject H0"</span>,</span>
+<span id="cb20-13"><a href="" aria-label="13"></a>      <span class="st">"Fail to reject H0"</span></span>
+<span id="cb20-14"><a href="" aria-label="14"></a>    ),</span>
+<span id="cb20-15"><a href="" aria-label="15"></a>    <span class="at">Support =</span> <span class="fu">ifelse</span>(</span>
+<span id="cb20-16"><a href="" aria-label="16"></a>      p_value <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> Estimate <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
+<span id="cb20-17"><a href="" aria-label="17"></a>      <span class="st">"Supported"</span>,</span>
+<span id="cb20-18"><a href="" aria-label="18"></a>      <span class="st">"Not supported"</span></span>
+<span id="cb20-19"><a href="" aria-label="19"></a>    )</span>
+<span id="cb20-20"><a href="" aria-label="20"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb20-21"><a href="" aria-label="21"></a>  <span class="fu">arrange</span>(Hypothesis)</span>
+<span id="cb20-22"><a href="" aria-label="22"></a></span>
+<span id="cb20-23"><a href="" aria-label="23"></a>hypothesis_results <span class="sc">|&gt;</span></span>
+<span id="cb20-24"><a href="" aria-label="24"></a>  <span class="fu">select</span>(</span>
+<span id="cb20-25"><a href="" aria-label="25"></a>    Hypothesis,</span>
+<span id="cb20-26"><a href="" aria-label="26"></a>    Variable,</span>
+<span id="cb20-27"><a href="" aria-label="27"></a>    Estimate,</span>
+<span id="cb20-28"><a href="" aria-label="28"></a>    p_value,</span>
+<span id="cb20-29"><a href="" aria-label="29"></a>    Decision,</span>
+<span id="cb20-30"><a href="" aria-label="30"></a>    Support</span>
+<span id="cb20-31"><a href="" aria-label="31"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb20-32"><a href="" aria-label="32"></a>  <span class="fu">kable</span>(</span>
+<span id="cb20-33"><a href="" aria-label="33"></a>    <span class="at">digits =</span> <span class="dv">4</span>,</span>
+<span id="cb20-34"><a href="" aria-label="34"></a>    <span class="at">caption =</span> <span class="st">"Hypothesis Testing Results"</span></span>
+<span id="cb20-35"><a href="" aria-label="35"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top">
+<caption>Hypothesis Testing Results</caption>
+<colgroup>
+<col style="width: 15%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 11%">
+<col style="width: 26%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Hypothesis</th>
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">p_value</th>
+<th style="text-align: left;">Decision</th>
+<th style="text-align: left;">Support</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">H5a</td>
+<td style="text-align: left;">Q31</td>
+<td style="text-align: right;">0.1883</td>
+<td style="text-align: right;">0.0365</td>
+<td style="text-align: left;">Reject H0</td>
+<td style="text-align: left;">Supported</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">H5b</td>
+<td style="text-align: left;">Q32</td>
+<td style="text-align: right;">0.3079</td>
+<td style="text-align: right;">0.0003</td>
+<td style="text-align: left;">Reject H0</td>
+<td style="text-align: left;">Supported</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">H5c</td>
+<td style="text-align: left;">Q33</td>
+<td style="text-align: right;">0.2942</td>
+<td style="text-align: right;">0.0009</td>
+<td style="text-align: left;">Reject H0</td>
+<td style="text-align: left;">Supported</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">H5d</td>
+<td style="text-align: left;">Q34</td>
+<td style="text-align: right;">-0.0683</td>
+<td style="text-align: right;">0.3901</td>
+<td style="text-align: left;">Fail to reject H0</td>
+<td style="text-align: left;">Not supported</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="h5a-confidentiality-of-financial-information-1" class="slide level2">
+<h2>H5a: Confidentiality of Financial Information</h2>
+<p>The regression coefficient for confidentiality of personal financial information (Q31) was <strong>0.1883</strong>.</p>
+<p>The p-value was <strong>0.0365</strong>.</p>
+<p>The relationship was <strong>statistically significant</strong> at the 0.05 level.</p>
+<p><strong>Hypothesis Decision:</strong></p>
+<p>H5a was <strong>Supported</strong>.</p>
+<p>The results indicate that confidentiality of personal financial information <strong>has a statistically significant positive relationship with</strong> members’ overall attitudes toward operational efficiency, after controlling for the other predictors.</p>
+</section>
+<section id="h5b-loan-application-processing-promptness" class="slide level2">
+<h2>H5b: Loan Application Processing Promptness</h2>
+<p>The regression coefficient for loan application processing promptness (Q32) was <strong>0.3079</strong>.</p>
+<p>The p-value was <strong>0.000321</strong>.</p>
+<p>The relationship was <strong>statistically significant</strong> at the 0.05 level.</p>
+<p><strong>Hypothesis Decision:</strong></p>
+<p>H5b was <strong>Supported</strong>.</p>
+<p>The results indicate that loan processing promptness <strong>has a statistically significant positive relationship with</strong> members’ overall attitudes toward operational efficiency, after controlling for the other predictors.</p>
+</section>
+<section id="h5c-adequacy-of-financial-services-1" class="slide level2">
+<h2>H5c: Adequacy of Financial Services</h2>
+<p>The regression coefficient for adequacy of financial services (Q33) was <strong>0.2942</strong>.</p>
+<p>The p-value was <strong>0.000921</strong>.</p>
+<p>The relationship was <strong>statistically significant</strong> at the 0.05 level.</p>
+<p><strong>Hypothesis Decision:</strong></p>
+<p>H5c was <strong>Supported</strong>.</p>
+<p>The results indicate that adequacy of financial services <strong>has a statistically significant positive relationship with</strong> members’ overall attitudes toward operational efficiency, after controlling for the other predictors.</p>
+</section>
+<section id="h5d-simplicity-of-loan-applications-1" class="slide level2">
+<h2>H5d: Simplicity of Loan Applications</h2>
+<p>The regression coefficient for simplicity and ease of loan applications (Q34) was <strong>-0.0683</strong>.</p>
+<p>The p-value was <strong>0.39</strong>.</p>
+<p>The relationship was <strong>not statistically significant</strong> at the 0.05 level.</p>
+<p><strong>Hypothesis Decision:</strong></p>
+<p>H5d was <strong>Not supported</strong>.</p>
+<p>The results indicate that simplicity of loan applications <strong>does not demonstrate a statistically significant positive relationship with</strong> members’ overall attitudes toward operational efficiency, after controlling for the other predictors.</p>
+</section></section>
+<section>
+<section id="regression-diagnostics" class="title-slide slide level1 center">
+<h1>Regression Diagnostics</h1>
+
+</section>
+<section id="checking-model-assumptions" class="slide level2">
+<h2>Checking Model Assumptions</h2>
+<p>Regression diagnostics are performed to evaluate the suitability of the multiple regression model.</p>
+<p>The analysis examines:</p>
+<ul>
+<li>Linearity of the relationships.</li>
+<li>Approximately constant residual variance.</li>
+<li>Normality of residuals.</li>
+<li>Potential influential observations.</li>
+<li>Multicollinearity among predictors.</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="" aria-label="1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb21-2"><a href="" aria-label="2"></a></span>
+<span id="cb21-3"><a href="" aria-label="3"></a><span class="fu">plot</span>(model_h5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="" aria-label="1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<img data-src="Case-31-Data-Analysis_files/figure-revealjs/diagnostic-plots-1.png" width="768" class="r-stretch"></section>
+<section id="multicollinearity-assessment" class="slide level2">
+<h2>Multicollinearity Assessment</h2>
+<p>Variance inflation factors (VIF) are calculated to evaluate multicollinearity among the four independent variables.</p>
+<p>Higher VIF values indicate stronger linear relationships among predictors, which can make coefficient estimates less precise.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="" aria-label="1"></a>predictor_names <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb23-2"><a href="" aria-label="2"></a>  <span class="st">"Q31"</span>, <span class="st">"Q32"</span>, <span class="st">"Q33"</span>, <span class="st">"Q34"</span></span>
+<span id="cb23-3"><a href="" aria-label="3"></a>)</span>
+<span id="cb23-4"><a href="" aria-label="4"></a></span>
+<span id="cb23-5"><a href="" aria-label="5"></a>vif_values <span class="ot">&lt;-</span> <span class="fu">sapply</span>(</span>
+<span id="cb23-6"><a href="" aria-label="6"></a>  predictor_names,</span>
+<span id="cb23-7"><a href="" aria-label="7"></a>  <span class="cf">function</span>(variable) {</span>
+<span id="cb23-8"><a href="" aria-label="8"></a>    other_variables <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(</span>
+<span id="cb23-9"><a href="" aria-label="9"></a>      predictor_names,</span>
+<span id="cb23-10"><a href="" aria-label="10"></a>      variable</span>
+<span id="cb23-11"><a href="" aria-label="11"></a>    )</span>
+<span id="cb23-12"><a href="" aria-label="12"></a></span>
+<span id="cb23-13"><a href="" aria-label="13"></a>    auxiliary_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb23-14"><a href="" aria-label="14"></a>      <span class="fu">reformulate</span>(</span>
+<span id="cb23-15"><a href="" aria-label="15"></a>        other_variables,</span>
+<span id="cb23-16"><a href="" aria-label="16"></a>        <span class="at">response =</span> variable</span>
+<span id="cb23-17"><a href="" aria-label="17"></a>      ),</span>
+<span id="cb23-18"><a href="" aria-label="18"></a>      <span class="at">data =</span> regression_data</span>
+<span id="cb23-19"><a href="" aria-label="19"></a>    )</span>
+<span id="cb23-20"><a href="" aria-label="20"></a></span>
+<span id="cb23-21"><a href="" aria-label="21"></a>    <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">summary</span>(auxiliary_model)<span class="sc">$</span>r.squared)</span>
+<span id="cb23-22"><a href="" aria-label="22"></a>  }</span>
+<span id="cb23-23"><a href="" aria-label="23"></a>)</span>
+<span id="cb23-24"><a href="" aria-label="24"></a></span>
+<span id="cb23-25"><a href="" aria-label="25"></a><span class="fu">data.frame</span>(</span>
+<span id="cb23-26"><a href="" aria-label="26"></a>  <span class="at">Predictor =</span> <span class="fu">names</span>(vif_values),</span>
+<span id="cb23-27"><a href="" aria-label="27"></a>  <span class="at">VIF =</span> <span class="fu">as.numeric</span>(vif_values)</span>
+<span id="cb23-28"><a href="" aria-label="28"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb23-29"><a href="" aria-label="29"></a>  <span class="fu">kable</span>(</span>
+<span id="cb23-30"><a href="" aria-label="30"></a>    <span class="at">digits =</span> <span class="dv">3</span>,</span>
+<span id="cb23-31"><a href="" aria-label="31"></a>    <span class="at">caption =</span> <span class="st">"Variance Inflation Factors"</span></span>
+<span id="cb23-32"><a href="" aria-label="32"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top">
+<caption>Variance Inflation Factors</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Predictor</th>
+<th style="text-align: right;">VIF</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Q31</td>
+<td style="text-align: right;">1.148</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Q32</td>
+<td style="text-align: right;">1.396</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Q33</td>
+<td style="text-align: right;">1.066</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Q34</td>
+<td style="text-align: right;">1.214</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="diagnostic-findings" class="slide level2">
+<h2>Diagnostic Findings</h2>
+<p>The regression diagnostic plots provide information about the residual distribution, variance consistency, and potentially influential observations.</p>
+<p>The highest calculated variance inflation factor was <strong>1.396</strong>.</p>
+<p>The VIF results <strong>do not indicate substantial multicollinearity using a threshold of 5</strong>.</p>
+<p>The residual plots should also be reviewed visually before drawing final conclusions about the model assumptions.</p>
+</section></section>
+<section>
+<section id="summary-of-findings" class="title-slide slide level1 center">
+<h1>Summary of Findings</h1>
+
+</section>
+<section id="hypothesis-testing-summary" class="slide level2">
+<h2>Hypothesis Testing Summary</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-label="1"></a>hypothesis_results <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="" aria-label="2"></a>  <span class="fu">select</span>(</span>
+<span id="cb24-3"><a href="" aria-label="3"></a>    Hypothesis,</span>
+<span id="cb24-4"><a href="" aria-label="4"></a>    Variable,</span>
+<span id="cb24-5"><a href="" aria-label="5"></a>    Estimate,</span>
+<span id="cb24-6"><a href="" aria-label="6"></a>    p_value,</span>
+<span id="cb24-7"><a href="" aria-label="7"></a>    Support</span>
+<span id="cb24-8"><a href="" aria-label="8"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb24-9"><a href="" aria-label="9"></a>  <span class="fu">kable</span>(</span>
+<span id="cb24-10"><a href="" aria-label="10"></a>    <span class="at">digits =</span> <span class="dv">4</span>,</span>
+<span id="cb24-11"><a href="" aria-label="11"></a>    <span class="at">caption =</span> <span class="st">"Final H5a-H5d Results"</span></span>
+<span id="cb24-12"><a href="" aria-label="12"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top">
+<caption>Final H5a-H5d Results</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Hypothesis</th>
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">p_value</th>
+<th style="text-align: left;">Support</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">H5a</td>
+<td style="text-align: left;">Q31</td>
+<td style="text-align: right;">0.1883</td>
+<td style="text-align: right;">0.0365</td>
+<td style="text-align: left;">Supported</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">H5b</td>
+<td style="text-align: left;">Q32</td>
+<td style="text-align: right;">0.3079</td>
+<td style="text-align: right;">0.0003</td>
+<td style="text-align: left;">Supported</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">H5c</td>
+<td style="text-align: left;">Q33</td>
+<td style="text-align: right;">0.2942</td>
+<td style="text-align: right;">0.0009</td>
+<td style="text-align: left;">Supported</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">H5d</td>
+<td style="text-align: left;">Q34</td>
+<td style="text-align: right;">-0.0683</td>
+<td style="text-align: right;">0.3901</td>
+<td style="text-align: left;">Not supported</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="interpretation-of-findings" class="slide level2">
+<h2>Interpretation of Findings</h2>
+<p>The multiple regression analysis examined four potential predictors of members’ overall attitudes toward the operational efficiency of Employees Federal Credit Union.</p>
+<p>Of the four hypotheses, <strong>3</strong> received statistical support.</p>
+<p>The model explained <strong>30.06%</strong> of the variance in overall operational-efficiency ratings.</p>
+<p>The findings help identify which aspects of the credit union’s services are positively associated with members’ overall evaluations when the other operational factors are held constant.</p>
+</section></section>
+<section>
+<section id="managerial-implications" class="title-slide slide level1 center">
+<h1>Managerial Implications</h1>
+
+</section>
+<section id="implications-for-employees-federal-credit-union" class="slide level2">
+<h2>Implications for Employees Federal Credit Union</h2>
+<p>The regression findings can assist management in identifying operational areas associated with member satisfaction.</p>
+<p>Confidentiality, loan processing promptness, adequacy of financial services, and simplicity of loan applications represent important aspects of the member experience.</p>
+<p>Management should pay particular attention to factors showing statistically significant positive relationships with overall operational efficiency.</p>
+<p>These findings can guide service evaluations and help prioritize operational improvements.</p>
+</section>
+<section id="recommendations" class="slide level2">
+<h2>Recommendations</h2>
+<p>Employees Federal Credit Union should use the regression findings to evaluate its operational practices.</p>
+<p>Recommended actions include:</p>
+<ol type="1">
+<li>Continue protecting members’ confidential financial information.</li>
+<li>Monitor and improve loan application processing times.</li>
+<li>Evaluate whether existing financial services adequately meet members’ needs.</li>
+<li>Simplify loan application procedures where possible.</li>
+<li>Continue collecting member feedback to monitor operational performance.</li>
+</ol>
+<p>The regression results identify associations and should not be interpreted as proof that changing a particular factor will cause an improvement in overall ratings.</p>
+</section></section>
+<section>
+<section id="conclusion" class="title-slide slide level1 center">
+<h1>Conclusion</h1>
+
+</section>
+<section id="overall-conclusion" class="slide level2">
+<h2>Overall Conclusion</h2>
+<p>This analysis tested H5a through H5d using one multiple linear regression model.</p>
+<p>The dependent variable was overall managerial and operational efficiency (Q37_r).</p>
+<p>The independent variables were confidentiality (Q31), loan processing promptness (Q32), adequacy of financial services (Q33), and loan application simplicity (Q34).</p>
+<p>The overall regression model was <strong>statistically significant</strong>.</p>
+<p>The analysis found that <strong>3 out of four hypotheses</strong> were supported.</p>
+<p>These findings provide evidence about the relationships between members’ perceptions of specific operational practices and their overall evaluation of Employees Federal Credit Union.</p>
+</section></section>
+<section>
+<section id="appendix" class="title-slide slide level1 center">
+<h1>Appendix</h1>
+
+</section>
+<section id="data-sources" class="slide level2">
+<h2>Data Sources</h2>
+<p>The following materials were used:</p>
+<ul>
+<li>Case 31: Employees Federal Credit Union narrative.</li>
+<li>Case Exhibit 31.1: EFCU Member Opinion Survey.</li>
+<li>Case Exhibit 31.2: Codes for Questionnaire.</li>
+<li>Case 31 cleaned SPSS dataset.</li>
+<li>IC - M08 - Data Analysis Table - Hypotheses - Case 31.</li>
+</ul>
+</section>
+<section id="r-analysis-information" class="slide level2">
+<h2>R Analysis Information</h2>
+<p>The statistical analysis was conducted in R using the following packages:</p>
+<ul>
+<li>haven</li>
+<li>dplyr</li>
+<li>ggplot2</li>
+<li>knitr</li>
+</ul>
+<p>The primary statistical procedure was multiple linear regression using the <code>lm()</code> function.</p>
+<p>Statistical significance was evaluated at the 0.05 level.</p>
+</section>
+<section id="github-repository-and-pages" class="slide level2">
+<h2>GitHub Repository and Pages</h2>
+<p>The Quarto source code and rendered HTML report are intended for publication through GitHub.</p>
+<p>The GitHub repository and published report links are listed below.</p>
+<ul>
+<li><a href="https://github.com/brianvuong1/ibm-6500-2">GitHub Repository</a></li>
+<li><a href="https://brianvuong1.github.io/ibm-6500-2/IC11-6-Case-31.html">GitHub Pages Report</a></li>
+</ul>
+</section>
+<section id="submission-deliverables" class="slide level2">
+<h2>Submission Deliverables</h2>
+<p>The required submission includes:</p>
+<ul>
+<li><code>IC11-6-Case-31.qmd</code></li>
+<li><code>IC11-6-Case-31.html</code></li>
+</ul>
+<p>The HTML report is generated by rendering the Quarto source file.</p>
+</section>
+<section id="final-summary" class="slide level2">
+<h2>Final Summary</h2>
+<p>The H5a-H5d analysis uses one multiple regression model to evaluate four operational factors associated with members’ overall attitudes toward Employees Federal Credit Union.</p>
+<p>The analysis includes data preparation, regression estimation, statistical significance testing, hypothesis decisions, regression diagnostics, and managerial implications.</p>
+<p>The findings provide a quantitative basis for understanding the operational factors associated with members’ overall evaluations of the credit union.</p>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="Case-31-Data-Analysis_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="Case-31-Data-Analysis_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="Case-31-Data-Analysis_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="Case-31-Data-Analysis_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="Case-31-Data-Analysis_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="Case-31-Data-Analysis_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="Case-31-Data-Analysis_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="Case-31-Data-Analysis_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="Case-31-Data-Analysis_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="Case-31-Data-Analysis_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': true,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
