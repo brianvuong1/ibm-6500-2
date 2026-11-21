@@ -1,0 +1,399 @@
+---
+title: "Case 31: Measurement Model Assessment"
+author: "Brian Vuong"
+date: today
+format:
+  html:
+    toc: true
+    toc-title: "Contents"
+    toc-depth: 3
+    number-sections: true
+    smooth-scroll: true
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Purpose and Case Context
+
+This report evaluates the measurement model for Case 31: Employees Federal Credit Union. Confirmatory factor analysis (CFA) is used to examine two multi-item constructs:
+
+1. Attitudes toward employee proficiencies, measured by `q3`–`q6`.
+2. Attitude toward operational effectiveness, measured by `q9_r`, `q10`, `q11`, `q12`, and `q31`–`q34`.
+
+CFA evaluates whether observed survey items adequately measure their intended latent constructs. It does not test causal relationships or the substantive hypotheses from the Case 31 data-analysis table.
+
+# Learning Notes: CFA and Measurement Models
+
+Confirmatory factor analysis is used when a researcher has a theoretically specified factor structure. Observed indicators are survey items directly answered by respondents. Latent factors represent underlying concepts measured indirectly through multiple indicators.
+
+A factor loading describes the relationship between an observed item and its latent factor. Larger standardized loadings indicate that the factor explains more of the item's variance.
+
+The model is identified by fixing the first loading of each factor to 1. This establishes the scale of each latent variable. Each factor has multiple indicators, allowing the model to be estimated and evaluated.
+
+Single-item constructs are not modeled as latent factors because they do not provide multiple indicators for estimating measurement error or internal consistency.
+
+# Case 31 Constructs and Indicators
+
+| Latent construct | Indicators | Interpretation |
+|---|---|---|
+| Employee proficiencies | `q3`, `q4`, `q5`, `q6` | Members’ perceptions of employee knowledge, service, and proficiency |
+| Operational effectiveness | `q9_r`, `q10`, `q11`, `q12`, `q31`, `q32`, `q33`, `q34` | Members’ perceptions of how effectively the credit union operates |
+
+The two constructs are expected to be related because effective employees may contribute to positive perceptions of credit-union operations. However, they are conceptually distinct. Employee proficiency concerns employees, whereas operational effectiveness concerns the organization’s systems and performance.
+
+# Data Preparation and Reverse Coding
+
+## Required Packages
+
+```{r}
+library(haven)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(lavaan)
+library(psych)
+library(knitr)
+```
+
+## Importing the Data
+
+```{r}
+efcu <- read_sav("Case 31 Data_efcu_4.sav")
+
+dim(efcu)
+names(efcu)
+str(efcu)
+```
+
+The data file contains 128 observations and 53 variables. The variables are stored using lowercase names, so the analysis uses the exact names found in the dataset.
+
+## CFA Indicators
+
+```{r}
+cfa_items <- c(
+  "q3", "q4", "q5", "q6",
+  "q9_r", "q10", "q11", "q12",
+  "q31", "q32", "q33", "q34"
+)
+
+efcu |>
+  select(all_of(cfa_items)) |>
+  summary()
+```
+
+## Missing Values
+
+```{r}
+missing_table <- efcu |>
+  summarise(across(
+    all_of(cfa_items),
+    ~ sum(is.na(.x))
+  )) |>
+  pivot_longer(
+    cols = everything(),
+    names_to = "variable",
+    values_to = "missing"
+  )
+
+kable(missing_table)
+```
+
+The missing-value table verifies whether any CFA indicators contain missing observations. The CFA model uses full-information maximum likelihood through `missing = "fiml"` so that available information is retained when missing values are present.
+
+## Reverse-Coding Decision
+
+The data file already contains the variable `q9_r`. Therefore, `q9` was not reverse-coded again. The existing variable was inspected to confirm that its direction is appropriate for the CFA model.
+
+```{r}
+table(efcu$q9, useNA = "ifany")
+table(efcu$q9_r, useNA = "ifany")
+```
+
+The final CFA indicator is `q9_r`, not the original `q9`. Using the existing recoded variable avoids reversing the item twice.
+
+# Descriptive Statistics and Distributions
+
+```{r}
+descriptive_table <- psych::describe(
+  as.data.frame(efcu |> select(all_of(cfa_items)))
+)
+
+kable(
+  round(
+    descriptive_table[, c("n", "mean", "sd", "min", "max")],
+    2
+  )
+)
+```
+
+```{r}
+efcu |>
+  select(all_of(cfa_items)) |>
+  pivot_longer(
+    cols = everything(),
+    names_to = "item",
+    values_to = "response"
+  ) |>
+  ggplot(aes(x = response)) +
+  geom_bar() +
+  facet_wrap(~ item, scales = "free_x") +
+  labs(
+    title = "Distributions of CFA Indicators",
+    x = "Response value",
+    y = "Number of respondents"
+  ) +
+  theme_minimal()
+```
+
+# Hypothesized Measurement Model
+
+The hypothesized two-factor model is:
+
+```{r}
+measurement_model <- '
+  Employee_Proficiencies =~ q3 + q4 + q5 + q6
+  Operational_Effectiveness =~ q9_r + q10 + q11 + q12 +
+                               q31 + q32 + q33 + q34
+'
+```
+
+The first factor represents attitudes toward employee proficiencies. The second factor represents attitudes toward operational effectiveness. The factors are allowed to correlate because members’ perceptions of employees and organizational operations may be related.
+
+# CFA Estimation
+
+```{r}
+fit <- cfa(
+  model = measurement_model,
+  data = efcu,
+  missing = "fiml",
+  estimator = "MLR",
+  std.lv = TRUE
+)
+
+summary(
+  fit,
+  fit.measures = TRUE,
+  standardized = TRUE,
+  rsquare = TRUE
+)
+```
+
+# CFA Results
+
+## Model Identification
+
+The model is identified because each latent factor has multiple observed indicators and the latent-variable scale is established by fixing the factor variances through `std.lv = TRUE`. The model has positive degrees of freedom and can therefore be evaluated using model-fit statistics.
+
+## Model Fit
+
+```{r}
+fit_indices <- fitMeasures(
+  fit,
+  c(
+    "chisq", "df", "pvalue",
+    "cfi", "tli",
+    "rmsea", "rmsea.ci.lower", "rmsea.ci.upper",
+    "srmr"
+  )
+)
+
+fit_table <- data.frame(
+  Measure = names(fit_indices),
+  Value = round(as.numeric(fit_indices), 3)
+)
+
+kable(fit_table)
+```
+
+The chi-square statistic evaluates the difference between the observed and model-implied covariance matrices. CFI and TLI values closer to 1 indicate better comparative fit. Lower RMSEA and SRMR values indicate smaller approximation and residual errors.
+
+Model fit should be interpreted using multiple indices rather than a single cutoff value.
+
+## Standardized Factor Loadings
+
+```{r}
+loading_table <- standardizedSolution(fit) |>
+  filter(op == "=~") |>
+  select(
+    factor = lhs,
+    indicator = rhs,
+    standardized_loading = est.std,
+    se,
+    z,
+    pvalue
+  ) |>
+  mutate(
+    across(
+      c(standardized_loading, se, z, pvalue),
+      ~ round(.x, 3)
+    )
+  )
+
+kable(loading_table)
+```
+
+A standardized loading of approximately 0.70 or higher is strong. Loadings from 0.60 to 0.69 are moderate to strong, while loadings from 0.50 to 0.59 may be acceptable with theoretical support. Loadings below 0.40 are generally weak.
+
+The loadings should be interpreted item by item. A significant loading indicates that the item is statistically related to its intended construct, but statistical significance alone does not establish that the item is a strong or substantively useful indicator.
+
+## Latent-Factor Correlation
+
+```{r}
+factor_correlation <- standardizedSolution(fit) |>
+  filter(
+    lhs == "Employee_Proficiencies",
+    op == "~~",
+    rhs == "Operational_Effectiveness"
+  )
+
+kable(factor_correlation)
+```
+
+The latent-factor correlation indicates whether employee proficiency and operational effectiveness are empirically related. A moderate positive correlation would support the expectation that the constructs are related but distinct. An extremely high correlation could raise concerns about discriminant validity.
+
+# Reliability and Convergent Validity
+
+## Cronbach’s Alpha
+
+```{r}
+employee_items <- efcu |>
+  select(q3, q4, q5, q6) |>
+  mutate(across(everything(), as.numeric))
+
+operations_items <- efcu |>
+  select(q9_r, q10, q11, q12, q31, q32, q33, q34) |>
+  mutate(across(everything(), as.numeric))
+
+employee_alpha <- psych::alpha(employee_items, check.keys = FALSE)
+operations_alpha <- psych::alpha(operations_items, check.keys = FALSE)
+
+alpha_table <- data.frame(
+  Construct = c(
+    "Employee proficiencies",
+    "Operational effectiveness"
+  ),
+  Cronbach_alpha = c(
+    employee_alpha$total$raw_alpha,
+    operations_alpha$total$raw_alpha
+  )
+)
+
+alpha_table$Cronbach_alpha <-
+  round(alpha_table$Cronbach_alpha, 3)
+
+kable(alpha_table)
+```
+
+Cronbach’s alpha evaluates internal consistency. A higher value suggests that the items provide consistent information about the same construct. Alpha should not be interpreted by itself because it can be influenced by the number of items and item redundancy.
+
+## Composite Reliability and Average Variance Extracted
+
+```{r}
+standardized_loadings <- standardizedSolution(fit) |>
+  filter(op == "=~") |>
+  select(
+    factor = lhs,
+    indicator = rhs,
+    loading = est.std
+  )
+
+reliability_table <- standardized_loadings |>
+  group_by(factor) |>
+  summarise(
+    composite_reliability =
+      sum(loading)^2 /
+      (sum(loading)^2 + sum(1 - loading^2)),
+    average_variance_extracted =
+      mean(loading^2),
+    .groups = "drop"
+  ) |>
+  mutate(
+    composite_reliability =
+      round(composite_reliability, 3),
+    average_variance_extracted =
+      round(average_variance_extracted, 3)
+  )
+
+kable(reliability_table)
+```
+
+Composite reliability summarizes the consistency of the standardized indicators. Average variance extracted (AVE) estimates the average amount of indicator variance explained by the latent factor.
+
+Convergent validity is supported when indicators load substantially on their intended factor and the construct demonstrates acceptable composite reliability and AVE. These statistics should be considered together with the item wording and model fit.
+
+# Discriminant Validity
+
+Discriminant validity concerns whether the two latent constructs are sufficiently different from one another.
+
+The factor correlation is examined first. The square root of each construct’s AVE can also be compared with the factor correlation using the Fornell–Larcker approach.
+
+```{r}
+ave_values <- reliability_table |>
+  select(
+    factor,
+    average_variance_extracted
+  )
+
+factor_cor <- lavInspect(fit, "cor.lv")
+
+sqrt_ave <- sqrt(
+  setNames(
+    ave_values$average_variance_extracted,
+    ave_values$factor
+  )
+)
+
+sqrt_ave
+factor_cor
+```
+
+If the latent-factor correlation is extremely high, the constructs may not be empirically distinguishable. If the square root of each construct’s AVE is larger than its correlation with the other construct, this provides evidence supporting discriminant validity.
+
+# Modification Indices
+
+Modification indices are used only as diagnostics.
+
+```{r}
+modification_indices <- modificationIndices(fit) |>
+  arrange(desc(mi)) |>
+  head(10)
+
+kable(modification_indices)
+```
+
+Modification indices do not automatically justify changing the model. Correlated errors or item removals should only be considered if they have a clear theoretical explanation. Any modified model must be reported as an explicitly labeled alternative and compared with the original hypothesized model.
+
+# Interpretation and Conclusion
+
+The CFA evaluated whether the Case 31 survey indicators measured two related latent constructs: employee proficiencies and operational effectiveness.
+
+The strongest evidence supporting the model should be based on:
+
+- acceptable overall model fit;
+- statistically significant and substantively meaningful standardized loadings;
+- acceptable internal consistency;
+- satisfactory composite reliability and AVE; and
+- a factor correlation that supports related but distinguishable constructs.
+
+The most important limitation concerns whether the operational-effectiveness items represent one coherent factor. These items address several aspects of members’ experiences and may use different response formats. Therefore, acceptable reliability alone does not prove that all items measure one unidimensional construct.
+
+The two-factor model is sufficiently defensible for a subsequent structural model only if the fit indices, loadings, reliability, convergent validity, and discriminant validity are jointly acceptable. If any indicator has a weak loading or if the operational-effectiveness items show poor coherence, the construct should be qualified and investigated before testing structural hypotheses.
+
+This CFA does not establish causal relationships. It evaluates the quality of the proposed measurement model.
+
+# References
+
+Byrne, B. M. (2016). *Structural equation modeling with AMOS: Basic concepts, applications, and programming*.
+
+Hair, J. F., Black, W. C., Babin, B. J., & Anderson, R. E. (2019). *Multivariate data analysis*.
+
+Rosseel, Y. (2012). lavaan: An R package for structural equation modeling. *Journal of Statistical Software, 48*(2), 1–36.
+
+# Appendix: Reproducibility and Publication Links
+
+- GitHub repository: [Github Repo](https://github.com/brianvuong1/ibm-6500-2)
+
+
